@@ -10,7 +10,6 @@ class SEOManager {
         this.setupIntersectionObserver();
         this.setupPerformanceTracking();
         this.setupSchemaUpdates();
-        this.setupSocialSharing();
     }
 
     // Lazy loading for images and content
@@ -92,27 +91,7 @@ class SEOManager {
         });
     }
 
-    // Social sharing functionality
-    setupSocialSharing() {
-        const shareData = {
-            title: document.title,
-            text: document.querySelector('meta[name="description"]')?.content || '',
-            url: window.location.href
-        };
 
-        // Add share buttons if Web Share API is supported
-        if (navigator.share) {
-            const shareButton = document.createElement('button');
-            shareButton.textContent = '📤 Compartir';
-            shareButton.className = 'share-button';
-            shareButton.onclick = () => navigator.share(shareData);
-            
-            // Add to appropriate sections
-            document.querySelectorAll('.hero-buttons, .contact-grid').forEach(container => {
-                container.appendChild(shareButton.cloneNode(true));
-            });
-        }
-    }
 
     // Analytics tracking methods
     trackSectionView(sectionName) {
@@ -219,9 +198,17 @@ class SEOManager {
 }
 
 // Initialize SEO Manager
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        window.seoManager = new SEOManager();
+        setupFAQs();
+    });
+} else {
     window.seoManager = new SEOManager();
-    
+    setupFAQs();
+}
+
+function setupFAQs() {
     // Add common FAQs
     const commonFAQs = [
         {
@@ -247,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     
     window.seoManager.addFAQSchema(commonFAQs);
-});
+}
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {

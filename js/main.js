@@ -351,3 +351,163 @@ window.ZivahApp = {
 
 // Hacer scrollToTop disponible globalmente
 window.scrollToTop = scrollToTop;
+
+// Funciones de compartir
+function shareWebsite() {
+    const shareData = {
+        title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+        text: 'Descubre los mejores productos ecuatorianos premium para mercados internacionales. Desde frutas tropicales hasta camarón y café de altura.',
+        url: window.location.href
+    };
+
+    // Intentar usar Web Share API si está disponible
+    if (navigator.share && navigator.canShare(shareData)) {
+        navigator.share(shareData)
+            .then(() => {
+                showShareSuccess('¡Sitio web compartido exitosamente!');
+            })
+            .catch((error) => {
+                console.log('Error al compartir:', error);
+                fallbackShare();
+            });
+    } else {
+        fallbackShare();
+    }
+}
+
+function fallbackShare() {
+    // Fallback para navegadores que no soportan Web Share API
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent('ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium');
+    const text = encodeURIComponent('Descubre los mejores productos ecuatorianos premium para mercados internacionales.');
+    
+    // Crear enlaces de compartir para redes sociales
+    const shareUrls = {
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+        twitter: `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
+        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+        whatsapp: `https://wa.me/?text=${text}%20${url}`
+    };
+    
+    // Mostrar modal de opciones de compartir
+    showShareModal(shareUrls);
+}
+
+function showShareModal(shareUrls) {
+    // Crear modal de compartir
+    const modal = document.createElement('div');
+    modal.className = 'share-modal';
+    modal.innerHTML = `
+        <div class="share-modal-content">
+            <div class="share-modal-header">
+                <h3>Compartir Sitio Web</h3>
+                <button class="share-modal-close" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+            </div>
+            <div class="share-modal-body">
+                <div class="share-options">
+                    <a href="${shareUrls.facebook}" target="_blank" class="share-option facebook">
+                        <span class="share-option-icon">📘</span>
+                        Facebook
+                    </a>
+                    <a href="${shareUrls.twitter}" target="_blank" class="share-option twitter">
+                        <span class="share-option-icon">🐦</span>
+                        Twitter
+                    </a>
+                    <a href="${shareUrls.linkedin}" target="_blank" class="share-option linkedin">
+                        <span class="share-option-icon">💼</span>
+                        LinkedIn
+                    </a>
+                    <a href="${shareUrls.whatsapp}" target="_blank" class="share-option whatsapp">
+                        <span class="share-option-icon">💬</span>
+                        WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Agregar estilos al modal
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Cerrar modal al hacer clic fuera
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+function copyWebsiteLink() {
+    const url = window.location.href;
+    
+    // Intentar usar Clipboard API moderna
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                showShareSuccess('¡Enlace copiado al portapapeles!');
+            })
+            .catch(() => {
+                fallbackCopy(url);
+            });
+    } else {
+        fallbackCopy(url);
+    }
+}
+
+function fallbackCopy(url) {
+    // Fallback para navegadores más antiguos
+    const textArea = document.createElement('textarea');
+    textArea.value = url;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        showShareSuccess('¡Enlace copiado al portapapeles!');
+    } catch (err) {
+        console.error('Error al copiar:', err);
+        showShareSuccess('Error al copiar el enlace');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function showShareSuccess(message) {
+    // Crear o reutilizar elemento de mensaje de éxito
+    let successElement = document.querySelector('.share-success');
+    
+    if (!successElement) {
+        successElement = document.createElement('div');
+        successElement.className = 'share-success';
+        document.body.appendChild(successElement);
+    }
+    
+    successElement.textContent = message;
+    successElement.classList.add('show');
+    
+    // Ocultar después de 3 segundos
+    setTimeout(() => {
+        successElement.classList.remove('show');
+    }, 3000);
+}
+
+// Hacer funciones disponibles globalmente
+window.shareWebsite = shareWebsite;
+window.copyWebsiteLink = copyWebsiteLink;
