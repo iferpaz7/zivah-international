@@ -28,12 +28,17 @@ assets\images\icons\ms-icon-310x310.png
 assets\images\icons\ms-icon-70x70.png
 assets\images\zivah-logo.svg
 browserconfig.xml
+css\loading.css
 css\responsive.css
 css\styles.css
 deployment-files.txt
 index.html
+js\loading-config.js
 js\main.js
+js\performance-config.js
 js\seo-utils.js
+js\smooth-loading.js
+js\smooth-loading-lite.js
 LICENSE
 robots.txt
 site.webmanifest
