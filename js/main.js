@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     initFormHandling();
     initSmoothScrolling();
+    initLogoFallback();
 });
 
 // Sistema de temas (Light/Dark)
@@ -146,7 +147,7 @@ function initFormHandling() {
 
 // Validación de formulario
 function validateForm(data) {
-    const requiredFields = ['nombre', 'email', 'empresa', 'producto', 'cantidad'];
+    const requiredFields = ['company', 'contact', 'email', 'country', 'product'];
     
     for (let field of requiredFields) {
         if (!data[field] || data[field].trim() === '') {
@@ -158,6 +159,14 @@ function validateForm(data) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
         return false;
+    }
+    
+    // Validar teléfono si se proporciona
+    if (data.phone && data.phone.trim() !== '') {
+        const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+        if (!phoneRegex.test(data.phone.replace(/[\s\-\(\)]/g, ''))) {
+            return false;
+        }
     }
     
     return true;
@@ -310,9 +319,23 @@ function initScrollAnimations() {
 // Inicializar animaciones cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', initScrollAnimations);
 
+// Logo fallback system
+function initLogoFallback() {
+    const logoImage = document.querySelector('.logo-image');
+    
+    if (logoImage) {
+        logoImage.addEventListener('error', function() {
+            // Fallback to PNG if SVG fails to load
+            this.src = 'assets/images/icons/android-icon-144x144.png';
+            this.style.filter = 'brightness(1.2) contrast(1.2)';
+        });
+    }
+}
+
 // Exportar funciones para uso global si es necesario
 window.ZivahApp = {
     Utils,
     showMessage,
-    trackQuoteSubmission
+    trackQuoteSubmission,
+    initLogoFallback
 };

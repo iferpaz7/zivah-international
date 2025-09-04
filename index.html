@@ -81,6 +81,9 @@
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     <link rel="dns-prefetch" href="//www.google-analytics.com" />
     
+    <!-- Preload critical assets -->
+    <link rel="preload" href="assets/images/zivah-logo.svg" as="image" type="image/svg+xml" />
+    
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/responsive.css" />
@@ -255,8 +258,13 @@
     <header class="header">
       <nav class="nav-container">
         <a href="#home" class="logo">
-          <div class="logo-icon">🌊</div>
-          ZIVAH International
+          <div class="logo-container">
+            <img src="assets/images/zivah-logo.svg" alt="ZIVAH International Logo" class="logo-image" loading="eager" />
+            <div class="logo-text">
+              <span class="logo-brand">ZIVAH</span>
+              <span class="logo-subtitle">International</span>
+            </div>
+          </div>
         </a>
         <ul class="nav-menu">
           <li><a href="#home">Inicio</a></li>
@@ -595,7 +603,7 @@
               horas.
             </div>
 
-            <form id="quote-form" method="POST" action="process_quote.php">
+            <form id="quote-form" method="POST" action="#" novalidate>
               <div class="form-grid">
                 <div class="form-group">
                   <label for="company">Empresa *</label>
