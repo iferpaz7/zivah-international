@@ -36,7 +36,7 @@
       "purpose": "any"
     },
     {
-      "src": "assets/images/icons/android-icon-144x144.png",
+      "src": "assets/images/icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any"
@@ -60,58 +60,25 @@
       "purpose": "maskable any"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/assets/images/screenshots/desktop-screenshot.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "ZIVAH International Desktop View"
-    },
-    {
-      "src": "/assets/images/screenshots/mobile-screenshot.png", 
-      "sizes": "375x667",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "ZIVAH International Mobile View"
-    }
-  ],
+
   "shortcuts": [
     {
       "name": "Solicitar Cotización",
       "short_name": "Cotizar",
       "description": "Solicitar cotización de productos",
-      "url": "/#cotizar",
-      "icons": [
-        {
-          "src": "/assets/images/icons/quote-icon-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
+      "url": "/#cotizar"
     },
     {
       "name": "Ver Productos",
       "short_name": "Productos", 
       "description": "Explorar catálogo de productos",
-      "url": "/#productos",
-      "icons": [
-        {
-          "src": "/assets/images/icons/products-icon-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
+      "url": "/#productos"
     },
     {
       "name": "Contacto",
       "short_name": "Contacto",
       "description": "Información de contacto",
-      "url": "/#contacto", 
-      "icons": [
-        {
-          "src": "/assets/images/icons/contact-icon-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
+      "url": "/#contacto"
     }
   ]
 }
