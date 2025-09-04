@@ -2,11 +2,62 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializar todas las funcionalidades
+    initTheme();
     initScrollEffects();
     initMobileMenu();
     initFormHandling();
     initSmoothScrolling();
 });
+
+// Sistema de temas (Light/Dark)
+function initTheme() {
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('.theme-icon');
+    
+    // Obtener tema guardado o usar preferencia del sistema
+    const savedTheme = localStorage.getItem('zivah-theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    
+    // Aplicar tema inicial
+    setTheme(currentTheme);
+    
+    // Event listener para el botón de cambio de tema
+    themeToggle.addEventListener('click', function() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+    });
+    
+    // Escuchar cambios en la preferencia del sistema
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('zivah-theme')) {
+            setTheme(e.matches ? 'dark' : 'light');
+        }
+    });
+}
+
+function setTheme(theme) {
+    const themeIcon = document.querySelector('.theme-icon');
+    
+    // Aplicar tema al documento
+    document.documentElement.setAttribute('data-theme', theme);
+    
+    // Actualizar icono
+    if (theme === 'dark') {
+        themeIcon.textContent = '☀️';
+        themeIcon.setAttribute('aria-label', 'Switch to light mode');
+    } else {
+        themeIcon.textContent = '🌙';
+        themeIcon.setAttribute('aria-label', 'Switch to dark mode');
+    }
+    
+    // Guardar preferencia
+    localStorage.setItem('zivah-theme', theme);
+    
+    // Dispatch evento personalizado para otros componentes
+    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
+}
 
 // Efectos de scroll
 function initScrollEffects() {
