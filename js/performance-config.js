@@ -61,7 +61,7 @@ window.ZIVAH_PERFORMANCE_CONFIG = {
 
         // Preload crítico
         preloadCritical: [
-            'assets/images/zivah-logo.svg'
+            'assets/images/icons/favicon-96x96.png'
         ],
 
         // Lazy load no crítico

@@ -448,7 +448,7 @@ function initPerformanceOptimizations() {
 // Preload de recursos críticos
 function preloadCriticalResources() {
     const criticalImages = [
-        'assets/images/zivah-logo.svg',
+        'assets/images/icons/favicon-96x96.png',
         'assets/images/icons/android-icon-144x144.png'
     ];
     

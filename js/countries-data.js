@@ -106,8 +106,7 @@ function searchCountries(query) {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { ECUADOR_EXPORT_COUNTRIES, getCountriesByRegion, searchCountries };
 }
-// P
-roductos de exportación de Ecuador organizados por categorías
+// Productos de exportación de Ecuador organizados por categorías
 const ECUADOR_EXPORT_PRODUCTS = [
   {
     category: 'Frutas Tropicales',

@@ -72,8 +72,7 @@ class SmoothLoaderLite {
         loader.innerHTML = `
             <div class="loader-content">
                 <div class="loader-logo">
-                    <img src="assets/images/zivah-logo.svg" alt="ZIVAH" 
-                         onerror="this.style.display='none'">
+                    <img src="assets/images/icons/favicon-96x96.png" alt="ZIVAH">
                 </div>
                 <div class="loader-bar"></div>
             </div>

@@ -41,8 +41,7 @@ class SmoothLoader {
             loader.className = 'page-loader';
             loader.innerHTML = `
                 <div class="loader-logo">
-                    <img src="assets/images/zivah-logo.svg" alt="ZIVAH Loading" 
-                         onerror="this.src='assets/images/icons/android-icon-144x144.png'">
+                    <img src="assets/images/icons/favicon-96x96.png" alt="ZIVAH Loading">
                 </div>
                 <div class="loader-spinner"></div>
                 <div class="loader-text">Cargando productos ecuatorianos premium...</div>
