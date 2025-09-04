@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initFormHandling();
     initSmoothScrolling();
     initLogoFallback();
+    
+    // Integrar con el sistema de smooth loading
+    initSmoothLoadingIntegration();
 });
 
 // Sistema de temas (Light/Dark)
@@ -174,26 +177,37 @@ function validateForm(data) {
 
 // Envío de formulario de cotización
 function submitQuoteForm(data) {
-    // Mostrar loading
+    const form = document.getElementById('quote-form');
     const submitBtn = document.querySelector('.btn-submit');
     const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Enviando...';
-    submitBtn.disabled = true;
+    
+    // Usar el sistema de smooth loading lite
+    if (window.SmoothLoaderLite) {
+        window.SmoothLoaderLite.showFormLoader(form);
+    } else {
+        // Fallback si smooth loading no está disponible
+        submitBtn.textContent = 'Enviando...';
+        submitBtn.disabled = true;
+    }
     
     // Simular llamada API
     setTimeout(() => {
         // Aquí harías la llamada real a tu API
         console.log('Datos de cotización:', data);
         
-        // Mostrar mensaje de éxito
+        // Ocultar loading
+        if (window.SmoothLoaderLite) {
+            window.SmoothLoaderLite.hideFormLoader(form);
+        } else {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+        
+        // Mostrar mensaje de éxito con animación
         showMessage('¡Cotización enviada exitosamente! Nos contactaremos pronto.', 'success');
         
         // Resetear formulario
         document.getElementById('quote-form').reset();
-        
-        // Restaurar botón
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
         
         // Opcional: enviar a Google Analytics o similar
         trackQuoteSubmission(data);
@@ -351,6 +365,129 @@ window.ZivahApp = {
 
 // Hacer scrollToTop disponible globalmente
 window.scrollToTop = scrollToTop;
+
+// Integración con el sistema de smooth loading
+function initSmoothLoadingIntegration() {
+    // Escuchar cuando la carga suave esté completa
+    document.addEventListener('smoothLoadComplete', function() {
+        console.log('🎉 ZIVAH International - Sistema de loading suave completado');
+        
+        // Inicializar funcionalidades que dependen de la carga completa
+        initAdvancedAnimations();
+        initPerformanceOptimizations();
+    });
+    
+    // Configurar lazy loading para imágenes que no tienen data-src
+    setupLazyLoadingFallback();
+}
+
+// Animaciones avanzadas después de la carga
+function initAdvancedAnimations() {
+    // Animación de aparición progresiva para elementos de productos
+    const productItems = document.querySelectorAll('.product-item');
+    productItems.forEach((item, index) => {
+        setTimeout(() => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            
+            requestAnimationFrame(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            });
+        }, index * 50);
+    });
+    
+    // Efecto de escritura para títulos principales
+    animateTypewriter();
+}
+
+// Efecto de escritura para títulos
+function animateTypewriter() {
+    const heroTitle = document.querySelector('.hero h1');
+    if (heroTitle && !heroTitle.classList.contains('typewriter-animated')) {
+        heroTitle.classList.add('typewriter-animated');
+        const text = heroTitle.textContent;
+        heroTitle.textContent = '';
+        
+        let i = 0;
+        const typeWriter = () => {
+            if (i < text.length) {
+                heroTitle.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        };
+        
+        setTimeout(typeWriter, 500);
+    }
+}
+
+// Optimizaciones de rendimiento
+function initPerformanceOptimizations() {
+    // Lazy loading para elementos pesados
+    const heavyElements = document.querySelectorAll('.hero-visual, .products-showcase');
+    heavyElements.forEach(element => {
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('loaded');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            observer.observe(element);
+        }
+    });
+    
+    // Preload de recursos críticos
+    preloadCriticalResources();
+}
+
+// Preload de recursos críticos
+function preloadCriticalResources() {
+    const criticalImages = [
+        'assets/images/zivah-logo.svg',
+        'assets/images/icons/android-icon-144x144.png'
+    ];
+    
+    criticalImages.forEach(src => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        document.head.appendChild(link);
+    });
+}
+
+// Fallback para lazy loading si el sistema principal no está disponible
+function setupLazyLoadingFallback() {
+    if (!window.SmoothLoaderLite) {
+        const images = document.querySelectorAll('img[data-src]');
+        
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.add('loaded');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            images.forEach(img => imageObserver.observe(img));
+        } else {
+            // Fallback para navegadores sin IntersectionObserver
+            images.forEach(img => {
+                img.src = img.dataset.src;
+                img.classList.add('loaded');
+            });
+        }
+    }
+}
 
 // Funciones de compartir
 function shareWebsite() {
