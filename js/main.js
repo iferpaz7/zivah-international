@@ -332,10 +332,22 @@ function initLogoFallback() {
     }
 }
 
+// Función global para scroll to top
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
 // Exportar funciones para uso global si es necesario
 window.ZivahApp = {
     Utils,
     showMessage,
     trackQuoteSubmission,
-    initLogoFallback
+    initLogoFallback,
+    scrollToTop
 };
+
+// Hacer scrollToTop disponible globalmente
+window.scrollToTop = scrollToTop;
