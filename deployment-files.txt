@@ -26,9 +26,11 @@ assets\images\icons\ms-icon-144x144.png
 assets\images\icons\ms-icon-150x150.png
 assets\images\icons\ms-icon-310x310.png
 assets\images\icons\ms-icon-70x70.png
+assets\images\zivah-logo.svg
 browserconfig.xml
 css\responsive.css
 css\styles.css
+deployment-files.txt
 index.html
 js\main.js
 js\seo-utils.js
@@ -36,3 +38,4 @@ LICENSE
 robots.txt
 site.webmanifest
 sitemap.xml
+zivah-international-website.zip
