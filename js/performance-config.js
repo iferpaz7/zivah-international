@@ -192,21 +192,13 @@ window.ZIVAH_PERFORMANCE_UTILS = {
 
     // Lazy load recursos no críticos
     lazyLoadNonCritical() {
-        // Lazy load de scripts no críticos
-        const nonCriticalScripts = [
-            'js/seo-utils.js?v=1.0.3'
-        ];
-
-        // Cargar después del load event
+        // Esta función está disponible para futuros scripts no críticos
+        // Actualmente no hay scripts no críticos para cargar de forma lazy
+        
+        // Cargar después del load event si se agregan scripts futuros
         window.addEventListener('load', () => {
-            setTimeout(() => {
-                nonCriticalScripts.forEach(script => {
-                    const scriptEl = document.createElement('script');
-                    scriptEl.src = script;
-                    scriptEl.async = true;
-                    document.head.appendChild(scriptEl);
-                });
-            }, 1000);
+            // Placeholder para futuros scripts no críticos
+            console.log('✅ ZIVAH Performance: All critical resources loaded');
         });
     },
 
