@@ -11,7 +11,40 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Integrar con el sistema de smooth loading
     initSmoothLoadingIntegration();
+    
+    // Wait for smooth loader to be ready
+    if (window.SmoothLoaderLite) {
+        // Additional initialization after smooth loader
+        setTimeout(initEnhancedAnimations, 100);
+    }
 });
+
+// Enhanced animations initialization
+function initEnhancedAnimations() {
+    // Ensure all animation classes are properly set up
+    const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .scale-in, .rotate-in, .section-transition');
+    
+    // Add intersection observer fallback if SmoothLoaderLite didn't handle it
+    if (animatedElements.length > 0 && !document.querySelector('.fade-in.visible')) {
+        const fallbackObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    fallbackObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '50px 0px -50px 0px'
+        });
+        
+        animatedElements.forEach(el => {
+            if (!el.classList.contains('visible')) {
+                fallbackObserver.observe(el);
+            }
+        });
+    }
+}
 
 // Sistema de temas (Light/Dark)
 function initTheme() {
@@ -80,8 +113,12 @@ function initScrollEffects() {
         const scrolled = window.pageYOffset;
         const rate = scrolled * -0.5;
         
+        // Limitar el efecto parallax para evitar valores extremos
+        const maxParallax = window.innerHeight; // Limitar al alto de la ventana
+        const limitedRate = Math.max(rate, -maxParallax);
+        
         if (hero) {
-            hero.style.transform = `translateY(${rate}px)`;
+            hero.style.transform = `translateY(${limitedRate}px)`;
         }
     });
     
@@ -252,16 +289,42 @@ function initSmoothScrolling() {
             const targetSection = document.querySelector(targetId);
             
             if (targetSection) {
-                const headerHeight = document.querySelector('.header').offsetHeight;
-                const targetPosition = targetSection.offsetTop - headerHeight;
+                const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
+                const targetPosition = targetSection.offsetTop - headerHeight - 20; // Extra padding
                 
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+                // Use custom smooth scroll with easing for better performance
+                smoothScrollTo(targetPosition, 800);
             }
         });
     });
+}
+
+// Custom smooth scroll function with easing
+function smoothScrollTo(targetPosition, duration = 800) {
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    let startTime = null;
+
+    function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const run = easeInOutCubic(timeElapsed, startPosition, distance, duration);
+        
+        window.scrollTo(0, run);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
+        }
+    }
+
+    function easeInOutCubic(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t + b;
+        t -= 2;
+        return c / 2 * (t * t * t + 2) + b;
+    }
+
+    requestAnimationFrame(animation);
 }
 
 // Tracking de eventos (para analytics)
@@ -377,8 +440,38 @@ function initSmoothLoadingIntegration() {
         initPerformanceOptimizations();
     });
     
+    // Ensure smooth scrolling is properly initialized
+    // This provides fallback if smooth-loading-lite doesn't handle it
+    if (!window.SmoothLoaderLite || !window.SmoothLoaderLite.smoothScrollTo) {
+        initBackupSmoothScrolling();
+    }
+    
     // Configurar lazy loading para imágenes que no tienen data-src
     setupLazyLoadingFallback();
+}
+
+// Backup smooth scrolling in case SmoothLoaderLite fails
+function initBackupSmoothScrolling() {
+    const links = document.querySelectorAll('a[href^="#"]');
+    
+    links.forEach(link => {
+        // Remove any existing listeners first
+        link.removeEventListener('click', handleSmoothScroll);
+        link.addEventListener('click', handleSmoothScroll);
+    });
+}
+
+function handleSmoothScroll(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href');
+    const target = document.querySelector(targetId);
+    
+    if (target) {
+        const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
+        const targetPosition = target.offsetTop - headerHeight - 20;
+        
+        smoothScrollTo(targetPosition, 800);
+    }
 }
 
 // Animaciones avanzadas después de la carga

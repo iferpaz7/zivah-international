@@ -150,30 +150,122 @@ class SmoothLoaderLite {
     setupMinimalAnimations() {
         if (!this.config.animations.enabled) return;
         
-        // Solo animaciones críticas
+        // Animation observer for entrance effects
         const animationObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('visible');
                     animationObserver.unobserve(entry.target);
                 }
             });
         }, {
             threshold: this.config.animations.threshold,
+            rootMargin: '50px 0px -100px 0px'
+        });
+
+        // Stagger observer for grouped elements
+        const staggerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const staggerItems = entry.target.querySelectorAll('.stagger-item');
+                    staggerItems.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                        }, index * 100);
+                    });
+                    staggerObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         });
 
-        // Aplicar solo a elementos críticos
-        const criticalElements = document.querySelectorAll('.hero-content, .section-title');
-        criticalElements.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = `opacity ${this.config.animations.duration}ms ease, transform ${this.config.animations.duration}ms ease`;
-            animationObserver.observe(el);
+        this.observers.set('animation', animationObserver);
+        this.observers.set('stagger', staggerObserver);
+
+        // Start observing
+        requestIdleCallback(() => this.startObserving(), { timeout: 2000 });
+        
+        // Setup smooth scrolling
+        this.setupSmoothScrolling();
+    }
+
+    startObserving() {
+        const animationObserver = this.observers.get('animation');
+        const staggerObserver = this.observers.get('stagger');
+
+        if (!animationObserver || !staggerObserver) return;
+
+        // Observe animated elements
+        const animatedElements = document.querySelectorAll(
+            '.fade-in, .slide-in-left, .slide-in-right, .scale-in, .rotate-in, .section-transition'
+        );
+        
+        animatedElements.forEach(el => {
+            if (!el.classList.contains('visible')) {
+                animationObserver.observe(el);
+            }
         });
 
-        this.observers.set('animations', animationObserver);
+        // Observe stagger containers
+        const staggerContainers = document.querySelectorAll(
+            '.products-grid, .products-showcase, .hero-stats'
+        );
+        
+        staggerContainers.forEach(container => {
+            staggerObserver.observe(container);
+        });
+    }
+
+    setupSmoothScrolling() {
+        const links = document.querySelectorAll('a[href^="#"]');
+        
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const target = document.querySelector(targetId);
+                
+                if (target) {
+                    this.smoothScrollTo(target);
+                }
+            });
+        });
+    }
+
+    smoothScrollTo(target) {
+        const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
+        const targetPosition = target.offsetTop - headerHeight - 20;
+        
+        this.animateScroll(targetPosition, 800);
+    }
+
+    animateScroll(targetPosition, duration = 800) {
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        let startTime = null;
+
+        const animation = (currentTime) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = this.easeInOutCubic(timeElapsed, startPosition, distance, duration);
+            
+            window.scrollTo(0, run);
+            
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
+            }
+        };
+
+        requestAnimationFrame(animation);
+    }
+
+    easeInOutCubic(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t + b;
+        t -= 2;
+        return c / 2 * (t * t * t + 2) + b;
     }
 
     // Métodos públicos mínimos
