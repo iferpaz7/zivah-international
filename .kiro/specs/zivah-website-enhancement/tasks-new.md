@@ -1,7 +1,7 @@
 # Implementation Plan
 
 - [ ] 1. Initialize Next.js project with modern tooling
-  - Create Next.js 15+ project with App Router and TypeScript
+  - Create Next.js 14+ project with App Router and TypeScript
   - Set up TailwindCSS with custom design system configuration
   - Configure ESLint, Prettier, and Husky for code quality
   - Initialize Prisma with PostgreSQL database connection

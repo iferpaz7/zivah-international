@@ -2,9 +2,9 @@
 
 ## Overview
 
-El diseño propuesto transforma el sitio web estático de ZIVAH International en una aplicación web dinámica usando PHP 8.1+, MySQL 8.0, y arquitectura MVC moderna. La solución se optimiza específicamente para cPanel de InterServer, aprovechando sus características nativas como MySQL databases, email accounts, y file manager.
+El diseño propuesto transforma el sitio web estático de ZIVAH International en una aplicación web moderna usando Next.js 15+, PostgreSQL, Prisma ORM, y TailwindCSS. La solución implementa arquitectura de aplicación full-stack con Server Side Rendering (SSR), Static Site Generation (SSG), y API Routes nativas de Next.js.
 
-La arquitectura seguirá el patrón MVC (Model-View-Controller) con una capa de abstracción de datos (Repository Pattern) para facilitar el mantenimiento y escalabilidad. Se implementará un sistema de autenticación robusto, panel de administración intuitivo, y API REST para futuras integraciones.
+La arquitectura seguirá el patrón de App Router de Next.js con componentes de servidor y cliente, utilizando Prisma como ORM para la gestión de datos y TailwindCSS para un diseño responsivo y moderno. Se implementará un sistema de autenticación con NextAuth.js, panel de administración intuitivo, y API Routes para todas las operaciones CRUD.
 
 ## Architecture
 
@@ -13,403 +13,647 @@ La arquitectura seguirá el patrón MVC (Model-View-Controller) con una capa de 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   Backend       │    │   Database      │
-│   (HTML/CSS/JS) │◄──►│   (PHP MVC)     │◄──►│   (MySQL 8.0)   │
+│   (Next.js UI)  │◄──►│   (API Routes)  │◄──►│   (PostgreSQL)  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │              ┌─────────────────┐              │
-         └─────────────►│   cPanel APIs   │◄─────────────┘
-                        │   (Email/Files) │
+         └─────────────►│   Prisma ORM    │◄─────────────┘
+                        │   (Data Layer)  │
                         └─────────────────┘
 ```
 
 ### Directory Structure
 
 ```
-/public_html/
-├── index.php                 # Entry point
-├── .htaccess                # URL rewriting
-├── assets/                  # Static assets
-│   ├── css/
-│   ├── js/
-│   └── images/
-├── config/                  # Configuration files
-│   ├── database.php
-│   ├── app.php
-│   └── email.php
+/zivah-international/
+├── next.config.js           # Next.js configuration
+├── package.json             # Dependencies and scripts
+├── tailwind.config.js       # TailwindCSS configuration
+├── prisma/                  # Database schema and migrations
+│   ├── schema.prisma
+│   ├── migrations/
+│   └── seed.ts
+├── public/                  # Static assets
+│   ├── images/
+│   ├── icons/
+│   └── favicon.ico
 ├── src/                     # Application source
-│   ├── Controllers/
-│   ├── Models/
-│   ├── Views/
-│   ├── Repositories/
-│   ├── Services/
-│   └── Middleware/
-├── admin/                   # Admin panel
-│   ├── index.php
-│   ├── login.php
-│   └── dashboard/
-├── api/                     # REST API endpoints
-│   ├── products.php
-│   ├── quotes.php
-│   └── auth.php
-└── vendor/                  # Composer dependencies
+│   ├── app/                 # App Router (Next.js 13+)
+│   │   ├── (admin)/         # Admin routes group
+│   │   ├── (auth)/          # Auth routes group
+│   │   ├── api/             # API routes
+│   │   ├── globals.css      # Global styles
+│   │   ├── layout.tsx       # Root layout
+│   │   └── page.tsx         # Home page
+│   ├── components/          # Reusable components
+│   │   ├── ui/              # UI components
+│   │   ├── forms/           # Form components
+│   │   └── layout/          # Layout components
+│   ├── lib/                 # Utility libraries
+│   │   ├── prisma.ts        # Prisma client
+│   │   ├── auth.ts          # NextAuth configuration
+│   │   ├── validations.ts   # Zod schemas
+│   │   └── utils.ts         # Utility functions
+│   └── types/               # TypeScript type definitions
+├── .env.local               # Environment variables
+└── .env.example             # Environment template
 ```
 
 ### Technology Stack
 
-- **Backend**: PHP 8.1+ (compatible con cPanel)
-- **Database**: MySQL 8.0 (cPanel native)
-- **Frontend**: Vanilla JavaScript + existing CSS
-- **Email**: cPanel Email API + PHPMailer
-- **Authentication**: JWT tokens + PHP sessions
-- **Dependency Management**: Composer
-- **CSS Framework**: Mantener el diseño actual + Bootstrap 5 para admin
-- **File Upload**: cPanel File Manager integration
+- **Framework**: Next.js 15+ (App Router, SSR, SSG, React Compiler)
+- **Database**: PostgreSQL 15+ (with connection pooling)
+- **ORM**: Prisma (type-safe database client)
+- **Frontend**: React 19+ with TypeScript
+- **Styling**: TailwindCSS + Headless UI components
+- **Authentication**: NextAuth.js v5 (OAuth, credentials)
+- **Form Handling**: React Hook Form + Zod validation
+- **Email**: Resend API or NodeMailer
+- **File Upload**: Next.js API routes with cloud storage
+- **State Management**: React Server Components + Zustand (client state)
+- **Testing**: Jest + Testing Library + Playwright
 
 ## Components and Interfaces
 
-### 1. Database Layer (Repository Pattern)
+### 1. Database Layer (Prisma ORM)
 
-#### Database Schema
+#### Prisma Schema
 
-```sql
--- Productos
-CREATE TABLE products (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    category_id INT,
-    description TEXT,
-    features JSON,
-    price DECIMAL(10,2),
-    stock_quantity INT DEFAULT 0,
-    image_url VARCHAR(500),
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX idx_category (category_id),
-    INDEX idx_active (is_active)
-);
+```prisma
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
 
--- Categorías de productos
-CREATE TABLE categories (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    slug VARCHAR(100) UNIQUE,
-    description TEXT,
-    icon VARCHAR(50),
-    color VARCHAR(7),
-    sort_order INT DEFAULT 0
-);
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
--- Cotizaciones
-CREATE TABLE quotes (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    quote_number VARCHAR(20) UNIQUE,
-    customer_name VARCHAR(255) NOT NULL,
-    customer_email VARCHAR(255) NOT NULL,
-    customer_phone VARCHAR(50),
-    company VARCHAR(255),
-    country VARCHAR(100),
-    message TEXT,
-    status ENUM('pending', 'processing', 'sent', 'closed') DEFAULT 'pending',
-    total_amount DECIMAL(12,2),
-    admin_notes TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX idx_status (status),
-    INDEX idx_email (customer_email),
-    INDEX idx_created (created_at)
-);
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  slug        String    @unique @db.VarChar(100)
+  description String?   @db.Text
+  icon        String?   @db.VarChar(50)
+  color       String?   @db.VarChar(7)
+  sortOrder   Int       @default(0) @map("sort_order")
+  products    Product[]
+  
+  @@map("categories")
+}
 
--- Items de cotización
-CREATE TABLE quote_items (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    quote_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT NOT NULL,
-    unit_price DECIMAL(10,2),
-    total_price DECIMAL(12,2),
-    notes TEXT,
-    FOREIGN KEY (quote_id) REFERENCES quotes(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id)
-);
+model Product {
+  id            Int         @id @default(autoincrement())
+  name          String      @db.VarChar(255)
+  categoryId    Int?        @map("category_id")
+  description   String?     @db.Text
+  features      Json?
+  price         Decimal?    @db.Decimal(10, 2)
+  stockQuantity Int         @default(0) @map("stock_quantity")
+  imageUrl      String?     @db.VarChar(500) @map("image_url")
+  isActive      Boolean     @default(true) @map("is_active")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  
+  category      Category?   @relation(fields: [categoryId], references: [id])
+  quoteItems    QuoteItem[]
+  
+  @@index([categoryId])
+  @@index([isActive])
+  @@map("products")
+}
 
--- Usuarios administradores
-CREATE TABLE admin_users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    full_name VARCHAR(255),
-    role ENUM('admin', 'manager', 'viewer') DEFAULT 'viewer',
-    is_active BOOLEAN DEFAULT TRUE,
-    last_login TIMESTAMP NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+model Quote {
+  id             Int         @id @default(autoincrement())
+  quoteNumber    String      @unique @db.VarChar(20) @map("quote_number")
+  customerName   String      @db.VarChar(255) @map("customer_name")
+  customerEmail  String      @db.VarChar(255) @map("customer_email")
+  customerPhone  String?     @db.VarChar(50) @map("customer_phone")
+  company        String?     @db.VarChar(255)
+  country        String?     @db.VarChar(100)
+  message        String?     @db.Text
+  status         QuoteStatus @default(PENDING)
+  totalAmount    Decimal?    @db.Decimal(12, 2) @map("total_amount")
+  adminNotes     String?     @db.Text @map("admin_notes")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+  
+  items          QuoteItem[]
+  
+  @@index([status])
+  @@index([customerEmail])
+  @@index([createdAt])
+  @@map("quotes")
+}
 
--- Configuración del sitio
-CREATE TABLE site_settings (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    setting_key VARCHAR(100) UNIQUE NOT NULL,
-    setting_value TEXT,
-    setting_type ENUM('text', 'number', 'boolean', 'json') DEFAULT 'text',
-    description TEXT,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+model QuoteItem {
+  id         Int     @id @default(autoincrement())
+  quoteId    Int     @map("quote_id")
+  productId  Int     @map("product_id")
+  quantity   Int
+  unitPrice  Decimal @db.Decimal(10, 2) @map("unit_price")
+  totalPrice Decimal @db.Decimal(12, 2) @map("total_price")
+  notes      String? @db.Text
+  
+  quote      Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  product    Product @relation(fields: [productId], references: [id])
+  
+  @@map("quote_items")
+}
 
--- Logs de actividad
-CREATE TABLE activity_logs (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
-    action VARCHAR(100) NOT NULL,
-    table_name VARCHAR(50),
-    record_id INT,
-    old_values JSON,
-    new_values JSON,
-    ip_address VARCHAR(45),
-    user_agent TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_user (user_id),
-    INDEX idx_action (action),
-    INDEX idx_created (created_at)
-);
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique @db.VarChar(50)
+  email     String    @unique @db.VarChar(255)
+  password  String    @db.VarChar(255)
+  fullName  String?   @db.VarChar(255) @map("full_name")
+  role      UserRole  @default(VIEWER)
+  isActive  Boolean   @default(true) @map("is_active")
+  lastLogin DateTime? @map("last_login")
+  createdAt DateTime  @default(now()) @map("created_at")
+  
+  activityLogs ActivityLog[]
+  
+  @@map("admin_users")
+}
+
+model SiteSetting {
+  id           Int         @id @default(autoincrement())
+  key          String      @unique @db.VarChar(100) @map("setting_key")
+  value        String?     @db.Text @map("setting_value")
+  type         SettingType @default(TEXT) @map("setting_type")
+  description  String?     @db.Text
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+  
+  @@map("site_settings")
+}
+
+model ActivityLog {
+  id         Int      @id @default(autoincrement())
+  userId     Int?     @map("user_id")
+  action     String   @db.VarChar(100)
+  tableName  String?  @db.VarChar(50) @map("table_name")
+  recordId   Int?     @map("record_id")
+  oldValues  Json?    @map("old_values")
+  newValues  Json?    @map("new_values")
+  ipAddress  String?  @db.VarChar(45) @map("ip_address")
+  userAgent  String?  @db.Text @map("user_agent")
+  createdAt  DateTime @default(now()) @map("created_at")
+  
+  user       User?    @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+enum QuoteStatus {
+  PENDING
+  PROCESSING
+  SENT
+  CLOSED
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  VIEWER
+}
+
+enum SettingType {
+  TEXT
+  NUMBER
+  BOOLEAN
+  JSON
+}
 ```
 
-#### Repository Interfaces
+#### Service Layer Interfaces
 
-```php
-interface ProductRepositoryInterface {
-    public function findAll(array $filters = []): array;
-    public function findById(int $id): ?Product;
-    public function findByCategory(int $categoryId): array;
-    public function create(array $data): Product;
-    public function update(int $id, array $data): bool;
-    public function delete(int $id): bool;
-    public function updateStock(int $id, int $quantity): bool;
+```typescript
+// lib/services/product.service.ts
+export interface ProductFilters {
+  categoryId?: number;
+  isActive?: boolean;
+  search?: string;
+  minPrice?: number;
+  maxPrice?: number;
 }
 
-interface QuoteRepositoryInterface {
-    public function findAll(array $filters = []): array;
-    public function findById(int $id): ?Quote;
-    public function create(array $data): Quote;
-    public function updateStatus(int $id, string $status): bool;
-    public function getStatistics(): array;
+export class ProductService {
+  async getProducts(filters?: ProductFilters): Promise<Product[]>
+  async getProductById(id: number): Promise<Product | null>
+  async getProductsByCategory(categoryId: number): Promise<Product[]>
+  async createProduct(data: CreateProductInput): Promise<Product>
+  async updateProduct(id: number, data: UpdateProductInput): Promise<Product>
+  async deleteProduct(id: number): Promise<boolean>
+  async updateStock(id: number, quantity: number): Promise<Product>
+}
+
+// lib/services/quote.service.ts
+export interface QuoteFilters {
+  status?: QuoteStatus;
+  customerEmail?: string;
+  dateFrom?: Date;
+  dateTo?: Date;
+}
+
+export class QuoteService {
+  async getQuotes(filters?: QuoteFilters): Promise<Quote[]>
+  async getQuoteById(id: number): Promise<Quote | null>
+  async createQuote(data: CreateQuoteInput): Promise<Quote>
+  async updateQuoteStatus(id: number, status: QuoteStatus): Promise<Quote>
+  async getQuoteStatistics(): Promise<QuoteStatistics>
+  async generateQuoteNumber(): Promise<string>
 }
 ```
 
-### 2. Controller Layer
+### 2. API Routes Layer
 
-#### Main Controllers
+#### Next.js API Routes
 
-```php
-class HomeController {
-    public function index(): void;
-    public function products(): void;
-    public function about(): void;
-    public function contact(): void;
-}
+```typescript
+// app/api/products/route.ts
+export async function GET(request: Request): Promise<Response>
+export async function POST(request: Request): Promise<Response>
 
-class ProductController {
-    public function index(): void;
-    public function show(int $id): void;
-    public function byCategory(string $slug): void;
-}
+// app/api/products/[id]/route.ts
+export async function GET(request: Request, { params }: { params: { id: string } }): Promise<Response>
+export async function PUT(request: Request, { params }: { params: { id: string } }): Promise<Response>
+export async function DELETE(request: Request, { params }: { params: { id: string } }): Promise<Response>
 
-class QuoteController {
-    public function create(): void;
-    public function store(array $data): void;
-    public function success(): void;
-}
+// app/api/categories/route.ts
+export async function GET(): Promise<Response>
+export async function POST(request: Request): Promise<Response>
 
-class AdminController {
-    public function dashboard(): void;
-    public function products(): void;
-    public function quotes(): void;
-    public function settings(): void;
-}
+// app/api/quotes/route.ts
+export async function GET(request: Request): Promise<Response>
+export async function POST(request: Request): Promise<Response>
 
-class ApiController {
-    public function getProducts(): array;
-    public function createQuote(array $data): array;
-    public function updateProduct(int $id, array $data): array;
-}
+// app/api/quotes/[id]/route.ts
+export async function GET(request: Request, { params }: { params: { id: string } }): Promise<Response>
+export async function PATCH(request: Request, { params }: { params: { id: string } }): Promise<Response>
+
+// app/api/auth/[...nextauth]/route.ts
+import NextAuth from "next-auth"
+import { authOptions } from "@/lib/auth"
+const handler = NextAuth(authOptions)
+export { handler as GET, handler as POST }
+
+// app/api/upload/route.ts
+export async function POST(request: Request): Promise<Response>
 ```
 
 ### 3. Service Layer
 
 #### Core Services
 
-```php
-class ProductService {
-    public function getAllProducts(array $filters = []): array;
-    public function getProductById(int $id): ?Product;
-    public function createProduct(array $data): Product;
-    public function updateProduct(int $id, array $data): bool;
-    public function deleteProduct(int $id): bool;
-    public function updateStock(int $id, int $quantity): bool;
+```typescript
+// lib/services/product.service.ts
+export class ProductService {
+  async getAllProducts(filters?: ProductFilters): Promise<Product[]>
+  async getProductById(id: number): Promise<Product | null>
+  async createProduct(data: CreateProductInput): Promise<Product>
+  async updateProduct(id: number, data: UpdateProductInput): Promise<Product>
+  async deleteProduct(id: number): Promise<boolean>
+  async updateStock(id: number, quantity: number): Promise<Product>
 }
 
-class QuoteService {
-    public function createQuote(array $data): Quote;
-    public function processQuote(int $id): bool;
-    public function sendQuoteEmail(Quote $quote): bool;
-    public function generateQuoteNumber(): string;
-    public function calculateTotal(array $items): float;
+// lib/services/quote.service.ts
+export class QuoteService {
+  async createQuote(data: CreateQuoteInput): Promise<Quote>
+  async processQuote(id: number): Promise<boolean>
+  async sendQuoteEmail(quote: Quote): Promise<boolean>
+  async generateQuoteNumber(): Promise<string>
+  async calculateTotal(items: QuoteItem[]): Promise<number>
 }
 
-class EmailService {
-    public function sendQuoteNotification(Quote $quote): bool;
-    public function sendQuoteResponse(Quote $quote, string $message): bool;
-    public function sendWelcomeEmail(string $email, string $name): bool;
+// lib/services/email.service.ts
+export class EmailService {
+  async sendQuoteNotification(quote: Quote): Promise<boolean>
+  async sendQuoteResponse(quote: Quote, message: string): Promise<boolean>
+  async sendWelcomeEmail(email: string, name: string): Promise<boolean>
 }
 
-class AuthService {
-    public function login(string $username, string $password): ?User;
-    public function logout(): void;
-    public function isAuthenticated(): bool;
-    public function getCurrentUser(): ?User;
-    public function generateToken(User $user): string;
+// lib/services/auth.service.ts
+export class AuthService {
+  async verifyCredentials(username: string, password: string): Promise<User | null>
+  async hashPassword(password: string): Promise<string>
+  async comparePassword(password: string, hash: string): Promise<boolean>
+  async createUser(data: CreateUserInput): Promise<User>
+}
+
+// lib/services/file.service.ts
+export class FileService {
+  async uploadImage(file: File): Promise<string>
+  async deleteImage(url: string): Promise<boolean>
+  async optimizeImage(file: File): Promise<File>
 }
 ```
 
 ### 4. Frontend Components
 
-#### JavaScript Modules
+#### React Components
 
-```javascript
-// Product Management
-class ProductManager {
-    async loadProducts(filters = {}) {}
-    async createProduct(data) {}
-    async updateProduct(id, data) {}
-    async deleteProduct(id) {}
+```typescript
+// components/products/ProductCard.tsx
+interface ProductCardProps {
+  product: Product;
+  onAddToQuote?: (product: Product) => void;
 }
+export function ProductCard({ product, onAddToQuote }: ProductCardProps): JSX.Element
 
-// Quote System
-class QuoteSystem {
-    constructor() {
-        this.items = [];
-        this.total = 0;
-    }
-    
-    addItem(product, quantity) {}
-    removeItem(productId) {}
-    calculateTotal() {}
-    async submitQuote(customerData) {}
+// components/products/ProductList.tsx
+interface ProductListProps {
+  products: Product[];
+  loading?: boolean;
 }
+export function ProductList({ products, loading }: ProductListProps): JSX.Element
 
-// Admin Dashboard
-class AdminDashboard {
-    async loadStatistics() {}
-    async loadRecentQuotes() {}
-    async loadLowStockProducts() {}
+// components/quotes/QuoteForm.tsx
+interface QuoteFormProps {
+  items: QuoteItem[];
+  onSubmit: (data: CreateQuoteInput) => Promise<void>;
 }
+export function QuoteForm({ items, onSubmit }: QuoteFormProps): JSX.Element
 
-// Form Validation
-class FormValidator {
-    static validateEmail(email) {}
-    static validatePhone(phone) {}
-    static validateRequired(fields) {}
+// components/admin/Dashboard.tsx
+interface DashboardProps {
+  statistics: QuoteStatistics;
+  recentQuotes: Quote[];
+}
+export function Dashboard({ statistics, recentQuotes }: DashboardProps): JSX.Element
+
+// components/admin/ProductManager.tsx
+interface ProductManagerProps {
+  onProductCreate: (data: CreateProductInput) => Promise<void>;
+  onProductUpdate: (id: number, data: UpdateProductInput) => Promise<void>;
+  onProductDelete: (id: number) => Promise<void>;
+}
+export function ProductManager(props: ProductManagerProps): JSX.Element
+
+// components/forms/ContactForm.tsx
+interface ContactFormData {
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  message: string;
+}
+export function ContactForm(): JSX.Element
+
+// hooks/useQuote.ts
+export function useQuote() {
+  const [items, setItems] = useState<QuoteItem[]>([]);
+  const addItem = (product: Product, quantity: number) => void;
+  const removeItem = (productId: number) => void;
+  const calculateTotal = () => number;
+  const submitQuote = (customerData: CustomerData) => Promise<void>;
+  return { items, addItem, removeItem, calculateTotal, submitQuote };
 }
 ```
 
 ## Data Models
 
-### Core Models
+### TypeScript Types
 
-```php
-class Product {
-    private int $id;
-    private string $name;
-    private int $categoryId;
-    private string $description;
-    private array $features;
-    private float $price;
-    private int $stockQuantity;
-    private string $imageUrl;
-    private bool $isActive;
-    private DateTime $createdAt;
-    private DateTime $updatedAt;
-    
-    // Getters, setters, and business logic methods
+```typescript
+// types/product.ts
+export interface Product {
+  id: number;
+  name: string;
+  categoryId?: number;
+  description?: string;
+  features?: Record<string, any>;
+  price?: number;
+  stockQuantity: number;
+  imageUrl?: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  category?: Category;
+  quoteItems?: QuoteItem[];
 }
 
-class Quote {
-    private int $id;
-    private string $quoteNumber;
-    private string $customerName;
-    private string $customerEmail;
-    private string $customerPhone;
-    private string $company;
-    private string $country;
-    private string $message;
-    private string $status;
-    private float $totalAmount;
-    private array $items;
-    private DateTime $createdAt;
-    
-    // Business logic methods
-    public function addItem(QuoteItem $item): void;
-    public function calculateTotal(): float;
-    public function canBeModified(): bool;
+export interface CreateProductInput {
+  name: string;
+  categoryId?: number;
+  description?: string;
+  features?: Record<string, any>;
+  price?: number;
+  stockQuantity?: number;
+  imageUrl?: string;
 }
 
-class Category {
-    private int $id;
-    private string $name;
-    private string $slug;
-    private string $description;
-    private string $icon;
-    private string $color;
-    private int $sortOrder;
+export interface UpdateProductInput extends Partial<CreateProductInput> {}
+
+// types/quote.ts
+export interface Quote {
+  id: number;
+  quoteNumber: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string;
+  company?: string;
+  country?: string;
+  message?: string;
+  status: QuoteStatus;
+  totalAmount?: number;
+  adminNotes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  items: QuoteItem[];
+}
+
+export interface QuoteItem {
+  id: number;
+  quoteId: number;
+  productId: number;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+  notes?: string;
+  product: Product;
+}
+
+export interface CreateQuoteInput {
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string;
+  company?: string;
+  country?: string;
+  message?: string;
+  items: {
+    productId: number;
+    quantity: number;
+    unitPrice: number;
+    notes?: string;
+  }[];
+}
+
+// types/category.ts
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+  icon?: string;
+  color?: string;
+  sortOrder: number;
+  products?: Product[];
+}
+
+// types/user.ts
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+  fullName?: string;
+  role: UserRole;
+  isActive: boolean;
+  lastLogin?: Date;
+  createdAt: Date;
+}
+
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER',
+  VIEWER = 'VIEWER'
+}
+
+export enum QuoteStatus {
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  SENT = 'SENT',
+  CLOSED = 'CLOSED'
 }
 ```
 
 ## Error Handling
 
-### Exception Hierarchy
+### Error Types
 
-```php
-abstract class ZivahException extends Exception {}
+```typescript
+// lib/errors/base.ts
+export abstract class AppError extends Error {
+  abstract readonly statusCode: number;
+  abstract readonly isOperational: boolean;
+  
+  constructor(message: string, public readonly context?: Record<string, any>) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
 
-class DatabaseException extends ZivahException {}
-class ValidationException extends ZivahException {}
-class AuthenticationException extends ZivahException {}
-class AuthorizationException extends ZivahException {}
-class EmailException extends ZivahException {}
-class FileUploadException extends ZivahException {}
-```
+export class ValidationError extends AppError {
+  readonly statusCode = 400;
+  readonly isOperational = true;
+}
 
-### Error Response Format
+export class NotFoundError extends AppError {
+  readonly statusCode = 404;
+  readonly isOperational = true;
+}
 
-```php
-class ErrorResponse {
-    public function __construct(
-        private string $message,
-        private int $code,
-        private array $details = [],
-        private ?string $trace = null
-    ) {}
-    
-    public function toArray(): array {
-        return [
-            'error' => true,
-            'message' => $this->message,
-            'code' => $this->code,
-            'details' => $this->details,
-            'timestamp' => date('c')
-        ];
-    }
+export class UnauthorizedError extends AppError {
+  readonly statusCode = 401;
+  readonly isOperational = true;
+}
+
+export class ForbiddenError extends AppError {
+  readonly statusCode = 403;
+  readonly isOperational = true;
+}
+
+export class DatabaseError extends AppError {
+  readonly statusCode = 500;
+  readonly isOperational = true;
 }
 ```
 
-### Global Error Handler
+### API Error Response Format
 
-```php
-class ErrorHandler {
-    public static function handleException(Throwable $e): void;
-    public static function handleError(int $errno, string $errstr, string $errfile, int $errline): void;
-    public static function logError(string $message, array $context = []): void;
-    public static function sendErrorNotification(Throwable $e): void;
+```typescript
+// lib/api/response.ts
+export interface ApiErrorResponse {
+  error: true;
+  message: string;
+  code: string;
+  statusCode: number;
+  details?: Record<string, any>;
+  timestamp: string;
+}
+
+export interface ApiSuccessResponse<T = any> {
+  error: false;
+  data: T;
+  message?: string;
+  timestamp: string;
+}
+
+export function createErrorResponse(error: AppError): ApiErrorResponse {
+  return {
+    error: true,
+    message: error.message,
+    code: error.name,
+    statusCode: error.statusCode,
+    details: error.context,
+    timestamp: new Date().toISOString(),
+  };
+}
+
+export function createSuccessResponse<T>(data: T, message?: string): ApiSuccessResponse<T> {
+  return {
+    error: false,
+    data,
+    message,
+    timestamp: new Date().toISOString(),
+  };
+}
+```
+
+### Error Boundary and Global Handler
+
+```typescript
+// components/ErrorBoundary.tsx
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+}
+
+export class ErrorBoundary extends React.Component<
+  React.PropsWithChildren<{}>,
+  ErrorBoundaryState
+> {
+  constructor(props: React.PropsWithChildren<{}>) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <ErrorFallback error={this.state.error} />;
+    }
+    return this.props.children;
+  }
+}
+
+// lib/logger.ts
+export class Logger {
+  static error(message: string, context?: Record<string, any>): void
+  static warn(message: string, context?: Record<string, any>): void
+  static info(message: string, context?: Record<string, any>): void
+  static debug(message: string, context?: Record<string, any>): void
 }
 ```
 
@@ -469,97 +713,206 @@ class ErrorHandler {
 
 ### Caching Strategy
 
-```php
-class CacheManager {
-    public function get(string $key): mixed;
-    public function set(string $key, mixed $value, int $ttl = 3600): bool;
-    public function delete(string $key): bool;
-    public function flush(): bool;
-    public function tags(array $tags): self;
+```typescript
+// lib/cache/cache-manager.ts
+export class CacheManager {
+  // Next.js built-in caching
+  static async get<T>(key: string): Promise<T | null>
+  static async set<T>(key: string, value: T, ttl?: number): Promise<void>
+  static async delete(key: string): Promise<void>
+  static async invalidateTag(tag: string): Promise<void>
+}
+
+// Using Next.js 13+ caching
+export const revalidate = 3600; // 1 hour
+export async function getProducts() {
+  return await fetch('/api/products', {
+    next: { tags: ['products'] }
+  });
 }
 ```
 
 ### Database Optimization
 
-- **Indexing**: Índices en columnas frecuentemente consultadas
-- **Query Optimization**: Análisis de consultas lentas
-- **Connection Pooling**: Reutilización de conexiones
-- **Pagination**: Limitación de resultados por página
+- **Connection Pooling**: Prisma connection pooling
+- **Query Optimization**: Prisma query optimization and includes
+- **Database Indexing**: Proper indexing in Prisma schema
+- **Pagination**: Cursor-based pagination with Prisma
+
+```typescript
+// Optimized queries with Prisma
+const products = await prisma.product.findMany({
+  include: {
+    category: true,
+    _count: {
+      select: { quoteItems: true }
+    }
+  },
+  where: {
+    isActive: true,
+  },
+  orderBy: {
+    createdAt: 'desc'
+  },
+  take: 10,
+  skip: (page - 1) * 10,
+});
+```
 
 ### Frontend Optimization
 
-- **Asset Minification**: CSS y JavaScript comprimidos
-- **Image Optimization**: Compresión automática, lazy loading
-- **CDN Integration**: Distribución de assets estáticos
-- **Progressive Loading**: Carga progresiva de contenido
+- **Image Optimization**: Next.js Image component with WebP/AVIF
+- **Code Splitting**: Automatic code splitting with Next.js
+- **Bundle Optimization**: Tree shaking and dead code elimination
+- **Static Generation**: ISR (Incremental Static Regeneration)
+- **Edge Functions**: Vercel Edge Functions for geo-performance
 
 ## Deployment Strategy
 
-### cPanel Integration
+### Vercel Deployment (Recommended)
 
-1. **Database Setup**: Creación de base de datos MySQL en cPanel
-2. **File Upload**: Subida de archivos vía File Manager
-3. **Domain Configuration**: Configuración de subdominios si necesario
-4. **Email Setup**: Configuración de cuentas de email para notificaciones
-5. **SSL Certificate**: Instalación de certificado Let's Encrypt
+1. **Database Setup**: PostgreSQL instance on Neon, Supabase, or Railway
+2. **Environment Variables**: Configure in Vercel dashboard
+3. **Domain Configuration**: Custom domain setup with Vercel
+4. **Email Setup**: Resend API for transactional emails
+5. **SSL Certificate**: Automatic HTTPS with Vercel
+
+### Alternative: VPS Deployment
+
+1. **Server Setup**: Ubuntu/Debian server with Node.js 18+
+2. **Database**: PostgreSQL 15+ with connection pooling
+3. **Process Management**: PM2 for Node.js process management
+4. **Reverse Proxy**: Nginx for load balancing and SSL termination
+5. **SSL Certificate**: Let's Encrypt with Certbot
 
 ### Environment Configuration
 
-```php
-// config/app.php
-return [
-    'environment' => $_ENV['APP_ENV'] ?? 'production',
-    'debug' => $_ENV['APP_DEBUG'] ?? false,
-    'url' => $_ENV['APP_URL'] ?? 'https://zivah.com',
-    'timezone' => 'America/Guayaquil',
-    'locale' => 'es',
-];
+```bash
+# .env.local
+# Database
+DATABASE_URL="postgresql://username:password@hostname:5432/database"
 
-// config/database.php
-return [
-    'host' => $_ENV['DB_HOST'] ?? 'localhost',
-    'database' => $_ENV['DB_DATABASE'] ?? 'zivah_db',
-    'username' => $_ENV['DB_USERNAME'],
-    'password' => $_ENV['DB_PASSWORD'],
-    'charset' => 'utf8mb4',
-    'options' => [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ]
-];
+# NextAuth.js
+NEXTAUTH_URL="https://zivah.com"
+NEXTAUTH_SECRET="your-secret-key"
+
+# Email
+RESEND_API_KEY="re_xxxxxxxxxx"
+FROM_EMAIL="no-reply@zivah.com"
+
+# File Upload
+NEXT_PUBLIC_UPLOAD_MAX_SIZE="10485760"
+UPLOAD_DIR="/uploads"
+
+# App Configuration
+NEXT_PUBLIC_APP_URL="https://zivah.com"
+NODE_ENV="production"
+```
+
+```typescript
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    reactCompiler: true,
+    turbo: {
+      rules: {
+        '*.svg': ['@svgr/webpack'],
+      },
+    },
+    ppr: true, // Partial Prerendering
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'zivah.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+    ],
+    formats: ['image/webp', 'image/avif'],
+  },
+  env: {
+    DATABASE_URL: process.env.DATABASE_URL,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+  },
+};
+
+module.exports = nextConfig;
 ```
 
 ### Migration Strategy
 
-1. **Backup Current Site**: Copia completa del sitio estático
-2. **Database Migration**: Creación de esquema y datos iniciales
-3. **Content Migration**: Migración de contenido estático a dinámico
-4. **Testing Phase**: Pruebas en subdomain de staging
-5. **Go Live**: Cambio de DNS y monitoreo
+1. **Backup Current Site**: Complete backup of static site
+2. **Database Setup**: PostgreSQL instance with Prisma migrations
+3. **Content Migration**: Static content to dynamic database-driven content
+4. **Development Environment**: Local development with Docker/Docker Compose
+5. **Staging Deployment**: Vercel preview deployment for testing
+6. **Production Deployment**: Production deployment with monitoring
 
 ## Monitoring and Maintenance
 
-### Logging Strategy
+### Logging and Analytics
 
-```php
-class Logger {
-    public function info(string $message, array $context = []): void;
-    public function warning(string $message, array $context = []): void;
-    public function error(string $message, array $context = []): void;
-    public function debug(string $message, array $context = []): void;
+```typescript
+// lib/logger.ts
+import { Logger } from '@/lib/logger';
+
+export class AppLogger {
+  static info(message: string, context?: Record<string, any>): void
+  static warn(message: string, context?: Record<string, any>): void
+  static error(message: string, context?: Record<string, any>): void
+  static debug(message: string, context?: Record<string, any>): void
 }
+
+// Integration with Vercel Analytics
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 ```
 
-### Health Checks
+### Health Checks and Monitoring
 
-- **Database Connectivity**: Verificación de conexión MySQL
-- **Email Service**: Test de envío de emails
-- **File System**: Verificación de permisos de escritura
-- **External APIs**: Monitoreo de servicios externos
+- **Database Health**: Prisma connection monitoring
+- **API Monitoring**: Response times and error rates
+- **Email Delivery**: Track email send success rates
+- **Performance Monitoring**: Core Web Vitals tracking
+- **Error Tracking**: Sentry integration for error monitoring
+- **Uptime Monitoring**: External service monitoring
 
-### Backup Strategy
+### Backup and Recovery Strategy
 
-- **Daily Database Backups**: Automatización vía cron jobs
-- **Weekly Full Backups**: Backup completo de archivos
-- **Retention Policy**: 30 días de backups diarios, 12 semanas de backups semanales
-- **Recovery Testing**: Pruebas mensuales de restauración
+- **Database Backups**: Automated PostgreSQL backups (daily/weekly)
+- **Code Repository**: Git version control with GitHub
+- **Asset Backups**: Cloud storage backup for uploaded files
+- **Environment Recovery**: Infrastructure as Code with Terraform/Pulumi
+- **Disaster Recovery**: Multi-region deployment capability
+
+### Development Workflow
+
+```typescript
+// Development setup with Docker Compose
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/zivah_dev
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: zivah_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+```
