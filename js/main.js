@@ -427,52 +427,130 @@ class SmoothLoaderLite {
     }
 
     setupPageLoader() {
-        // Loader mínimo y rápido
+        // Enhanced loader with centered logo and animations
         const loader = document.createElement('div');
         loader.className = 'page-loader-lite';
         loader.innerHTML = `
             <div class="loader-content">
-                <div class="loader-logo">
-                    <img src="assets/images/icons/favicon-96x96.png" alt="ZIVAH">
+                <div class="loader-logo-container">
+                    <div class="loader-logo">
+                        <img src="assets/images/zivah-logo.svg" alt="ZIVAH International" 
+                             onerror="this.src='assets/images/icons/favicon-96x96.png'">
+                    </div>
+                    <div class="loader-pulse"></div>
                 </div>
-                <div class="loader-bar"></div>
+                <div class="loader-progress">
+                    <div class="loader-progress-bar"></div>
+                </div>
+                <div class="loader-text">Cargando productos premium...</div>
             </div>
         `;
         
-        // Estilos inline para evitar FOUC
+        // Enhanced inline styles using ZIVAH nature gradient
         loader.style.cssText = `
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #ff6347, #16a085);
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #7CB342 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(2px);
         `;
         
         document.body.appendChild(loader);
         
+        // Enhanced preloading with progress tracking
+        this.setupProgressTracking(loader);
+        
         // Auto-hide con timeout de seguridad
         const hideLoader = () => {
             loader.style.opacity = '0';
-            setTimeout(() => loader.remove(), 300);
+            setTimeout(() => {
+                if (loader && loader.parentNode) {
+                    loader.remove();
+                }
+            }, 500);
         };
         
-        // Hide cuando todo esté listo
-        if (document.readyState === 'complete') {
-            setTimeout(hideLoader, this.config.pageLoader.minTime);
-        } else {
-            window.addEventListener('load', () => {
+        // Enhanced DOM ready detection
+        const checkDOMReady = () => {
+            if (document.readyState === 'complete') {
                 setTimeout(hideLoader, this.config.pageLoader.minTime);
-            });
+            } else {
+                const loadHandler = () => {
+                    // Wait a bit more for critical resources
+                    setTimeout(hideLoader, this.config.pageLoader.minTime);
+                    window.removeEventListener('load', loadHandler);
+                };
+                window.addEventListener('load', loadHandler);
+            }
+        };
+        
+        // Check if DOM is already ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkDOMReady);
+        } else {
+            checkDOMReady();
         }
         
         // Timeout de seguridad
         setTimeout(hideLoader, this.config.pageLoader.maxTime);
+    }
+
+    setupProgressTracking(loader) {
+        const progressBar = loader.querySelector('.loader-progress-bar');
+        const loaderText = loader.querySelector('.loader-text');
+        
+        if (!progressBar || !loaderText) return;
+        
+        const messages = [
+            'Cargando productos premium...',
+            'Conectando con Ecuador...',
+            'Preparando exportaciones...',
+            'Casi listo...'
+        ];
+        
+        let progress = 0;
+        let messageIndex = 0;
+        
+        const updateProgress = () => {
+            progress += Math.random() * 15 + 5;
+            if (progress > 95) progress = 95;
+            
+            progressBar.style.width = progress + '%';
+            
+            // Update message
+            if (progress > 25 && messageIndex === 0) {
+                messageIndex = 1;
+                loaderText.textContent = messages[1];
+            } else if (progress > 50 && messageIndex === 1) {
+                messageIndex = 2;
+                loaderText.textContent = messages[2];
+            } else if (progress > 75 && messageIndex === 2) {
+                messageIndex = 3;
+                loaderText.textContent = messages[3];
+            }
+            
+            if (progress < 95) {
+                setTimeout(updateProgress, Math.random() * 200 + 100);
+            }
+        };
+        
+        // Start progress after a short delay
+        setTimeout(updateProgress, 200);
+        
+        // Complete progress when page loads
+        const completeProgress = () => {
+            progressBar.style.width = '100%';
+            loaderText.textContent = '¡Listo!';
+        };
+        
+        window.addEventListener('load', completeProgress);
     }
 
     setupLazyLoading() {
@@ -1302,6 +1380,54 @@ function initSmoothLoader() {
         window.SmoothLoaderLite = new SmoothLoaderLite();
     }
 }
+
+// Initialize loader immediately (before DOM is ready)
+(function() {
+    // Early loader initialization to show loading screen ASAP
+    if (document.readyState === 'loading' && !/bot|crawler|spider/i.test(navigator.userAgent)) {
+        // Create minimal early loader
+        const earlyLoader = document.createElement('div');
+        earlyLoader.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #7CB342 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            font-family: system-ui, -apple-system, sans-serif;
+        `;
+        earlyLoader.innerHTML = `
+            <div style="text-align: center; color: white;">
+                <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.1); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+                    <img src="assets/images/icons/favicon-96x96.png" alt="ZIVAH" style="width: 50px; height: 50px; filter: brightness(1.2);" onerror="this.style.display='none'">
+                </div>
+                <div style="font-size: 1.1rem; font-weight: 500;">Cargando...</div>
+            </div>
+        `;
+        
+        // Add to body as soon as possible
+        if (document.body) {
+            document.body.appendChild(earlyLoader);
+        } else {
+            document.addEventListener('DOMContentLoaded', () => {
+                if (!document.querySelector('.page-loader-lite')) {
+                    document.body.appendChild(earlyLoader);
+                }
+            });
+        }
+        
+        // Replace with enhanced loader when ready
+        document.addEventListener('DOMContentLoaded', () => {
+            if (earlyLoader && earlyLoader.parentNode) {
+                earlyLoader.remove();
+            }
+        });
+    }
+})();
 
 // Enhanced dropdown initialization
 function initEnhancedDropdown() {

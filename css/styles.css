@@ -2960,41 +2960,156 @@ img.lazy::before {
   will-change: auto;
 }
 
-/* ===== LOADING INICIAL DE PÁGINA ===== */
-.page-loader {
+/* ===== ENHANCED LOADING SYSTEM ===== */
+.page-loader,
+.page-loader-lite {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, var(--zivah-coral) 0%, var(--zivah-green) 100%);
+  background: var(--nature-gradient);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s ease;
 }
 
-.page-loader.hidden {
+.page-loader.hidden,
+.page-loader-lite.hidden {
   opacity: 0;
   visibility: hidden;
 }
 
+/* Enhanced Loader Content */
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+/* Logo Container with Pulse Effect */
+.loader-logo-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .loader-logo {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 20px;
-  animation: logoFloat 2s ease-in-out infinite;
+  width: 120px;
+  height: 120px;
+  position: relative;
+  z-index: 2;
+  animation: logoFloat 2.5s ease-in-out infinite;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .loader-logo img {
-  width: 100%;
-  height: 100%;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
-  filter: brightness(1.2);
+  filter: brightness(1.2) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
 }
 
+/* Pulse Animation Behind Logo */
+.loader-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  animation: pulseExpand 2s ease-in-out infinite;
+}
+
+.loader-pulse::before,
+.loader-pulse::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: pulseExpand 2s ease-in-out infinite;
+}
+
+.loader-pulse::before {
+  animation-delay: 0.5s;
+}
+
+.loader-pulse::after {
+  animation-delay: 1s;
+}
+
+/* Progress Bar */
+.loader-progress {
+  width: 280px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loader-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, 
+    var(--zivah-lime) 0%,
+    var(--zivah-white) 50%,
+    var(--zivah-lime) 100%);
+  border-radius: 10px;
+  width: 0%;
+  animation: progressLoad 3s ease-out forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.loader-progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%);
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Loading Text */
+.loader-text {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-align: center;
+  opacity: 0.9;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: textFade 2s ease-in-out infinite alternate;
+}
+
+/* Legacy Support */
 .loader-spinner {
   width: 60px;
   height: 60px;
@@ -3003,31 +3118,6 @@ img.lazy::before {
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
-}
-
-.loader-text {
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 600;
-  text-align: center;
-  opacity: 0.9;
-}
-
-.loader-progress {
-  width: 200px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-  margin-top: 20px;
-  overflow: hidden;
-}
-
-.loader-progress-bar {
-  height: 100%;
-  background: white;
-  border-radius: 2px;
-  width: 0%;
-  animation: progressLoad 3s ease-out forwards;
 }
 
 /* ===== ANIMACIONES DE ENTRADA ===== */
@@ -3395,11 +3485,47 @@ img.lazy::before {
   }
 }
 
+/* Enhanced Loading Animations */
+@keyframes pulseExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes textFade {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
   .loader-logo {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
+    padding: 15px;
+  }
+  
+  .loader-logo img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .loader-pulse {
+    width: 80px;
+    height: 80px;
   }
   
   .loader-spinner {
@@ -3412,23 +3538,62 @@ img.lazy::before {
   }
   
   .loader-progress {
-    width: 150px;
+    width: 240px;
+    height: 5px;
   }
   
-  .fade-in,
-  .slide-in-left,
-  .slide-in-right,
-  .scale-in,
-  .rotate-in {
-    transform: translateY(20px);
+  .loader-content {
+    gap: 1.2rem;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loader-logo {
+    width: 70px;
+    height: 70px;
+    padding: 12px;
   }
   
-  .slide-in-left {
-    transform: translateX(-30px);
+  .loader-logo img {
+    width: 40px;
+    height: 40px;
   }
   
-  .slide-in-right {
-    transform: translateX(30px);
+  .loader-pulse {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .loader-text {
+    font-size: 0.9rem;
+  }
+  
+  .loader-progress {
+    width: 200px;
+    height: 4px;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .loader-logo {
+    animation: none;
+  }
+  
+  .loader-pulse,
+  .loader-pulse::before,
+  .loader-pulse::after {
+    animation: none;
+    opacity: 0.3;
+  }
+  
+  .loader-text {
+    animation: none;
+  }
+  
+  .loader-progress-bar::before {
+    animation: none;
   }
 }
 

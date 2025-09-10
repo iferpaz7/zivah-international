@@ -140,7 +140,10 @@
   <link rel="dns-prefetch" href="//www.google-analytics.com" />
 
   <!-- Preload critical assets -->
-  <link rel="preload" href="assets/images/icons/favicon-96x96.png" as="image" type="image/svg+xml" />
+  <link rel="preload" href="assets/images/icons/favicon-96x96.png" as="image" type="image/png" />
+  <link rel="preload" href="assets/images/zivah-logo.svg" as="image" type="image/svg+xml" />
+  <link rel="preload" href="css/styles.css?v=2.0.1" as="style" />
+  <link rel="preload" href="js/main.js" as="script" />
 
   <!-- Theme Preloader Script - Prevents FOUC -->
   <script>
@@ -169,6 +172,30 @@
 
   <!-- Estilos CSS Consolidados -->
   <link rel="stylesheet" href="css/styles.css?v=2.0.1" />
+  
+  <!-- Enhanced Preload Strategy -->
+  <script>
+    // Immediate preload strategy to start loading critical resources
+    (function() {
+      // Preload logo SVG immediately if it exists
+      const logoPreload = document.createElement('link');
+      logoPreload.rel = 'preload';
+      logoPreload.href = 'assets/images/zivah-logo.svg';
+      logoPreload.as = 'image';
+      logoPreload.type = 'image/svg+xml';
+      logoPreload.onerror = function() {
+        // Fallback to PNG if SVG fails
+        this.href = 'assets/images/icons/favicon-96x96.png';
+        this.type = 'image/png';
+      };
+      document.head.appendChild(logoPreload);
+      
+      // Start early performance monitoring
+      if (window.performance && window.performance.mark) {
+        performance.mark('zivah-preload-start');
+      }
+    })();
+  </script>
 
   <!-- Structured Data - Organization -->
   <script type="application/ld+json">
