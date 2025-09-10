@@ -28,7 +28,7 @@ La arquitectura seguirá el patrón de App Router de Next.js con componentes de 
 /zivah-international/
 ├── next.config.js           # Next.js configuration
 ├── package.json             # Dependencies and scripts
-├── tailwind.config.js       # TailwindCSS configuration
+├── tailwind.config.ts       # TailwindCSS v4 configuration
 ├── prisma/                  # Database schema and migrations
 │   ├── schema.prisma
 │   ├── migrations/
@@ -65,13 +65,19 @@ La arquitectura seguirá el patrón de App Router de Next.js con componentes de 
 - **Database**: PostgreSQL 15+ (with connection pooling)
 - **ORM**: Prisma (type-safe database client)
 - **Frontend**: React 19+ with TypeScript
-- **Styling**: TailwindCSS + Headless UI components
+- **Styling**: TailwindCSS v4 (latest) + Headless UI components
 - **Authentication**: NextAuth.js v5 (OAuth, credentials)
 - **Form Handling**: React Hook Form + Zod validation
-- **Email**: Resend API or NodeMailer
-- **File Upload**: Next.js API routes with cloud storage
+- **Email**: Resend API or NodeMailer  
+- **File Upload**: Next.js API routes with cloud storage (AWS S3/Cloudinary)
 - **State Management**: React Server Components + Zustand (client state)
 - **Testing**: Jest + Testing Library + Playwright
+- **Analytics**: Vercel Analytics + Google Analytics 4
+- **Monitoring**: Sentry for error tracking
+- **SEO**: Next.js Metadata API + structured data
+- **Performance**: Vercel Speed Insights + Core Web Vitals
+- **Internationalization**: next-intl for Spanish/English support
+- **Design System**: Custom TailwindCSS v4 theme based on existing ZIVAH brand colors
 
 ## Components and Interfaces
 
@@ -228,6 +234,215 @@ enum SettingType {
   BOOLEAN
   JSON
 }
+```
+
+### 2. Content Migration and Brand Preservation
+
+#### Existing Assets and Content Analysis
+
+The current static site contains:
+- **Comprehensive SEO metadata**: Meta tags, Open Graph, Twitter Cards, Schema.org structured data
+- **Brand Assets**: ZIVAH logo (SVG), favicon collection, brand colors system
+- **Content**: Spanish corporate content with detailed product descriptions
+- **Styling**: Custom CSS with ZIVAH brand color palette and responsive design
+- **JavaScript**: 2000+ lines including country data, form validation, performance optimization
+- **Internationalization**: Support for Spanish/English markets
+
+#### Brand Design System Migration
+
+```typescript
+// tailwind.config.ts - TailwindCSS v4 configuration
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  // TailwindCSS v4 uses 'source' instead of 'content'
+  source: ['./src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        // ZIVAH Official Brand Colors from existing CSS
+        zivah: {
+          lime: '#7CB342',           // Verde Lima - Nature, agriculture
+          green: '#2E7D32',          // Verde Medio - Sustainability  
+          'dark-green': '#1B5E20',   // Verde Oscuro - Premium stability
+          navy: '#0D47A1',           // Azul Marino - Ocean, export
+          blue: '#1976D2',           // Azul Medio - Freshness, technology
+          coral: '#FF5722',          // Naranja Coral - Seafood, energy
+          'light-coral': '#FF8A65',  // Naranja Claro - Warmth
+          'blue-gray': '#37474F',    // Gris Azulado - Text
+          charcoal: '#263238',       // Gris Carbón - Headers
+        }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Montserrat', 'sans-serif'],
+      },
+      backgroundImage: {
+        'hero-gradient': 'linear-gradient(135deg, #FF5722 0%, #2E7D32 100%)',
+        'ocean-gradient': 'linear-gradient(135deg, #0D47A1 0%, #1976D2 100%)',
+        'forest-gradient': 'linear-gradient(135deg, #1B5E20 0%, #7CB342 100%)',
+      },
+      // TailwindCSS v4 enhanced features
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'scale-in': 'scaleIn 0.2s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+      }
+    }
+  },
+  // TailwindCSS v4 new features
+  experimental: {
+    optimizeUniversalDefaults: true,
+  },
+  future: {
+    hoverOnlyWhenSupported: true,
+  }
+}
+
+export default config
+```
+
+#### TailwindCSS v4 Enhanced Features
+
+```css
+/* globals.css - TailwindCSS v4 with CSS-in-JS support */
+@import "tailwindcss";
+
+/* TailwindCSS v4 CSS Custom Properties */
+:root {
+  /* ZIVAH Brand Colors as CSS Custom Properties */
+  --color-zivah-lime: #7CB342;
+  --color-zivah-green: #2E7D32;
+  --color-zivah-dark-green: #1B5E20;
+  --color-zivah-navy: #0D47A1;
+  --color-zivah-blue: #1976D2;
+  --color-zivah-coral: #FF5722;
+  --color-zivah-light-coral: #FF8A65;
+  --color-zivah-blue-gray: #37474F;
+  --color-zivah-charcoal: #263238;
+  
+  /* TailwindCSS v4 Dynamic Color Schemes */
+  --color-primary: var(--color-zivah-green);
+  --color-secondary: var(--color-zivah-coral);
+  --color-accent: var(--color-zivah-lime);
+}
+
+/* TailwindCSS v4 Component Classes */
+@layer components {
+  .btn-primary {
+    @apply bg-zivah-green hover:bg-zivah-dark-green text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply bg-zivah-coral hover:bg-zivah-light-coral text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200;
+  }
+  
+  .card-zivah {
+    @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100;
+  }
+  
+  .gradient-hero {
+    @apply bg-gradient-to-br from-zivah-coral to-zivah-green;
+  }
+  
+  .gradient-ocean {
+    @apply bg-gradient-to-br from-zivah-navy to-zivah-blue;
+  }
+}
+
+/* TailwindCSS v4 Utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+```
+
+#### Content Data Migration Strategy
+
+```typescript
+// lib/data/content-migration.ts
+export interface MigratedContent {
+  // Company Information from existing structured data
+  company: {
+    name: "ZIVAH International S.A.";
+    foundingDate: "2020-11-23";
+    addresses: CompanyAddress[];
+    contactInfo: ContactInfo;
+    certifications: string[];
+    socialMedia: SocialMediaLinks[];
+  };
+  
+  // Product Categories from existing content
+  categories: {
+    frutas: ProductCategory;
+    mariscos: ProductCategory; 
+    cafe: ProductCategory;
+    camaron: ProductCategory;
+    larvas: ProductCategory;
+    arboles: ProductCategory;
+  };
+  
+  // Export destinations from existing countries data
+  exportDestinations: ExportCountry[];
+  
+  // SEO content from existing meta tags
+  seoContent: {
+    defaultMeta: MetaTags;
+    pageSpecificMeta: Record<string, MetaTags>;
+    structuredData: SchemaOrgData;
+  };
+}
+
+// Migrate existing country data (40+ countries)
+export const EXPORT_COUNTRIES = [
+  // From existing js/main.js ECUADOR_EXPORT_COUNTRIES
+  { code: 'US', name: 'Estados Unidos', flag: '🇺🇸', region: 'América del Norte' },
+  // ... 40+ more countries
+];
+```
+
+#### Static Asset Migration
+
+```typescript
+// lib/assets/asset-migration.ts
+export const ASSET_MIGRATION_MAP = {
+  // Existing logo and branding
+  'assets/images/zivah-logo.svg': '/images/brand/zivah-logo.svg',
+  
+  // Favicon collection (15+ files)
+  'assets/images/icons/favicon.ico': '/images/icons/favicon.ico',
+  'assets/images/icons/apple-icon-*.png': '/images/icons/apple-*.png',
+  'assets/images/icons/android-icon-*.png': '/images/icons/android-*.png',
+  
+  // Product images (to be added during migration)
+  productImages: {
+    shrimp: '/images/products/camaron/',
+    fruits: '/images/products/frutas/',
+    coffee: '/images/products/cafe/',
+    seafood: '/images/products/mariscos/',
+    larvae: '/images/products/larvas/',
+    trees: '/images/products/arboles/'
+  }
+};
 ```
 
 #### Service Layer Interfaces
@@ -412,6 +627,161 @@ export function useQuote() {
   const calculateTotal = () => number;
   const submitQuote = (customerData: CustomerData) => Promise<void>;
   return { items, addItem, removeItem, calculateTotal, submitQuote };
+}
+```
+
+### 5. Internationalization (i18n) System
+
+#### Next-Intl Configuration
+
+```typescript
+// i18n/config.ts
+export const locales = ['es', 'en'] as const;
+export const defaultLocale = 'es' as const;
+
+// i18n/messages/es.json - Based on existing Spanish content
+{
+  "navigation": {
+    "inicio": "Inicio",
+    "productos": "Productos", 
+    "nosotros": "Nosotros",
+    "contacto": "Contacto",
+    "cotizar": "Cotizar"
+  },
+  "hero": {
+    "title": "ZIVAH International S.A.",
+    "subtitle": "Exportadores de Productos Ecuatorianos Premium",
+    "description": "Más de 4 años conectando Ecuador con el mundo. Frutas tropicales, mariscos, café, camarón, larvas de acuicultura y cultivo de árboles frutales con certificación internacional.",
+    "cta": "Solicitar Cotización"
+  },
+  "products": {
+    "categories": {
+      "frutas": "Frutas Tropicales",
+      "mariscos": "Productos Marinos", 
+      "cafe": "Café de Altura",
+      "camaron": "Camarón Ecuatoriano",
+      "larvas": "Larvas de Acuicultura",
+      "arboles": "Árboles Frutales"
+    }
+  },
+  "company": {
+    "name": "ZIVAH International S.A.",
+    "foundingYear": "2020",
+    "headquarters": "Samborondón, Guayas, Ecuador",
+    "distributionOffice": "Miami, FL, Estados Unidos"
+  }
+}
+
+// i18n/messages/en.json - English translations
+{
+  "navigation": {
+    "inicio": "Home",
+    "productos": "Products",
+    "nosotros": "About Us", 
+    "contacto": "Contact",
+    "cotizar": "Get Quote"
+  },
+  "hero": {
+    "title": "ZIVAH International S.A.",
+    "subtitle": "Premium Ecuadorian Products Exporters",
+    "description": "Over 4 years connecting Ecuador with the world. Tropical fruits, seafood, coffee, shrimp, aquaculture larvae and fruit tree cultivation with international certification.",
+    "cta": "Request Quote"
+  }
+}
+```
+
+### 6. SEO and Metadata Migration
+
+#### Metadata API Implementation
+
+```typescript
+// app/layout.tsx - Root metadata
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  // Migrated from existing meta tags
+  title: {
+    template: '%s | ZIVAH International S.A.',
+    default: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium'
+  },
+  description: 'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas y oficina de distribución en Miami.',
+  keywords: [
+    'exportación ecuador', 'frutas tropicales', 'camarón ecuatoriano', 
+    'larvas acuicultura', 'cafe arabica', 'productos marinos', 
+    'miami exportadores', 'Samborondón cultivos'
+  ],
+  authors: [{ name: 'ZIVAH International S.A.' }],
+  creator: 'ZIVAH International S.A.',
+  publisher: 'ZIVAH International S.A.',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'es_ES',
+    alternateLocale: 'en_US',
+    url: 'https://zivahinternational.com',
+    siteName: 'ZIVAH International S.A.',
+    title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    description: 'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
+    images: [
+      {
+        url: '/images/og/zivah-og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'ZIVAH International - Productos Ecuatorianos Premium',
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    description: 'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
+    images: ['/images/og/zivah-twitter-card.jpg'],
+  },
+  verification: {
+    google: 'google-site-verification-code',
+    bing: 'bing-site-verification-code',
+  },
+};
+
+// lib/metadata/structured-data.ts - Schema.org migration
+export function generateCompanySchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'ZIVAH International S.A.',
+    alternateName: 'ZIVAH International',
+    url: 'https://zivahinternational.com',
+    logo: 'https://zivahinternational.com/images/icons/favicon-96x96.png',
+    description: 'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
+    foundingDate: '2020-11-23',
+    address: [
+      {
+        '@type': 'PostalAddress',
+        streetAddress: 'Casa Matriz Mz 10 S L 31',
+        addressLocality: 'Samborondón',
+        addressRegion: 'Guayas',
+        postalCode: '092301',
+        addressCountry: 'EC'
+      }
+    ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+593-4-XXX-XXXX',
+      contactType: 'sales',
+      email: 'info@zivahinternational.com',
+      availableLanguage: ['Spanish', 'English']
+    }
+  };
 }
 ```
 
