@@ -107,7 +107,9 @@
 
   <!-- Web App Manifest - PWA Support -->
   <link rel="manifest" href="site.webmanifest?v=3" />
-  <meta name="theme-color" content="#ff6347" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="ZIVAH International" />
@@ -139,6 +141,31 @@
 
   <!-- Preload critical assets -->
   <link rel="preload" href="assets/images/icons/favicon-96x96.png" as="image" type="image/svg+xml" />
+
+  <!-- Theme Preloader Script - Prevents FOUC -->
+  <script>
+    (function() {
+      // Immediately apply theme before page render to prevent flash
+      try {
+        const savedTheme = localStorage.getItem('zivah-theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+        
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+        
+        // Set initial theme-color
+        const themeColor = theme === 'dark' ? '#0f1419' : '#ffffff';
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]:not([media])');
+        if (metaThemeColor) {
+          metaThemeColor.content = themeColor;
+        }
+      } catch (e) {
+        // Fallback to light theme if anything fails
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
 
   <!-- Estilos CSS Consolidados -->
   <link rel="stylesheet" href="css/styles.css?v=2.0.0" />

@@ -1359,54 +1359,221 @@ function disableProblematicAnimations() {
     document.documentElement.style.scrollBehavior = 'auto';
 }
 
-// Sistema de temas (Light/Dark)
+// Sistema de temas (Light/Dark) - Enhanced
 function initTheme() {
     const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) {
+        console.warn('Theme toggle button not found');
+        return;
+    }
+    
     const themeIcon = themeToggle.querySelector('.theme-icon');
     
-    // Obtener tema guardado o usar preferencia del sistema
-    const savedTheme = localStorage.getItem('zivah-theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    // Enhanced theme detection with fallbacks
+    let currentTheme = 'light'; // Default fallback
     
-    // Aplicar tema inicial
+    try {
+        const savedTheme = localStorage.getItem('zivah-theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        
+        if (savedTheme && ['dark', 'light'].includes(savedTheme)) {
+            currentTheme = savedTheme;
+        } else if (systemPrefersDark) {
+            currentTheme = 'dark';
+        } else if (systemPrefersLight) {
+            currentTheme = 'light';
+        }
+    } catch (e) {
+        console.warn('Error detecting theme preference:', e);
+    }
+    
+    // Aplicar tema inicial con performance optimization
     setTheme(currentTheme);
     
-    // Event listener para el botón de cambio de tema
-    themeToggle.addEventListener('click', function() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
+    // Enhanced event listener with debouncing
+    let themeToggleTimeout;
+    themeToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Prevent rapid clicking
+        if (themeToggleTimeout) return;
+        
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        // Add visual feedback
+        themeToggle.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            themeToggle.style.transform = '';
+        }, 150);
+        
         setTheme(newTheme);
+        
+        // Debounce to prevent rapid toggling
+        themeToggleTimeout = setTimeout(() => {
+            themeToggleTimeout = null;
+        }, 300);
     });
     
-    // Escuchar cambios en la preferencia del sistema
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-        if (!localStorage.getItem('zivah-theme')) {
-            setTheme(e.matches ? 'dark' : 'light');
+    // Enhanced system preference listener with error handling
+    try {
+        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const lightModeMediaQuery = window.matchMedia('(prefers-color-scheme: light)');
+        
+        function handleSystemThemeChange(e) {
+            // Only auto-change if user hasn't set a preference
+            const hasUserPreference = localStorage.getItem('zivah-theme');
+            if (!hasUserPreference) {
+                setTheme(e.matches ? 'dark' : 'light');
+                
+                // Dispatch system change event
+                window.dispatchEvent(new CustomEvent('themeChanged', { 
+                    detail: { 
+                        theme: e.matches ? 'dark' : 'light', 
+                        source: 'system_preference',
+                        timestamp: Date.now()
+                    } 
+                }));
+            }
+        }
+        
+        // Listen to both dark and light mode changes
+        darkModeMediaQuery.addEventListener('change', (e) => {
+            if (e.matches) handleSystemThemeChange(e);
+        });
+        
+        lightModeMediaQuery.addEventListener('change', (e) => {
+            if (e.matches) handleSystemThemeChange({ matches: false });
+        });
+        
+    } catch (e) {
+        console.warn('Error setting up system theme listeners:', e);
+    }
+    
+    // Keyboard accessibility
+    themeToggle.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+        }
+    });
+    
+    // Listen for custom theme change events (from other components)
+    window.addEventListener('themeChanged', function(e) {
+        const { theme, source } = e.detail;
+        
+        // Update other UI elements that might need theme-specific changes
+        updateThemeDependentElements(theme);
+        
+        // Log for debugging (remove in production)
+        console.log(`Theme changed to ${theme} from ${source}`);
+    });
+}
+
+// Helper function to update theme-dependent elements
+function updateThemeDependentElements(theme) {
+    // Update any charts, maps, or third-party components that need theme updates
+    const charts = document.querySelectorAll('.chart, .map, .graph');
+    charts.forEach(chart => {
+        if (chart.updateTheme && typeof chart.updateTheme === 'function') {
+            chart.updateTheme(theme);
+        }
+    });
+    
+    // Update favicon based on theme (if you have dark/light versions)
+    const favicon = document.querySelector('link[rel="icon"]');
+    if (favicon && theme === 'dark') {
+        // You could switch to a dark favicon here
+        // favicon.href = '/assets/images/icons/favicon-dark.ico';
+    }
+    
+    // Update any embedded content that supports theming
+    const embeds = document.querySelectorAll('iframe[data-theme-aware]');
+    embeds.forEach(embed => {
+        try {
+            embed.contentWindow.postMessage({ type: 'theme-change', theme }, '*');
+        } catch (e) {
+            // Cross-origin iframe, can't communicate
         }
     });
 }
 
 function setTheme(theme) {
     const themeIcon = document.querySelector('.theme-icon');
+    const themeToggle = document.getElementById('themeToggle');
     
-    // Aplicar tema al documento
-    document.documentElement.setAttribute('data-theme', theme);
-    
-    // Actualizar icono
-    if (theme === 'dark') {
-        themeIcon.textContent = '☀️';
-        themeIcon.setAttribute('aria-label', 'Switch to light mode');
-    } else {
-        themeIcon.textContent = '🌙';
-        themeIcon.setAttribute('aria-label', 'Switch to dark mode');
-    }
-    
-    // Guardar preferencia
-    localStorage.setItem('zivah-theme', theme);
-    
-    // Dispatch evento personalizado para otros componentes
-    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
+    // Performance optimization: batch DOM updates
+    requestAnimationFrame(() => {
+        // Aplicar tema al documento con transición suave
+        document.documentElement.style.transition = 'none';
+        document.documentElement.setAttribute('data-theme', theme);
+        
+        // Force reflow and re-enable transitions
+        setTimeout(() => {
+            document.documentElement.style.transition = '';
+        }, 50);
+        
+        // Actualizar icono y accesibilidad
+        if (theme === 'dark') {
+            themeIcon.textContent = '☀️';
+            themeIcon.setAttribute('aria-label', 'Switch to light mode');
+            themeToggle.setAttribute('title', 'Cambiar a modo claro');
+            themeToggle.setAttribute('aria-pressed', 'true');
+            
+            // Update meta theme-color for dark mode
+            let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+            if (!metaThemeColor) {
+                metaThemeColor = document.createElement('meta');
+                metaThemeColor.name = 'theme-color';
+                document.head.appendChild(metaThemeColor);
+            }
+            metaThemeColor.content = '#0f1419';
+        } else {
+            themeIcon.textContent = '🌙';
+            themeIcon.setAttribute('aria-label', 'Switch to dark mode');
+            themeToggle.setAttribute('title', 'Cambiar a modo oscuro');
+            themeToggle.setAttribute('aria-pressed', 'false');
+            
+            // Update meta theme-color for light mode
+            let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+            if (!metaThemeColor) {
+                metaThemeColor = document.createElement('meta');
+                metaThemeColor.name = 'theme-color';
+                document.head.appendChild(metaThemeColor);
+            }
+            metaThemeColor.content = '#ffffff';
+        }
+        
+        // Guardar preferencia con better error handling
+        try {
+            localStorage.setItem('zivah-theme', theme);
+        } catch (e) {
+            console.warn('Could not save theme preference:', e);
+        }
+        
+        // Update body class for better targeting
+        document.body.classList.toggle('theme-dark', theme === 'dark');
+        document.body.classList.toggle('theme-light', theme === 'light');
+        
+        // Dispatch evento personalizado para otros componentes
+        window.dispatchEvent(new CustomEvent('themeChanged', { 
+            detail: { 
+                theme, 
+                timestamp: Date.now(),
+                source: 'user_action'
+            } 
+        }));
+        
+        // Analytics tracking (if implemented)
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'theme_change', {
+                'theme_mode': theme,
+                'event_category': 'UI',
+                'event_label': 'Theme Toggle'
+            });
+        }
+    });
 }
 
 // Efectos de scroll
