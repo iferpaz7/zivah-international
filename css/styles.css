@@ -1366,10 +1366,11 @@ Hero Section */
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--zivah-navy);
+    background: rgba(13, 71, 161, 0.95);
     flex-direction: column;
     padding: 20px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
   }
 
   .nav-menu.active {
@@ -1521,20 +1522,21 @@ Hero Section */
 }
 
 [data-theme="dark"] .hero-badge {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  border: 1px solid rgba(124, 179, 66, 0.3);
 }
 
 [data-theme="dark"] .quote-form {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 20, 25, 0.3);
+  border: 1px solid rgba(124, 179, 66, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 /* Dark theme form styles are now handled by CSS variables above */
 
 [data-theme="dark"] .cert-item {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  border: 1px solid transparent;
 }
 
 [data-theme="dark"] .product-item:hover {
@@ -1548,15 +1550,12 @@ Hero Section */
 
 /* Hero Section Dark Mode */
 [data-theme="dark"] .hero {
-  background: linear-gradient(135deg, 
-    rgba(15, 20, 25, 0.95) 0%, 
-    rgba(38, 50, 56, 0.95) 100%),
-    var(--hero-gradient);
+  background: var(--bg-primary);
   color: var(--text-primary);
 }
 
 [data-theme="dark"] .hero::before {
-  background: rgba(0, 0, 0, 0.6);
+  display: none;
 }
 
 [data-theme="dark"] .hero h1 {
@@ -1576,9 +1575,9 @@ Hero Section */
 }
 
 [data-theme="dark"] .hero-stats {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
 }
 
 [data-theme="dark"] .stat-number {
@@ -1604,15 +1603,16 @@ Hero Section */
 }
 
 [data-theme="dark"] .product-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 8px 32px var(--shadow-color);
+  background: transparent;
+  border: 1px solid rgba(124, 179, 66, 0.2);
+  box-shadow: none;
 }
 
 [data-theme="dark"] .product-card:hover {
-  box-shadow: 0 12px 48px var(--shadow-hover);
+  background: rgba(124, 179, 66, 0.05);
   border-color: var(--zivah-lime);
-  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(124, 179, 66, 0.1);
+  transform: translateY(-3px);
 }
 
 [data-theme="dark"] .product-title {
@@ -1636,22 +1636,20 @@ Hero Section */
 
 /* Products Showcase Dark Mode */
 [data-theme="dark"] .products-showcase {
-  background: linear-gradient(135deg, 
-    rgba(38, 50, 56, 0.95) 0%, 
-    rgba(15, 20, 25, 0.95) 100%);
+  background: transparent;
 }
 
 [data-theme="dark"] .products-showcase::before {
-  background: rgba(0, 0, 0, 0.7);
+  display: none;
 }
 
 /* Certifications Section Dark Mode */
 [data-theme="dark"] .certifications {
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
 }
 
 [data-theme="dark"] .cert-grid {
-  background: rgba(255, 255, 255, 0.05);
+  background: transparent;
   border-radius: 16px;
   padding: 40px;
 }
@@ -1666,19 +1664,19 @@ Hero Section */
 
 /* Global Stats Section Dark Mode */
 [data-theme="dark"] .global {
-  background: linear-gradient(135deg, 
-    rgba(13, 71, 161, 0.9) 0%, 
-    rgba(25, 118, 210, 0.9) 100%);
+  background: var(--bg-primary);
 }
 
 [data-theme="dark"] .global-stats {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(15px);
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
 }
 
 [data-theme="dark"] .global-stat {
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border-color);
 }
 
 [data-theme="dark"] .global-stat:last-child {
@@ -1686,12 +1684,12 @@ Hero Section */
 }
 
 [data-theme="dark"] .global-stat-number {
-  color: var(--zivah-white);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: var(--zivah-lime);
+  text-shadow: none;
 }
 
 [data-theme="dark"] .global-stat-label {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-secondary);
 }
 
 /* Contact Section Dark Mode */
@@ -1700,20 +1698,21 @@ Hero Section */
 }
 
 [data-theme="dark"] .contact-item {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 8px 32px var(--shadow-color);
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
 }
 
 [data-theme="dark"] .contact-item:hover {
-  box-shadow: 0 12px 48px var(--shadow-hover);
+  background: rgba(124, 179, 66, 0.05);
   border-color: var(--zivah-lime);
-  transform: translateY(-3px);
+  box-shadow: none;
+  transform: translateY(-2px);
 }
 
 [data-theme="dark"] .contact-icon {
   color: var(--zivah-lime);
-  background: rgba(124, 179, 66, 0.1);
+  background: transparent;
 }
 
 [data-theme="dark"] .contact-item h4 {
@@ -1734,19 +1733,17 @@ Hero Section */
 
 /* Footer Dark Mode */
 [data-theme="dark"] .footer {
-  background: linear-gradient(135deg, 
-    var(--zivah-charcoal) 0%, 
-    rgba(15, 20, 25, 0.95) 100%);
-  border-top: 3px solid var(--zivah-lime);
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
 }
 
 [data-theme="dark"] .footer::before {
-  background: rgba(0, 0, 0, 0.8);
+  display: none;
 }
 
 [data-theme="dark"] .footer-section h4 {
   color: var(--zivah-white);
-  border-bottom: 2px solid var(--zivah-lime);
+  border-bottom: 1px solid rgba(124, 179, 66, 0.3);
   padding-bottom: 10px;
   margin-bottom: 20px;
 }
@@ -1766,8 +1763,8 @@ Hero Section */
 }
 
 [data-theme="dark"] .footer-bottom {
-  background: rgba(0, 0, 0, 0.5);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  border-top: 1px solid var(--border-color);
   color: var(--text-secondary);
 }
 
@@ -1777,18 +1774,19 @@ Hero Section */
 }
 
 [data-theme="dark"] .quality-grid {
-  background: var(--bg-secondary);
+  background: transparent;
   border-radius: 16px;
 }
 
 [data-theme="dark"] .quality-item {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
+  background: transparent;
+  border: 1px solid transparent;
 }
 
 [data-theme="dark"] .quality-item:hover {
+  background: rgba(124, 179, 66, 0.05);
   border-color: var(--zivah-lime);
-  box-shadow: 0 8px 32px var(--shadow-hover);
+  box-shadow: none;
 }
 
 /* Enhanced Button States for Dark Mode */
@@ -1846,15 +1844,15 @@ Hero Section */
 
 /* Mobile Menu Dark Mode Enhancements */
 [data-theme="dark"] .nav-menu {
-  background: linear-gradient(135deg, 
-    rgba(38, 50, 56, 0.98) 0%, 
-    rgba(15, 20, 25, 0.98) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 [data-theme="dark"] .nav-menu.active {
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  background: transparent;
+  box-shadow: none;
 }
 
 /* Dark Mode Transitions */
