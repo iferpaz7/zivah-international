@@ -1,14 +1,15 @@
-// ZIVAH International S.A. - JavaScript Principal - Consolidated
+// ZIVAH International S.A. - JavaScript Principal v2.1.0 - Enhanced Preloader
 // =============================================================================
 // This file consolidates all JavaScript functionality from the following files:
 // - countries-data.js (234 lines) - Country and product data
 // - enhanced-dropdown.js (185 lines) - Enhanced dropdown functionality  
 // - form-enhancements.js (215 lines) - Form validation and enhancements
 // - performance-config.js (296 lines) - Performance optimization config
-// - smooth-loading-lite.js (400 lines) - Smooth loading system
-// - main.js (907 lines) - Core application functionality
+// - smooth-loading-lite.js (400+ lines) - Enhanced smooth loading system
+// - main.js (907+ lines) - Core application functionality
 // 
-// Total consolidated: ~2070 lines for better performance and maintenance
+// v2.1.0 Changes: Enhanced preloader with centered logo, brand colors, animations
+// Total consolidated: ~2500+ lines for better performance and maintenance
 // =============================================================================
 
 // ============================================================================
