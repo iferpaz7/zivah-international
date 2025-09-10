@@ -356,17 +356,30 @@ html {
 /* Mobile Menu */
 .mobile-menu-btn {
   display: none;
-  background: none;
-  border: none;
+  background: transparent !important;
+  border: none !important;
   color: var(--text-primary);
   font-size: 1.5rem;
   cursor: pointer;
   transition: transform 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-shadow: none !important;
+  text-decoration: none !important;
 }
 
 .mobile-menu-btn:hover {
   /* Scale transform removed for better performance */
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(46, 125, 50, 0.1);
+  color: var(--zivah-green);
+}
+
+.mobile-menu-btn:active,
+.mobile-menu-btn:focus {
+  background: rgba(46, 125, 50, 0.15);
+  color: var(--zivah-green);
+  outline: none;
 }
 
 /* Form Improvements */
@@ -1375,12 +1388,18 @@ Hero Section */
     top: 100%;
     left: 0;
     right: 0;
-    background: rgba(13, 71, 161, 0.95);
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.98) 0%, 
+      rgba(247, 250, 252, 0.98) 50%, 
+      rgba(46, 125, 50, 0.08) 100%);
     flex-direction: column;
     padding: 20px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(46, 125, 50, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     z-index: 9998;
+    border: 1px solid rgba(46, 125, 50, 0.25);
+    border-top: none;
   }
 
   .nav-menu.active {
@@ -1514,7 +1533,50 @@ Hero Section */
 }
 
 [data-theme="dark"] .nav-menu a:hover {
-  color: var(--zivah-coral);
+  color: var(--zivah-lime);
+}
+
+/* Light theme mobile nav menu - ensure proper contrast */
+@media (max-width: 768px) {
+  .nav-menu a {
+    color: var(--zivah-charcoal) !important;
+    font-weight: 600;
+    text-decoration: none !important;
+    background: none !important;
+    border: none !important;
+    outline: none !important;
+  }
+  
+  .nav-menu a:hover {
+    color: var(--zivah-green) !important;
+    background: rgba(46, 125, 50, 0.05) !important;
+  }
+  
+  .nav-menu a:focus,
+  .nav-menu a:active,
+  .nav-menu a:visited {
+    color: var(--zivah-charcoal) !important;
+    background: none !important;
+    outline: 2px solid var(--zivah-green) !important;
+  }
+  
+  /* Force override browser defaults for mobile nav */
+  .nav-menu,
+  .nav-menu * {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+  }
+  
+  [data-theme="dark"] .nav-menu a {
+    color: var(--zivah-white) !important;
+    font-weight: 600;
+  }
+  
+  [data-theme="dark"] .nav-menu a:hover {
+    color: var(--zivah-lime) !important;
+  }
 }
 
 [data-theme="dark"] .theme-toggle {
@@ -1854,17 +1916,49 @@ Hero Section */
   transform: translateY(-3px) scale(1.1);
 }
 
+/* Anti-Blue Override for Mobile Navigation */
+@media (max-width: 768px) {
+  /* Force override any blue browser defaults */
+  .header,
+  .nav-container,
+  .nav-menu,
+  .mobile-menu-btn,
+  button,
+  a {
+    -webkit-tap-highlight-color: rgba(46, 125, 50, 0.2) !important;
+  }
+  
+  /* Override system focus colors */
+  *:focus {
+    outline-color: var(--zivah-green) !important;
+  }
+  
+  /* Override any button active/pressed states */
+  button:active,
+  .mobile-menu-btn:active {
+    background-color: rgba(46, 125, 50, 0.1) !important;
+    color: var(--zivah-green) !important;
+  }
+}
+
 /* Mobile Menu Dark Mode Enhancements */
 [data-theme="dark"] .nav-menu {
-  background: transparent;
-  border: none;
-  backdrop-filter: none;
-  box-shadow: none;
+  background: linear-gradient(135deg, 
+    rgba(15, 20, 25, 0.95) 0%, 
+    rgba(38, 50, 56, 0.95) 50%, 
+    rgba(46, 125, 50, 0.15) 100%);
+  border: 1px solid rgba(124, 179, 66, 0.3);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="dark"] .nav-menu.active {
-  background: transparent;
-  box-shadow: none;
+  background: linear-gradient(135deg, 
+    rgba(15, 20, 25, 0.95) 0%, 
+    rgba(38, 50, 56, 0.95) 50%, 
+    rgba(46, 125, 50, 0.15) 100%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* Dark Mode Transitions */
@@ -3668,10 +3762,13 @@ html[data-theme] * {
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--zivah-navy);
+    background: var(--bg-primary);
     flex-direction: column;
     padding: 20px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    z-index: 9998;
+    border: 1px solid var(--border-color);
+    border-top: none;
   }
 
   .nav-menu.active {
