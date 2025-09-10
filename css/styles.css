@@ -103,15 +103,12 @@ html {
   align-items: center;
   color: var(--text-primary);
   text-decoration: none;
-  transition: transform 0.3s ease;
-  /* Asegurar que el logo no se deforme */
+  /* Transform animation removed for better performance */
   flex-shrink: 0;
   max-width: 100%;
 }
 
-.logo:hover {
-  transform: scale(1.05);
-}
+/* .logo:hover transform removed for better performance */
 
 /* Asegurar que el logo se vea bien en todos los navegadores */
 .logo img {
@@ -207,7 +204,7 @@ html {
 
 .nav-cta:hover {
   background: #E64A19;
-  transform: translateY(-2px);
+  /* Transform removed for better performance */
   box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
 }
 
@@ -229,7 +226,7 @@ html {
 
 .theme-toggle:hover {
   background: rgba(0, 0, 0, 0.2);
-  transform: scale(1.1);
+  /* Scale transform removed for better performance */
 }
 
 .theme-icon {
@@ -253,7 +250,8 @@ html {
 }
 
 .mobile-menu-btn:hover {
-  transform: scale(1.1);
+  /* Scale transform removed for better performance */
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Form Improvements */
@@ -290,13 +288,10 @@ html {
   border: 2px solid transparent;
   border-top: 2px solid currentColor;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  /* Spin animation removed for better performance */
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+/* @keyframes spin removed for better performance */
 
 /* Message Styles */
 .message {
@@ -305,7 +300,7 @@ html {
   margin-bottom: 20px;
   font-weight: 500;
   display: none;
-  animation: slideIn 0.3s ease;
+  /* SlideIn animation removed for better performance */
 }
 
 .message.success {
@@ -320,16 +315,7 @@ html {
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}/* 
+/* @keyframes slideIn removed for better performance *//* 
 Hero Section */
 .hero {
   background: var(--hero-gradient);
@@ -729,6 +715,9 @@ Hero Section */
   padding: 40px;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .form-grid {
@@ -740,13 +729,16 @@ Hero Section */
 
 .form-group {
   text-align: left;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: var(--zivah-white);
+  color: var(--text-primary);
 }
 
 .form-group input,
@@ -754,12 +746,12 @@ Hero Section */
 .form-group textarea {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid var(--border-color);
+  border: 2px solid rgba(38, 50, 56, 0.2);
   border-radius: 8px;
-  background: var(--bg-tertiary);
+  background: rgba(255, 255, 255, 0.9);
   color: var(--text-primary);
   font-size: 16px;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
   backdrop-filter: blur(10px);
 }
 
@@ -767,7 +759,7 @@ Hero Section */
 .form-group select:hover,
 .form-group textarea:hover {
   border-color: var(--zivah-coral);
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 1);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(255, 99, 71, 0.2);
 }
@@ -1360,23 +1352,10 @@ Hero Section */
   }
 }
 
-/* Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Animations removed for better performance */
+/* @keyframes fadeInUp removed */
 
-.product-card,
-.global-stat,
-.product-item {
-  animation: fadeInUp 0.6s ease-out;
-}
+/* .product-card, .global-stat, .product-item animation removed for better performance */
 /*
  Dark Mode Specific Improvements */
  
@@ -1427,15 +1406,15 @@ Hero Section */
 [data-theme="dark"] .form-group input,
 [data-theme="dark"] .form-group select,
 [data-theme="dark"] .form-group textarea {
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   color: var(--text-primary);
 }
 
 [data-theme="dark"] .form-group input:hover,
 [data-theme="dark"] .form-group select:hover,
 [data-theme="dark"] .form-group textarea:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   border-color: var(--zivah-coral);
 }
 
@@ -1454,9 +1433,9 @@ Hero Section */
   color: var(--zivah-white);
 }
 
-/* Smooth transitions for theme switching */
+/* Smooth transitions reduced for better performance */
 * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 /* Focus states for accessibility */
@@ -1482,7 +1461,7 @@ Hero Section */
   }
 }
 
-/* Reduced motion support */
+/* Performance optimization - reduced animations */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1492,6 +1471,51 @@ Hero Section */
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Global performance optimization - selective targeting */
+.performance-mode .fade-in,
+.performance-mode .slide-in-left,
+.performance-mode .slide-in-right,
+.performance-mode .scale-in,
+.performance-mode .rotate-in,
+.performance-mode .section-transition {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Disable problematic animations globally */
+*:hover {
+  animation-play-state: paused !important;
+}
+
+/* ===== SELECTIVE ANIMATION OVERRIDE FOR PERFORMANCE ===== */
+/* Disable only problematic animations, preserve form functionality */
+.fade-in,
+.slide-in-left,
+.slide-in-right,
+.scale-in,
+.rotate-in,
+.section-transition {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Force disable specific problematic animations */
+.page-loader,
+.loader-logo,
+.loader-spinner,
+.skeleton {
+  animation: none !important;
+  transition: opacity 0.1s ease !important;
+}
+
+/* Disable all transforms in hover states except form elements */
+*:hover:not(input):not(select):not(textarea) {
+  transform: none !important;
 }
 
 /* Print styles */
@@ -2437,70 +2461,65 @@ img.lazy::before {
 
 /* ===== ANIMACIONES DE ENTRADA ===== */
 .fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: opacity, transform;
+  opacity: 1; /* Always visible, animation disabled */
+  transform: none;
+  /* Transition removed for performance */
 }
 
 .fade-in.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 .slide-in-left {
-  opacity: 0;
-  transform: translateX(-50px);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: opacity, transform;
+  opacity: 1; /* Always visible, animation disabled */
+  transform: none;
+  /* Transition removed for performance */
 }
 
 .slide-in-left.visible {
   opacity: 1;
-  transform: translateX(0);
+  transform: none;
 }
 
 .slide-in-right {
-  opacity: 0;
-  transform: translateX(50px);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: opacity, transform;
+  opacity: 1; /* Always visible, animation disabled */
+  transform: none;
+  /* Transition removed for performance */
 }
 
 .slide-in-right.visible {
   opacity: 1;
-  transform: translateX(0);
+  transform: none;
 }
 
 .scale-in {
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: opacity, transform;
+  opacity: 1; /* Always visible, animation disabled */
+  transform: none;
+  /* Transition removed for performance */
 }
 
 .scale-in.visible {
   opacity: 1;
-  transform: scale(1);
+  transform: none;
 }
 
 .rotate-in {
-  opacity: 0;
-  transform: rotate(-10deg) scale(0.8);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: opacity, transform;
+  opacity: 1; /* Always visible, animation disabled */
+  transform: none;
+  /* Transition removed for performance */
 }
 
 .rotate-in.visible {
   opacity: 1;
-  transform: rotate(0deg) scale(1);
+  transform: none;
 }
 
 /* ===== SKELETON LOADERS ===== */
 .skeleton {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  /* Shimmer animation removed for performance */
   border-radius: 8px;
 }
 

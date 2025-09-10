@@ -18,8 +18,7 @@ const essentialFiles = [
     'browserconfig.xml',
     '.htaccess',
     'css/styles.css',
-    'js/main.js',
-    'js/seo-utils.js'
+    'js/main.js'
 ];
 
 // Verificar archivos esenciales
@@ -110,7 +109,7 @@ function getAllFiles(dirPath, arrayOfFiles = []) {
             // Excluir archivos innecesarios
             if (!file.startsWith('.') || ['.htaccess'].includes(file)) {
                 if (!['.md', '.json', '.js'].includes(path.extname(file)) || 
-                    ['main.js', 'seo-utils.js'].includes(file)) {
+                    ['main.js'].includes(file)) {
                     arrayOfFiles.push(fullPath);
                 }
             }

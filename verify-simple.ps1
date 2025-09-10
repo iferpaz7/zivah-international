@@ -4,9 +4,7 @@ Write-Host "Verificando Sistema de Loading v1.0.3..." -ForegroundColor Green
 # Verificar archivos principales
 $files = @(
     "index.html",
-    "css/loading.css", 
-    "js/performance-config.js",
-    "js/smooth-loading-lite.js",
+    "css/styles.css", 
     "js/main.js"
 )
 
@@ -24,22 +22,16 @@ Write-Host "`nVersiones en HTML:" -ForegroundColor Yellow
 if (Test-Path "index.html") {
     $content = Get-Content "index.html" -Raw
     
-    if ($content -match "loading\.css\?v=1\.0\.3") {
-        Write-Host "  OK: CSS loading v1.0.3" -ForegroundColor Green
+    if ($content -match "styles\.css\?v=") {
+        Write-Host "  OK: CSS styles found with version" -ForegroundColor Green
     } else {
-        Write-Host "  ERROR: CSS loading version incorrecta" -ForegroundColor Red
+        Write-Host "  ERROR: CSS styles version not found" -ForegroundColor Red
     }
     
-    if ($content -match "performance-config\.js\?v=1\.0\.3") {
-        Write-Host "  OK: Performance config v1.0.3" -ForegroundColor Green
+    if ($content -match "main\.js\?v=") {
+        Write-Host "  OK: JavaScript main.js found with version (consolidated)" -ForegroundColor Green
     } else {
-        Write-Host "  ERROR: Performance config version incorrecta" -ForegroundColor Red
-    }
-    
-    if ($content -match "smooth-loading-lite\.js\?v=1\.0\.3") {
-        Write-Host "  OK: Smooth loading lite v1.0.3" -ForegroundColor Green
-    } else {
-        Write-Host "  ERROR: Smooth loading lite version incorrecta" -ForegroundColor Red
+        Write-Host "  ERROR: JavaScript main.js version not found" -ForegroundColor Red
     }
 }
 

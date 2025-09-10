@@ -8,9 +8,7 @@ $success = @()
 # Verificar archivos principales
 $requiredFiles = @(
     "index.html",
-    "css/loading.css",
-    "js/performance-config.js",
-    "js/smooth-loading-lite.js",
+    "css/styles.css",
     "js/main.js"
 )
 
@@ -31,21 +29,21 @@ if (Test-Path "index.html") {
     $htmlContent = Get-Content "index.html" -Raw
     
     # Verificar CSS
-    if ($htmlContent -match 'css/loading\.css\?v=1\.0\.3') {
-        $success += "✅ CSS loading version correcta"
-        Write-Host "  ✅ CSS loading v1.0.3" -ForegroundColor Green
+    if ($htmlContent -match 'css/styles\.css\?v=') {
+        $success += "✅ CSS styles version found"
+        Write-Host "  ✅ CSS styles with versioning" -ForegroundColor Green
     } else {
-        $warnings += "⚠️ CSS loading version incorrecta"
-        Write-Host "  ⚠️ CSS loading version" -ForegroundColor Yellow
+        $warnings += "⚠️ CSS styles version not found"
+        Write-Host "  ⚠️ CSS styles version missing" -ForegroundColor Yellow
     }
     
-    # Verificar JS
-    if ($htmlContent -match 'js/performance-config\.js\?v=1\.0\.3') {
-        $success += "✅ Performance config version correcta"
-        Write-Host "  ✅ Performance config v1.0.3" -ForegroundColor Green
+    # Verificar JS consolidado
+    if ($htmlContent -match 'js/main\.js\?v=') {
+        $success += "✅ JavaScript consolidated version correcta"
+        Write-Host "  ✅ JavaScript main.js (consolidated) with versioning" -ForegroundColor Green
     } else {
-        $warnings += "⚠️ Performance config version incorrecta"
-        Write-Host "  ⚠️ Performance config version" -ForegroundColor Yellow
+        $warnings += "⚠️ JavaScript main.js version incorrecta"
+        Write-Host "  ⚠️ JavaScript main.js version missing" -ForegroundColor Yellow
     }
     
     if ($htmlContent -match 'js/smooth-loading-lite\.js\?v=1\.0\.3') {
@@ -57,44 +55,41 @@ if (Test-Path "index.html") {
     }
 }
 
-# Verificar configuración SEO-friendly
+# Verificar configuración SEO-friendly en main.js consolidado
 Write-Host "`n🤖 Verificando configuración SEO..." -ForegroundColor Yellow
-if (Test-Path "js/performance-config.js") {
-    $configContent = Get-Content "js/performance-config.js" -Raw
+if (Test-Path "js/main.js") {
+    $mainContent = Get-Content "js/main.js" -Raw
     
-    if ($configContent -match 'skipLoaderForBots.*true') {
-        $success += "✅ Configuración SEO para bots habilitada"
-        Write-Host "  ✅ Skip loader for bots: enabled" -ForegroundColor Green
+    if ($mainContent -match 'skipLoaderForBots.*true') {
+        $success += "✅ Configuración SEO para bots habilitada (consolidada)"
+        Write-Host "  ✅ Skip loader for bots: enabled (consolidated)" -ForegroundColor Green
     } else {
         $warnings += "⚠️ Configuración SEO para bots no encontrada"
         Write-Host "  ⚠️ Skip loader for bots: not found" -ForegroundColor Yellow
     }
     
-    if ($configContent -match 'isBot.*bot\|crawler\|spider') {
-        $success += "✅ Detección de bots configurada"
-        Write-Host "  ✅ Bot detection: configured" -ForegroundColor Green
+    if ($mainContent -match 'isBot.*bot\|crawler\|spider') {
+        $success += "✅ Detección de bots configurada (consolidada)"
+        Write-Host "  ✅ Bot detection: configured (consolidated)" -ForegroundColor Green
     } else {
         $warnings += "⚠️ Detección de bots no encontrada"
         Write-Host "  ⚠️ Bot detection: not found" -ForegroundColor Yellow
     }
-}
-
-# Verificar optimizaciones de rendimiento
-Write-Host "`n⚡ Verificando optimizaciones de rendimiento..." -ForegroundColor Yellow
-if (Test-Path "js/smooth-loading-lite.js") {
-    $liteContent = Get-Content "js/smooth-loading-lite.js" -Raw
     
-    if ($liteContent -match 'prefers-reduced-motion') {
-        $success += "✅ Soporte para reduced motion"
-        Write-Host "  ✅ Reduced motion support" -ForegroundColor Green
+    # Verificar optimizaciones de rendimiento consolidadas
+    Write-Host "`n⚡ Verificando optimizaciones de rendimiento..." -ForegroundColor Yellow
+    
+    if ($mainContent -match 'prefers-reduced-motion') {
+        $success += "✅ Soporte para reduced motion (consolidado)"
+        Write-Host "  ✅ Reduced motion support (consolidated)" -ForegroundColor Green
     } else {
         $warnings += "⚠️ Soporte para reduced motion no encontrado"
         Write-Host "  ⚠️ Reduced motion support: not found" -ForegroundColor Yellow
     }
     
-    if ($liteContent -match 'requestIdleCallback') {
-        $success += "✅ Optimización con requestIdleCallback"
-        Write-Host "  ✅ RequestIdleCallback optimization" -ForegroundColor Green
+    if ($mainContent -match 'requestIdleCallback') {
+        $success += "✅ Optimización con requestIdleCallback (consolidado)"
+        Write-Host "  ✅ RequestIdleCallback optimization (consolidated)" -ForegroundColor Green
     } else {
         $warnings += "⚠️ RequestIdleCallback no encontrado"
         Write-Host "  ⚠️ RequestIdleCallback: not found" -ForegroundColor Yellow
@@ -129,12 +124,11 @@ if (Test-Path "demo-loading.html") {
     Write-Host "  ⚠️ demo-loading.html" -ForegroundColor Yellow
 }
 
-# Verificar tamaños de archivo
+# Verificar tamaños de archivo consolidado
 Write-Host "`n📊 Verificando tamaños de archivo..." -ForegroundColor Yellow
 $sizeChecks = @{
-    "js/smooth-loading-lite.js" = 6144
-    "js/performance-config.js" = 5120
-    "css/loading.css" = 4096
+    "js/main.js" = 81920    # ~80KB máximo para el archivo consolidado
+    "css/styles.css" = 8192  # ~8KB máximo
 }
 
 foreach ($file in $sizeChecks.Keys) {
@@ -151,6 +145,9 @@ foreach ($file in $sizeChecks.Keys) {
             $warnings += "⚠️ $file tamaño grande ($sizeKB KB)"
             Write-Host "  ⚠️ $file ($sizeKB KB)" -ForegroundColor Yellow
         }
+    } else {
+        $errors += "❌ $file no encontrado"
+        Write-Host "  ❌ $file no encontrado" -ForegroundColor Red
     }
 }
 
