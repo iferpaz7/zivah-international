@@ -434,8 +434,8 @@ class SmoothLoaderLite {
             <div class="loader-content">
                 <div class="loader-logo-container">
                     <div class="loader-logo">
-                        <img src="assets/images/zivah-logo.svg" alt="ZIVAH International" 
-                             onerror="this.src='assets/images/icons/favicon-96x96.png'">
+                        <img src="assets/images/icons/favicon-96x96.png" alt="ZIVAH International" 
+                             style="display: block; margin: 0 auto;">
                     </div>
                     <div class="loader-pulse"></div>
                 </div>
@@ -455,6 +455,7 @@ class SmoothLoaderLite {
             height: 100%;
             background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #7CB342 100%);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 9999;
@@ -1395,6 +1396,7 @@ function initSmoothLoader() {
             height: 100%;
             background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #7CB342 100%);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 9999;
