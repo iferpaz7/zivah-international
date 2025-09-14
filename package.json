@@ -2,18 +2,19 @@
   "name": "zivah-international-website",
   "version": "1.0.0",
   "description": "Sitio web corporativo para ZIVAH International S.A. - Exportadores premium de productos ecuatorianos",
-  "main": "index.html",
+  "main": "src/app/page.tsx",
   "scripts": {
-    "dev": "http-server -p 8000 -o",
-    "build": "echo 'Building static site...' && echo 'Ready for deployment'",
-    "preview": "http-server dist -p 4173 -o",
-    "lint:css": "stylelint 'css/**/*.css'",
-    "lint:js": "eslint 'js/**/*.js'",
-    "format": "prettier --write '**/*.{html,css,js,md}'",
-    "optimize:images": "imagemin 'assets/images/**/*' --out-dir='assets/images/optimized'",
-    "seo:validate": "echo 'Validating SEO...' && node -e \"console.log('✓ Sitemap exists:', require('fs').existsSync('sitemap.xml')); console.log('✓ Robots.txt exists:', require('fs').existsSync('robots.txt')); console.log('✓ Manifest exists:', require('fs').existsSync('site.webmanifest'));\"",
-    "seo:lighthouse": "lighthouse https://zivahinternational.com --output=html --output-path=./lighthouse-report.html",
-    "seo:meta-check": "node -e \"const fs=require('fs'); const html=fs.readFileSync('index.html','utf8'); console.log('✓ Title:', !!html.match(/<title>/)); console.log('✓ Description:', !!html.match(/name=\\\"description\\\"/)); console.log('✓ OG Tags:', !!html.match(/property=\\\"og:/)); console.log('✓ Schema:', !!html.match(/application\\/ld\\+json/));\""
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write '**/*.{ts,tsx,md}'",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:reset": "prisma migrate reset && npm run db:seed"
   },
   "keywords": [
     "zivah",
@@ -30,15 +31,40 @@
   "author": "ZIVAH International S.A.",
   "license": "UNLICENSED",
   "private": true,
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.1",
+    "@prisma/client": "^6.16.1",
+    "@tailwindcss/postcss": "^4.1.13",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/bcryptjs": "^2.4.6",
+    "autoprefixer": "^10.4.21",
+    "bcryptjs": "^3.0.2",
+    "clsx": "^2.1.1",
+    "next": "^15.5.3",
+    "postcss": "^8.5.6",
+    "prisma": "^6.16.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-hook-form": "^7.62.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.13",
+    "zod": "^4.1.8"
+  },
   "devDependencies": {
+    "@types/node": "^20.19.14",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^15.5.3",
     "http-server": "^14.1.1",
-    "prettier": "^3.0.0",
-    "eslint": "^8.0.0",
-    "stylelint": "^15.0.0",
     "imagemin": "^8.0.0",
-    "imagemin-webp": "^7.0.0",
     "imagemin-mozjpeg": "^10.0.0",
-    "imagemin-pngquant": "^9.0.0"
+    "imagemin-pngquant": "^9.0.0",
+    "imagemin-webp": "^7.0.0",
+    "prettier": "^3.0.0",
+    "stylelint": "^15.0.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
   },
   "browserslist": [
     "> 1%",
@@ -51,6 +77,6 @@
   },
   "homepage": "https://zivahinternational.com",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.18.0"
   }
 }
