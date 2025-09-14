@@ -106,8 +106,10 @@
   <meta name="msapplication-TileImage" content="assets/images/icons/ms-icon-310x310.png" />
 
   <!-- Web App Manifest - PWA Support -->
-  <link rel="manifest" href="site.webmanifest?v=3" />
-  <meta name="theme-color" content="#ff6347" />
+  <link rel="manifest" href="site.webmanifest?v=4" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="ZIVAH International" />
@@ -138,13 +140,62 @@
   <link rel="dns-prefetch" href="//www.google-analytics.com" />
 
   <!-- Preload critical assets -->
-  <link rel="preload" href="assets/images/icons/favicon-96x96.png" as="image" type="image/svg+xml" />
+  <link rel="preload" href="assets/images/icons/favicon-96x96.png" as="image" type="image/png" />
+  <link rel="preload" href="assets/images/zivah-logo.svg" as="image" type="image/svg+xml" />
+  <link rel="preload" href="css/styles.css?v=2.1.0" as="style" />
+  <link rel="preload" href="js/main.js?v=2.1.0" as="script" />
 
-  <!-- Estilos CSS -->
-  <link rel="stylesheet" href="css/styles.css?v=1.0.2" />
-  <link rel="stylesheet" href="css/responsive.css?v=1.0.1" />
-  <link rel="stylesheet" href="css/loading.css?v=1.0.2" />
-  <link rel="stylesheet" href="css/enhanced-dropdown.css?v=1.0.4" />
+  <!-- Theme Preloader Script - Prevents FOUC -->
+  <script>
+    (function() {
+      // Immediately apply theme before page render to prevent flash
+      try {
+        const savedTheme = localStorage.getItem('zivah-theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+        
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+        
+        // Set initial theme-color
+        const themeColor = theme === 'dark' ? '#0f1419' : '#ffffff';
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]:not([media])');
+        if (metaThemeColor) {
+          metaThemeColor.content = themeColor;
+        }
+      } catch (e) {
+        // Fallback to light theme if anything fails
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+
+  <!-- Estilos CSS Consolidados -->
+  <link rel="stylesheet" href="css/styles.css?v=2.1.0" />
+  
+  <!-- Enhanced Preload Strategy -->
+  <script>
+    // Immediate preload strategy to start loading critical resources
+    (function() {
+      // Preload logo SVG immediately if it exists
+      const logoPreload = document.createElement('link');
+      logoPreload.rel = 'preload';
+      logoPreload.href = 'assets/images/zivah-logo.svg';
+      logoPreload.as = 'image';
+      logoPreload.type = 'image/svg+xml';
+      logoPreload.onerror = function() {
+        // Fallback to PNG if SVG fails
+        this.href = 'assets/images/icons/favicon-96x96.png';
+        this.type = 'image/png';
+      };
+      document.head.appendChild(logoPreload);
+      
+      // Start early performance monitoring
+      if (window.performance && window.performance.mark) {
+        performance.mark('zivah-preload-start');
+      }
+    })();
+  </script>
 
   <!-- Structured Data - Organization -->
   <script type="application/ld+json">
@@ -1207,14 +1258,8 @@
     }
     </script>
 
-  <!-- JavaScript - Optimizado para SEO y Rendimiento -->
-  <script src="js/performance-config.js?v=1.0.1"></script>
-  <script src="js/smooth-loading-lite.js?v=1.0.2"></script>
-  <script src="js/countries-data.js?v=1.0.1"></script>
-  <script src="js/enhanced-dropdown.js?v=1.0.4"></script>
-  <script src="js/form-enhancements.js?v=1.0.4"></script>
-  <script src="js/main.js?v=1.0.3"></script>
-  <!-- SEO Utils se carga automáticamente desde performance-config.js -->
+  <!-- JavaScript - Consolidated into main.js for better performance -->
+  <script src="js/main.js?v=2.1.0"></script>
 
   <!-- Schema.org Breadcrumb -->
   <script type="application/ld+json">

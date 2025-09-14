@@ -13,10 +13,7 @@
     "optimize:images": "imagemin 'assets/images/**/*' --out-dir='assets/images/optimized'",
     "seo:validate": "echo 'Validating SEO...' && node -e \"console.log('✓ Sitemap exists:', require('fs').existsSync('sitemap.xml')); console.log('✓ Robots.txt exists:', require('fs').existsSync('robots.txt')); console.log('✓ Manifest exists:', require('fs').existsSync('site.webmanifest'));\"",
     "seo:lighthouse": "lighthouse https://zivahinternational.com --output=html --output-path=./lighthouse-report.html",
-    "seo:meta-check": "node -e \"const fs=require('fs'); const html=fs.readFileSync('index.html','utf8'); console.log('✓ Title:', !!html.match(/<title>/)); console.log('✓ Description:', !!html.match(/name=\\\"description\\\"/)); console.log('✓ OG Tags:', !!html.match(/property=\\\"og:/)); console.log('✓ Schema:', !!html.match(/application\\/ld\\+json/));\"",
-    "prepare:astro": "npm create astro@latest zivah-astro-migration",
-    "prepare:nextjs": "npx create-next-app@latest zivah-nextjs-migration",
-    "prepare:tailwind": "npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p"
+    "seo:meta-check": "node -e \"const fs=require('fs'); const html=fs.readFileSync('index.html','utf8'); console.log('✓ Title:', !!html.match(/<title>/)); console.log('✓ Description:', !!html.match(/name=\\\"description\\\"/)); console.log('✓ OG Tags:', !!html.match(/property=\\\"og:/)); console.log('✓ Schema:', !!html.match(/application\\/ld\\+json/));\""
   },
   "keywords": [
     "zivah",
