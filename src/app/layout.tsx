@@ -142,12 +142,17 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{
           __html: `
             (function() {
-              function setTheme() {
-                const theme = localStorage.getItem('theme') || 
-                             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                document.documentElement.classList.toggle('dark', theme === 'dark');
+              try {
+                // Prevent flash of wrong theme by setting initial theme immediately
+                const savedTheme = localStorage.getItem('theme');
+                const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                const initialTheme = savedTheme || systemTheme;
+                if (initialTheme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                }
+              } catch (e) {
+                // Silently fail - ThemeProvider will handle it
               }
-              setTheme();
             })();
           `
         }} />

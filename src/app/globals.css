@@ -1,10 +1,7 @@
-@import "tailwindcss";
+@import "../../styles.css";
 
-/* Zivah International Brand System - .kiro specs */
+/* Zivah International Brand System - Custom CSS variables only */
 :root {
-  color-scheme: light;
-  --background: #ffffff;
-  --foreground: #263238;
   --zivah-lime: #7CB342;
   --zivah-green: #2E7D32;
   --zivah-dark-green: #1B5E20;
@@ -16,11 +13,8 @@
   --zivah-charcoal: #263238;
 }
 
-/* Dark mode variables */
-:root.dark {
-  color-scheme: dark;
-  --background: #0f1419;
-  --foreground: #e4e6ea;
+/* Dark mode adjustments for custom variables */
+.dark {
   --zivah-lime: #8BC34A;
   --zivah-green: #4CAF50;
   --zivah-dark-green: #2E7D32;
@@ -32,13 +26,15 @@
   --zivah-charcoal: #37474F;
 }
 
-html, body { 
-  margin: 0; 
-  padding: 0; 
-  color: var(--foreground);
-  background: var(--background);
-  transition: background-color 0.3s ease, color 0.3s ease;
+/* Smooth scroll behavior */
+html {
   scroll-behavior: smooth;
+}
+
+/* Font settings */
+html, body {
+  font-family: Inter, system-ui, sans-serif;
+  font-feature-settings: "rlig" 1, "calt" 1;
 }
 
 /* Glass morphism utilities */
@@ -99,16 +95,6 @@ html, body {
 
 .dark .glass-button:hover {
   background: rgba(55, 65, 81, 0.4);
-}
-
-/* Smooth transitions for dark mode */
-* {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-}
-
-html, body {
-  font-family: Inter, system-ui, sans-serif;
-  font-feature-settings: "rlig" 1, "calt" 1;
 }
 
 /* Component base styles */

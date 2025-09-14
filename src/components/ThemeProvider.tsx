@@ -17,24 +17,30 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
+    // Prevent hydration mismatch by only running on client
+    if (typeof window === 'undefined') return
+
     // Get theme from localStorage or system preference
     const savedTheme = localStorage.getItem('theme') as Theme
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     const initialTheme = savedTheme || systemTheme
-    
+
     setThemeState(initialTheme)
     applyTheme(initialTheme)
+    setMounted(true)
   }, [])
 
   const applyTheme = (newTheme: Theme) => {
+    if (typeof window === 'undefined') return
+
     const html = document.documentElement
-    
+
     if (newTheme === 'dark') {
       html.classList.add('dark')
     } else {
       html.classList.remove('dark')
     }
+
     localStorage.setItem('theme', newTheme)
   }
 
@@ -49,7 +55,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     applyTheme(newTheme)
   }
 
-  // Don't prevent rendering
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <ThemeContext.Provider value={{ theme: 'light', toggleTheme, setTheme }}>
+        {children}
+      </ThemeContext.Provider>
+    )
+  }
+
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
       {children}
