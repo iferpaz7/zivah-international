@@ -50,6 +50,7 @@ model Product {
   createdAt        DateTime         @default(now()) @map("created_at")
   updatedAt        DateTime         @updatedAt @map("updated_at")
   measureId        Int?             @map("measure_id")
+  code             String?          @unique @db.VarChar(50)
   variants         ProductVariant[]
   category         Category?        @relation(fields: [categoryId], references: [id])
   defaultMeasure   Measure?         @relation(fields: [measureId], references: [id])
@@ -59,6 +60,7 @@ model Product {
   @@index([measureId])
   @@index([isActive, isFeatured])
   @@index([slug])
+  @@index([code])
   @@map("products")
 }
 

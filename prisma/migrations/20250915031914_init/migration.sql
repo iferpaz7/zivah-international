@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "public"."MeasureType" AS ENUM ('WEIGHT', 'VOLUME', 'LENGTH', 'AREA', 'QUANTITY', 'CONTAINER');
+
+-- CreateEnum
 CREATE TYPE "public"."QuoteStatus" AS ENUM ('PENDING', 'REVIEWED', 'QUOTED', 'APPROVED', 'REJECTED', 'EXPIRED');
 
 -- CreateEnum
@@ -55,6 +58,8 @@ CREATE TABLE "public"."products" (
     "seo_description" VARCHAR(500),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "measure_id" INTEGER,
+    "code" VARCHAR(50),
 
     CONSTRAINT "products_pkey" PRIMARY KEY ("id")
 );
@@ -73,6 +78,24 @@ CREATE TABLE "public"."product_variants" (
     "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "product_variants_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."measures" (
+    "id" SERIAL NOT NULL,
+    "name" VARCHAR(100) NOT NULL,
+    "shortName" VARCHAR(20) NOT NULL,
+    "symbol" VARCHAR(10),
+    "type" "public"."MeasureType" NOT NULL,
+    "baseUnit" VARCHAR(20),
+    "conversionFactor" DECIMAL(15,6),
+    "is_active" BOOLEAN NOT NULL DEFAULT true,
+    "sort_order" INTEGER NOT NULL DEFAULT 0,
+    "description" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "measures_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -116,6 +139,7 @@ CREATE TABLE "public"."quote_items" (
     "specifications" JSONB,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "measure_id" INTEGER,
 
     CONSTRAINT "quote_items_pkey" PRIMARY KEY ("id")
 );
@@ -321,7 +345,13 @@ CREATE UNIQUE INDEX "products_slug_key" ON "public"."products"("slug");
 CREATE UNIQUE INDEX "products_sku_key" ON "public"."products"("sku");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "products_code_key" ON "public"."products"("code");
+
+-- CreateIndex
 CREATE INDEX "products_category_id_idx" ON "public"."products"("category_id");
+
+-- CreateIndex
+CREATE INDEX "products_measure_id_idx" ON "public"."products"("measure_id");
 
 -- CreateIndex
 CREATE INDEX "products_is_active_is_featured_idx" ON "public"."products"("is_active", "is_featured");
@@ -330,10 +360,22 @@ CREATE INDEX "products_is_active_is_featured_idx" ON "public"."products"("is_act
 CREATE INDEX "products_slug_idx" ON "public"."products"("slug");
 
 -- CreateIndex
+CREATE INDEX "products_code_idx" ON "public"."products"("code");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "product_variants_sku_key" ON "public"."product_variants"("sku");
 
 -- CreateIndex
 CREATE INDEX "product_variants_product_id_idx" ON "public"."product_variants"("product_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "measures_name_key" ON "public"."measures"("name");
+
+-- CreateIndex
+CREATE INDEX "measures_type_idx" ON "public"."measures"("type");
+
+-- CreateIndex
+CREATE INDEX "measures_is_active_sort_order_idx" ON "public"."measures"("is_active", "sort_order");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "quotes_quote_number_key" ON "public"."quotes"("quote_number");
@@ -358,6 +400,9 @@ CREATE INDEX "quote_items_quote_id_idx" ON "public"."quote_items"("quote_id");
 
 -- CreateIndex
 CREATE INDEX "quote_items_product_id_idx" ON "public"."quote_items"("product_id");
+
+-- CreateIndex
+CREATE INDEX "quote_items_measure_id_idx" ON "public"."quote_items"("measure_id");
 
 -- CreateIndex
 CREATE INDEX "quote_communications_quote_id_idx" ON "public"."quote_communications"("quote_id");
@@ -468,10 +513,10 @@ CREATE UNIQUE INDEX "verification_tokens_identifier_token_key" ON "public"."veri
 ALTER TABLE "public"."products" ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "public"."categories"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."product_variants" ADD CONSTRAINT "product_variants_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."products" ADD CONSTRAINT "products_measure_id_fkey" FOREIGN KEY ("measure_id") REFERENCES "public"."measures"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."quotes" ADD CONSTRAINT "quotes_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."product_variants" ADD CONSTRAINT "product_variants_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."quotes" ADD CONSTRAINT "quotes_assigned_to_id_fkey" FOREIGN KEY ("assigned_to_id") REFERENCES "public"."users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -480,10 +525,16 @@ ALTER TABLE "public"."quotes" ADD CONSTRAINT "quotes_assigned_to_id_fkey" FOREIG
 ALTER TABLE "public"."quotes" ADD CONSTRAINT "quotes_country_id_fkey" FOREIGN KEY ("country_id") REFERENCES "public"."countries"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."quote_items" ADD CONSTRAINT "quote_items_quote_id_fkey" FOREIGN KEY ("quote_id") REFERENCES "public"."quotes"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."quotes" ADD CONSTRAINT "quotes_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."quote_items" ADD CONSTRAINT "quote_items_measure_id_fkey" FOREIGN KEY ("measure_id") REFERENCES "public"."measures"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."quote_items" ADD CONSTRAINT "quote_items_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."quote_items" ADD CONSTRAINT "quote_items_quote_id_fkey" FOREIGN KEY ("quote_id") REFERENCES "public"."quotes"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."quote_communications" ADD CONSTRAINT "quote_communications_quote_id_fkey" FOREIGN KEY ("quote_id") REFERENCES "public"."quotes"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -663,6 +663,7 @@ async function main() {
     create: {
       name: 'Banano Cavendish Premium',
       slug: 'banano-cavendish-premium',
+      code: 'AGR-BAN-001', // Agricultural - Banano code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Banano Cavendish de exportación premium cultivado en la costa ecuatoriana. Ecuador es uno de los mayores exportadores mundiales de banano con excelente calidad y vida útil.',
@@ -718,6 +719,7 @@ async function main() {
     create: {
       name: 'Cacao Fino de Aroma Nacional',
       slug: 'cacao-fino-aroma',
+      code: 'AGR-CAC-001', // Agricultural - Cacao code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Cacao Nacional ecuatoriano de fino aroma, reconocido mundialmente por su calidad superior para chocolate premium. Ecuador es líder en la exportación de cacao fino.',
@@ -766,6 +768,7 @@ async function main() {
     create: {
       name: 'Camarón Blanco Premium',
       slug: 'camaron-blanco-premium',
+      code: 'MAR-CAM-001', // Marine - Camarón code
       categoryId: marinosCategory.id,
       measureId: pieces.id,
       description: 'Camarón blanco Litopenaeus vannamei de granjas acuícolas ecuatorianas. Ecuador es líder mundial en exportación de camarón con la más alta calidad y certificaciones internacionales.',
@@ -812,6 +815,7 @@ async function main() {
     create: {
       name: 'Rosas Rojas Premium',
       slug: 'rosas-rojas-premium',
+      code: 'AGR-FLO-001', // Agricultural - Flores code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Rosas rojas ecuatorianas de exportación cultivadas en la sierra ecuatoriana. Ecuador es uno de los principales exportadores mundiales de flores, especialmente rosas de alta calidad.',
@@ -851,6 +855,7 @@ async function main() {
     create: {
       name: 'Larvas de Camarón Post-Larva',
       slug: 'larvas-camaron-postlarva',
+      code: 'MAR-LAR-001', // Marine - Larvas code
       categoryId: marinosCategory.id, // Now correctly categorized under marine products
       measureId: pieces.id,
       description: 'Larvas de camarón libres de patógenos producidas en laboratorio certificado con tecnología de punta para acuicultura sustentable y desarrollo del sector camaronero ecuatoriano.',
@@ -890,6 +895,7 @@ async function main() {
     create: {
       name: 'Aguacate Hass Premium',
       slug: 'aguacate-hass-premium',
+      code: 'AGR-AGU-001', // Agricultural - Aguacate code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Aguacate Hass de calidad exportación cultivado en Ecuador. Textura cremosa, sabor intenso y certificación orgánica disponible.',
@@ -937,6 +943,7 @@ async function main() {
     create: {
       name: 'Mango Tommy Atkins Premium',
       slug: 'mango-tommy-atkins',
+      code: 'AGR-MAN-001', // Agricultural - Mango code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Mango Tommy Atkins de exportación premium cultivado en la costa ecuatoriana. Frutos grandes, dulces y con excelente vida útil postcosecha.',
@@ -984,6 +991,7 @@ async function main() {
     create: {
       name: 'Café Arábica de Altura Premium',
       slug: 'cafe-arabica-altura',
+      code: 'AGR-CAF-001', // Agricultural - Café code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Granos de café cultivados en las montañas andinas ecuatorianas entre 1200-1800 msnm, reconocidos mundialmente por su calidad excepcional y perfil único.',
@@ -1023,6 +1031,7 @@ async function main() {
     create: {
       name: 'Atún Fresco del Pacífico',
       slug: 'atun-fresco-pacifico',
+      code: 'MAR-ATU-001', // Marine - Atún code
       categoryId: marinosCategory.id,
       measureId: pieces.id, // Marine products default to pieces
       description: 'Atún fresco capturado en las ricas aguas del Pacífico ecuatoriano con técnicas sustentables. Procesamiento inmediato post-captura.',
@@ -1069,6 +1078,7 @@ async function main() {
     create: {
       name: 'Calabaza Premium',
       slug: 'calabaza-premium',
+      code: 'AGR-CAL-001', // Agricultural - Calabaza code
       categoryId: agricolasCategory.id,
       description: 'Calabaza premium cultivada con métodos orgánicos en Ecuador. Rica en nutrientes y perfecta para exportación.',
       shortDescription: 'Calabaza orgánica premium',
@@ -1100,6 +1110,7 @@ async function main() {
     create: {
       name: 'Camote Dulce',
       slug: 'camote-dulce',
+      code: 'AGR-CAM-002', // Agricultural - Camote code
       categoryId: agricolasCategory.id,
       description: 'Camote dulce ecuatoriano rico en nutrientes y vitaminas. Cultivo sustentable en la costa.',
       shortDescription: 'Camote dulce rico en nutrientes',
@@ -1131,6 +1142,7 @@ async function main() {
     create: {
       name: 'Caña de Azúcar',
       slug: 'cana-azucar',
+      code: 'AGR-CAN-001', // Agricultural - Caña code
       categoryId: agricolasCategory.id,
       description: 'Caña de azúcar ecuatoriana para procesamiento natural. Cultivo sustentable en la costa.',
       shortDescription: 'Caña de azúcar procesamiento natural',
@@ -1162,6 +1174,7 @@ async function main() {
     create: {
       name: 'Cebolla Premium',
       slug: 'cebolla-premium',
+      code: 'AGR-CEB-001', // Agricultural - Cebolla code
       categoryId: agricolasCategory.id,
       description: 'Cebolla premium de variedades selectas cultivada en Ecuador. Sabor intenso y larga conservación.',
       shortDescription: 'Cebolla variedades selectas',
@@ -1193,6 +1206,7 @@ async function main() {
     create: {
       name: 'Chayote Orgánico',
       slug: 'chayote-organico',
+      code: 'AGR-CHA-001', // Agricultural - Chayote code
       categoryId: agricolasCategory.id,
       description: 'Chayote orgánico certificado internacionalmente. Bajo en calorías y rico en nutrientes.',
       shortDescription: 'Chayote certificado internacional',
@@ -1224,6 +1238,7 @@ async function main() {
     create: {
       name: 'Coco Tropical',
       slug: 'coco-tropical',
+      code: 'AGR-COC-001', // Agricultural - Coco code
       categoryId: agricolasCategory.id,
       description: 'Coco tropical de la costa ecuatoriana. Agua de coco natural y pulpa fresca.',
       shortDescription: 'Coco costa ecuatoriana',
@@ -1255,6 +1270,7 @@ async function main() {
     create: {
       name: 'Cúrcuma',
       slug: 'curcuma',
+      code: 'AGR-CUR-001', // Agricultural - Cúrcuma code
       categoryId: agricolasCategory.id,
       description: 'Cúrcuma ecuatoriana con propiedades medicinales. Rica en curcumina y antioxidantes.',
       shortDescription: 'Cúrcuma propiedades medicinales',
@@ -1286,6 +1302,7 @@ async function main() {
     create: {
       name: 'Jengibre Fresco',
       slug: 'jengibre-fresco',
+      code: 'AGR-JEN-001', // Agricultural - Jengibre code
       categoryId: agricolasCategory.id,
       description: 'Jengibre fresco de calidad exportación. Sabor intenso y propiedades medicinales.',
       shortDescription: 'Jengibre calidad exportación',
@@ -1319,6 +1336,7 @@ async function main() {
     create: {
       name: 'Ñame Tropical',
       slug: 'name-tropical',
+      code: 'AGR-NAM-001', // Agricultural - Ñame code
       categoryId: agricolasCategory.id,
       description: 'Ñame tropical de variedades autóctonas ecuatorianas. Tubérculo nutritivo y versátil.',
       shortDescription: 'Ñame variedades autóctonas',
@@ -1350,6 +1368,7 @@ async function main() {
     create: {
       name: 'Ñampí',
       slug: 'nampi',
+      code: 'AGR-NPI-001', // Agricultural - Ñampí code
       categoryId: agricolasCategory.id,
       description: 'Ñampí, tubérculo andino tradicional ecuatoriano. Rico en almidón y minerales.',
       shortDescription: 'Ñampí tubérculo andino',
@@ -1381,6 +1400,7 @@ async function main() {
     create: {
       name: 'Palmito Orgánico',
       slug: 'palmito-organico',
+      code: 'AGR-PAL-001', // Agricultural - Palmito code
       categoryId: agricolasCategory.id,
       description: 'Palmito orgánico sustentable certificado. Cosecha responsable de palma de pejibaye.',
       shortDescription: 'Palmito sustentable certificado',
@@ -1412,6 +1432,7 @@ async function main() {
     create: {
       name: 'Papaya Hawaiana',
       slug: 'papaya-hawaiana',
+      code: 'AGR-PAP-001', // Agricultural - Papaya code
       categoryId: agricolasCategory.id,
       description: 'Papaya hawaiana de dulzura natural cultivada en Ecuador. Rica en enzimas digestivas.',
       shortDescription: 'Papaya dulzura natural',
@@ -1443,6 +1464,7 @@ async function main() {
     create: {
       name: 'Piña Golden MD2',
       slug: 'pina-golden',
+      code: 'AGR-PIN-001', // Agricultural - Piña code
       categoryId: agricolasCategory.id,
       description: 'Piña Golden MD2 de máxima calidad cultivada en Ecuador. Dulzura excepcional y bajo contenido ácido.',
       shortDescription: 'Piña MD2 máxima calidad',
@@ -1475,6 +1497,7 @@ async function main() {
     create: {
       name: 'Plátano Verde',
       slug: 'platano-verde',
+      code: 'AGR-PLA-001', // Agricultural - Plátano code
       categoryId: agricolasCategory.id,
       description: 'Plátano verde ecuatoriano para exportación. Ideal para procesamiento industrial y consumo.',
       shortDescription: 'Plátano verde para exportación',
@@ -1506,6 +1529,7 @@ async function main() {
     create: {
       name: 'Yuca Premium',
       slug: 'yuca-premium',
+      code: 'AGR-YUC-001', // Agricultural - Yuca code
       categoryId: agricolasCategory.id,
       description: 'Yuca premium para procesamiento industrial. Tubérculo versátil y nutritivo.',
       shortDescription: 'Yuca procesamiento industrial',
@@ -1537,6 +1561,7 @@ async function main() {
     create: {
       name: 'Árboles de Mango',
       slug: 'arboles-mango',
+      code: 'OTR-ARB-001', // Other Products - Árboles code
       categoryId: otrosCategory.id,
       description: 'Árboles de mango de variedades tropicales para cultivo. Plantas certificadas y adaptadas.',
       shortDescription: 'Árboles mango variedades tropicales',
@@ -1568,6 +1593,7 @@ async function main() {
     create: {
       name: 'Árboles de Aguacate',
       slug: 'arboles-aguacate',
+      code: 'OTR-AGU-001', // Other Products - Aguacate trees code
       categoryId: otrosCategory.id,
       description: 'Árboles de aguacate Hass y criollos para cultivo comercial. Plantas injertadas certificadas.',
       shortDescription: 'Árboles aguacate Hass y criollos',
@@ -1599,6 +1625,7 @@ async function main() {
     create: {
       name: 'Árboles Cítricos',
       slug: 'arboles-citricos',
+      code: 'OTR-CIT-001', // Other Products - Cítricos code
       categoryId: otrosCategory.id,
       description: 'Árboles cítricos: naranja, limón, mandarina para cultivo comercial. Variedades adaptadas.',
       shortDescription: 'Árboles naranja, limón, mandarina',
@@ -1630,6 +1657,7 @@ async function main() {
     create: {
       name: 'Nueces de Macadamia',
       slug: 'nueces-macadamia',
+      code: 'OTR-MAC-001', // Other Products - Macadamia code
       categoryId: otrosCategory.id,
       description: 'Nueces de macadamia de cultivo especializado en Ecuador. Premium quality con certificación.',
       shortDescription: 'Nueces macadamia cultivo especializado',
@@ -1661,6 +1689,7 @@ async function main() {
     create: {
       name: 'Nueces Pecanas',
       slug: 'nueces-pecanas',
+      code: 'OTR-PEC-001', // Other Products - Pecanas code
       categoryId: otrosCategory.id,
       description: 'Nueces pecanas adaptadas al trópico ecuatoriano. Cultivo innovador con técnicas especializadas.',
       shortDescription: 'Nueces pecanas adaptadas al trópico',
@@ -1692,6 +1721,7 @@ async function main() {
     create: {
       name: 'Almendras Tropicales',
       slug: 'almendras-tropicales',
+      code: 'OTR-ALM-001', // Other Products - Almendras code
       categoryId: otrosCategory.id,
       description: 'Almendras tropicales de variedades ecuatorianas. Cultivo tradicional con métodos modernos.',
       shortDescription: 'Almendras variedades ecuatorianas',
