@@ -3,7 +3,6 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   // React optimizations
   reactStrictMode: true,
-  swcMinify: true,
 
   // Performance optimizations
   experimental: {
@@ -17,10 +16,19 @@ const nextConfig: NextConfig = {
 
   // Image optimization
   images: {
-    domains: [
-      'localhost',
-      'zivahinternational.com',
-      'www.zivahinternational.com',
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+      {
+        protocol: 'https',
+        hostname: 'zivahinternational.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.zivahinternational.com',
+      },
     ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -124,9 +132,6 @@ const nextConfig: NextConfig = {
 
   // Enable source maps in production for debugging
   productionBrowserSourceMaps: false,
-
-  // Optimize CSS
-  optimizeFonts: true,
 
   // PWA and service worker
   // Service worker headers are handled separately
