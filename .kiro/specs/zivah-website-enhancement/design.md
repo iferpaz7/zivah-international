@@ -68,7 +68,7 @@ La arquitectura seguirá el patrón de App Router de Next.js con componentes de 
 - **Styling**: TailwindCSS v4 (latest) + Headless UI components
 - **Authentication**: NextAuth.js v5 (OAuth, credentials)
 - **Form Handling**: React Hook Form + Zod validation
-- **Email**: Resend API or NodeMailer  
+- **Email**: Resend API or NodeMailer
 - **File Upload**: Next.js API routes with cloud storage (AWS S3/Cloudinary)
 - **State Management**: React Server Components + Zustand (client state)
 - **Testing**: Jest + Testing Library + Playwright
@@ -105,7 +105,7 @@ model Category {
   color       String?   @db.VarChar(7)
   sortOrder   Int       @default(0) @map("sort_order")
   products    Product[]
-  
+
   @@map("categories")
 }
 
@@ -121,10 +121,10 @@ model Product {
   isActive      Boolean     @default(true) @map("is_active")
   createdAt     DateTime    @default(now()) @map("created_at")
   updatedAt     DateTime    @updatedAt @map("updated_at")
-  
+
   category      Category?   @relation(fields: [categoryId], references: [id])
   quoteItems    QuoteItem[]
-  
+
   @@index([categoryId])
   @@index([isActive])
   @@map("products")
@@ -144,9 +144,9 @@ model Quote {
   adminNotes     String?     @db.Text @map("admin_notes")
   createdAt      DateTime    @default(now()) @map("created_at")
   updatedAt      DateTime    @updatedAt @map("updated_at")
-  
+
   items          QuoteItem[]
-  
+
   @@index([status])
   @@index([customerEmail])
   @@index([createdAt])
@@ -161,10 +161,10 @@ model QuoteItem {
   unitPrice  Decimal @db.Decimal(10, 2) @map("unit_price")
   totalPrice Decimal @db.Decimal(12, 2) @map("total_price")
   notes      String? @db.Text
-  
+
   quote      Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
   product    Product @relation(fields: [productId], references: [id])
-  
+
   @@map("quote_items")
 }
 
@@ -178,9 +178,9 @@ model User {
   isActive  Boolean   @default(true) @map("is_active")
   lastLogin DateTime? @map("last_login")
   createdAt DateTime  @default(now()) @map("created_at")
-  
+
   activityLogs ActivityLog[]
-  
+
   @@map("admin_users")
 }
 
@@ -191,7 +191,7 @@ model SiteSetting {
   type         SettingType @default(TEXT) @map("setting_type")
   description  String?     @db.Text
   updatedAt    DateTime    @updatedAt @map("updated_at")
-  
+
   @@map("site_settings")
 }
 
@@ -206,9 +206,9 @@ model ActivityLog {
   ipAddress  String?  @db.VarChar(45) @map("ip_address")
   userAgent  String?  @db.Text @map("user_agent")
   createdAt  DateTime @default(now()) @map("created_at")
-  
+
   user       User?    @relation(fields: [userId], references: [id])
-  
+
   @@index([userId])
   @@index([action])
   @@index([createdAt])
@@ -241,6 +241,7 @@ enum SettingType {
 #### Existing Assets and Content Analysis
 
 The current static site contains:
+
 - **Comprehensive SEO metadata**: Meta tags, Open Graph, Twitter Cards, Schema.org structured data
 - **Brand Assets**: ZIVAH logo (SVG), favicon collection, brand colors system
 - **Content**: Spanish corporate content with detailed product descriptions
@@ -252,7 +253,7 @@ The current static site contains:
 
 ```typescript
 // tailwind.config.ts - TailwindCSS v4 configuration
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   // TailwindCSS v4 uses 'source' instead of 'content'
@@ -262,16 +263,16 @@ const config: Config = {
       colors: {
         // ZIVAH Official Brand Colors from existing CSS
         zivah: {
-          lime: '#7CB342',           // Verde Lima - Nature, agriculture
-          green: '#2E7D32',          // Verde Medio - Sustainability  
-          'dark-green': '#1B5E20',   // Verde Oscuro - Premium stability
-          navy: '#0D47A1',           // Azul Marino - Ocean, export
-          blue: '#1976D2',           // Azul Medio - Freshness, technology
-          coral: '#FF5722',          // Naranja Coral - Seafood, energy
-          'light-coral': '#FF8A65',  // Naranja Claro - Warmth
-          'blue-gray': '#37474F',    // Gris Azulado - Text
-          charcoal: '#263238',       // Gris Carbón - Headers
-        }
+          lime: '#7CB342', // Verde Lima - Nature, agriculture
+          green: '#2E7D32', // Verde Medio - Sustainability
+          'dark-green': '#1B5E20', // Verde Oscuro - Premium stability
+          navy: '#0D47A1', // Azul Marino - Ocean, export
+          blue: '#1976D2', // Azul Medio - Freshness, technology
+          coral: '#FF5722', // Naranja Coral - Seafood, energy
+          'light-coral': '#FF8A65', // Naranja Claro - Warmth
+          'blue-gray': '#37474F', // Gris Azulado - Text
+          charcoal: '#263238', // Gris Carbón - Headers
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -301,8 +302,8 @@ const config: Config = {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
-      }
-    }
+      },
+    },
   },
   // TailwindCSS v4 new features
   experimental: {
@@ -310,31 +311,31 @@ const config: Config = {
   },
   future: {
     hoverOnlyWhenSupported: true,
-  }
-}
+  },
+};
 
-export default config
+export default config;
 ```
 
 #### TailwindCSS v4 Enhanced Features
 
 ```css
 /* globals.css - TailwindCSS v4 with CSS-in-JS support */
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* TailwindCSS v4 CSS Custom Properties */
 :root {
   /* ZIVAH Brand Colors as CSS Custom Properties */
-  --color-zivah-lime: #7CB342;
-  --color-zivah-green: #2E7D32;
-  --color-zivah-dark-green: #1B5E20;
-  --color-zivah-navy: #0D47A1;
-  --color-zivah-blue: #1976D2;
-  --color-zivah-coral: #FF5722;
-  --color-zivah-light-coral: #FF8A65;
-  --color-zivah-blue-gray: #37474F;
+  --color-zivah-lime: #7cb342;
+  --color-zivah-green: #2e7d32;
+  --color-zivah-dark-green: #1b5e20;
+  --color-zivah-navy: #0d47a1;
+  --color-zivah-blue: #1976d2;
+  --color-zivah-coral: #ff5722;
+  --color-zivah-light-coral: #ff8a65;
+  --color-zivah-blue-gray: #37474f;
   --color-zivah-charcoal: #263238;
-  
+
   /* TailwindCSS v4 Dynamic Color Schemes */
   --color-primary: var(--color-zivah-green);
   --color-secondary: var(--color-zivah-coral);
@@ -346,19 +347,19 @@ export default config
   .btn-primary {
     @apply bg-zivah-green hover:bg-zivah-dark-green text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl;
   }
-  
+
   .btn-secondary {
     @apply bg-zivah-coral hover:bg-zivah-light-coral text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200;
   }
-  
+
   .card-zivah {
     @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100;
   }
-  
+
   .gradient-hero {
     @apply bg-gradient-to-br from-zivah-coral to-zivah-green;
   }
-  
+
   .gradient-ocean {
     @apply bg-gradient-to-br from-zivah-navy to-zivah-blue;
   }
@@ -369,7 +370,7 @@ export default config
   .text-balance {
     text-wrap: balance;
   }
-  
+
   .text-pretty {
     text-wrap: pretty;
   }
@@ -383,27 +384,27 @@ export default config
 export interface MigratedContent {
   // Company Information from existing structured data
   company: {
-    name: "ZIVAH International S.A.";
-    foundingDate: "2020-11-23";
+    name: 'ZIVAH International S.A.';
+    foundingDate: '2020-11-23';
     addresses: CompanyAddress[];
     contactInfo: ContactInfo;
     certifications: string[];
     socialMedia: SocialMediaLinks[];
   };
-  
+
   // Product Categories from existing content
   categories: {
     frutas: ProductCategory;
-    mariscos: ProductCategory; 
+    mariscos: ProductCategory;
     cafe: ProductCategory;
     camaron: ProductCategory;
     larvas: ProductCategory;
     arboles: ProductCategory;
   };
-  
+
   // Export destinations from existing countries data
   exportDestinations: ExportCountry[];
-  
+
   // SEO content from existing meta tags
   seoContent: {
     defaultMeta: MetaTags;
@@ -415,7 +416,12 @@ export interface MigratedContent {
 // Migrate existing country data (40+ countries)
 export const EXPORT_COUNTRIES = [
   // From existing js/main.js ECUADOR_EXPORT_COUNTRIES
-  { code: 'US', name: 'Estados Unidos', flag: '🇺🇸', region: 'América del Norte' },
+  {
+    code: 'US',
+    name: 'Estados Unidos',
+    flag: '🇺🇸',
+    region: 'América del Norte',
+  },
   // ... 40+ more countries
 ];
 ```
@@ -427,12 +433,12 @@ export const EXPORT_COUNTRIES = [
 export const ASSET_MIGRATION_MAP = {
   // Existing logo and branding
   'assets/images/zivah-logo.svg': '/images/brand/zivah-logo.svg',
-  
+
   // Favicon collection (15+ files)
   'assets/images/icons/favicon.ico': '/images/icons/favicon.ico',
   'assets/images/icons/apple-icon-*.png': '/images/icons/apple-*.png',
   'assets/images/icons/android-icon-*.png': '/images/icons/android-*.png',
-  
+
   // Product images (to be added during migration)
   productImages: {
     shrimp: '/images/products/camaron/',
@@ -440,8 +446,8 @@ export const ASSET_MIGRATION_MAP = {
     coffee: '/images/products/cafe/',
     seafood: '/images/products/mariscos/',
     larvae: '/images/products/larvas/',
-    trees: '/images/products/arboles/'
-  }
+    trees: '/images/products/arboles/',
+  },
 };
 ```
 
@@ -458,13 +464,13 @@ export interface ProductFilters {
 }
 
 export class ProductService {
-  async getProducts(filters?: ProductFilters): Promise<Product[]>
-  async getProductById(id: number): Promise<Product | null>
-  async getProductsByCategory(categoryId: number): Promise<Product[]>
-  async createProduct(data: CreateProductInput): Promise<Product>
-  async updateProduct(id: number, data: UpdateProductInput): Promise<Product>
-  async deleteProduct(id: number): Promise<boolean>
-  async updateStock(id: number, quantity: number): Promise<Product>
+  async getProducts(filters?: ProductFilters): Promise<Product[]>;
+  async getProductById(id: number): Promise<Product | null>;
+  async getProductsByCategory(categoryId: number): Promise<Product[]>;
+  async createProduct(data: CreateProductInput): Promise<Product>;
+  async updateProduct(id: number, data: UpdateProductInput): Promise<Product>;
+  async deleteProduct(id: number): Promise<boolean>;
+  async updateStock(id: number, quantity: number): Promise<Product>;
 }
 
 // lib/services/quote.service.ts
@@ -476,12 +482,12 @@ export interface QuoteFilters {
 }
 
 export class QuoteService {
-  async getQuotes(filters?: QuoteFilters): Promise<Quote[]>
-  async getQuoteById(id: number): Promise<Quote | null>
-  async createQuote(data: CreateQuoteInput): Promise<Quote>
-  async updateQuoteStatus(id: number, status: QuoteStatus): Promise<Quote>
-  async getQuoteStatistics(): Promise<QuoteStatistics>
-  async generateQuoteNumber(): Promise<string>
+  async getQuotes(filters?: QuoteFilters): Promise<Quote[]>;
+  async getQuoteById(id: number): Promise<Quote | null>;
+  async createQuote(data: CreateQuoteInput): Promise<Quote>;
+  async updateQuoteStatus(id: number, status: QuoteStatus): Promise<Quote>;
+  async getQuoteStatistics(): Promise<QuoteStatistics>;
+  async generateQuoteNumber(): Promise<string>;
 }
 ```
 
@@ -491,34 +497,49 @@ export class QuoteService {
 
 ```typescript
 // app/api/products/route.ts
-export async function GET(request: Request): Promise<Response>
-export async function POST(request: Request): Promise<Response>
+export async function GET(request: Request): Promise<Response>;
+export async function POST(request: Request): Promise<Response>;
 
 // app/api/products/[id]/route.ts
-export async function GET(request: Request, { params }: { params: { id: string } }): Promise<Response>
-export async function PUT(request: Request, { params }: { params: { id: string } }): Promise<Response>
-export async function DELETE(request: Request, { params }: { params: { id: string } }): Promise<Response>
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+): Promise<Response>;
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } }
+): Promise<Response>;
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+): Promise<Response>;
 
 // app/api/categories/route.ts
-export async function GET(): Promise<Response>
-export async function POST(request: Request): Promise<Response>
+export async function GET(): Promise<Response>;
+export async function POST(request: Request): Promise<Response>;
 
 // app/api/quotes/route.ts
-export async function GET(request: Request): Promise<Response>
-export async function POST(request: Request): Promise<Response>
+export async function GET(request: Request): Promise<Response>;
+export async function POST(request: Request): Promise<Response>;
 
 // app/api/quotes/[id]/route.ts
-export async function GET(request: Request, { params }: { params: { id: string } }): Promise<Response>
-export async function PATCH(request: Request, { params }: { params: { id: string } }): Promise<Response>
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+): Promise<Response>;
+export async function PATCH(
+  request: Request,
+  { params }: { params: { id: string } }
+): Promise<Response>;
 
 // app/api/auth/[...nextauth]/route.ts
-import NextAuth from "next-auth"
-import { authOptions } from "@/lib/auth"
-const handler = NextAuth(authOptions)
-export { handler as GET, handler as POST }
+import NextAuth from 'next-auth';
+import { authOptions } from '@/lib/auth';
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
 
 // app/api/upload/route.ts
-export async function POST(request: Request): Promise<Response>
+export async function POST(request: Request): Promise<Response>;
 ```
 
 ### 3. Service Layer
@@ -528,43 +549,46 @@ export async function POST(request: Request): Promise<Response>
 ```typescript
 // lib/services/product.service.ts
 export class ProductService {
-  async getAllProducts(filters?: ProductFilters): Promise<Product[]>
-  async getProductById(id: number): Promise<Product | null>
-  async createProduct(data: CreateProductInput): Promise<Product>
-  async updateProduct(id: number, data: UpdateProductInput): Promise<Product>
-  async deleteProduct(id: number): Promise<boolean>
-  async updateStock(id: number, quantity: number): Promise<Product>
+  async getAllProducts(filters?: ProductFilters): Promise<Product[]>;
+  async getProductById(id: number): Promise<Product | null>;
+  async createProduct(data: CreateProductInput): Promise<Product>;
+  async updateProduct(id: number, data: UpdateProductInput): Promise<Product>;
+  async deleteProduct(id: number): Promise<boolean>;
+  async updateStock(id: number, quantity: number): Promise<Product>;
 }
 
 // lib/services/quote.service.ts
 export class QuoteService {
-  async createQuote(data: CreateQuoteInput): Promise<Quote>
-  async processQuote(id: number): Promise<boolean>
-  async sendQuoteEmail(quote: Quote): Promise<boolean>
-  async generateQuoteNumber(): Promise<string>
-  async calculateTotal(items: QuoteItem[]): Promise<number>
+  async createQuote(data: CreateQuoteInput): Promise<Quote>;
+  async processQuote(id: number): Promise<boolean>;
+  async sendQuoteEmail(quote: Quote): Promise<boolean>;
+  async generateQuoteNumber(): Promise<string>;
+  async calculateTotal(items: QuoteItem[]): Promise<number>;
 }
 
 // lib/services/email.service.ts
 export class EmailService {
-  async sendQuoteNotification(quote: Quote): Promise<boolean>
-  async sendQuoteResponse(quote: Quote, message: string): Promise<boolean>
-  async sendWelcomeEmail(email: string, name: string): Promise<boolean>
+  async sendQuoteNotification(quote: Quote): Promise<boolean>;
+  async sendQuoteResponse(quote: Quote, message: string): Promise<boolean>;
+  async sendWelcomeEmail(email: string, name: string): Promise<boolean>;
 }
 
 // lib/services/auth.service.ts
 export class AuthService {
-  async verifyCredentials(username: string, password: string): Promise<User | null>
-  async hashPassword(password: string): Promise<string>
-  async comparePassword(password: string, hash: string): Promise<boolean>
-  async createUser(data: CreateUserInput): Promise<User>
+  async verifyCredentials(
+    username: string,
+    password: string
+  ): Promise<User | null>;
+  async hashPassword(password: string): Promise<string>;
+  async comparePassword(password: string, hash: string): Promise<boolean>;
+  async createUser(data: CreateUserInput): Promise<User>;
 }
 
 // lib/services/file.service.ts
 export class FileService {
-  async uploadImage(file: File): Promise<string>
-  async deleteImage(url: string): Promise<boolean>
-  async optimizeImage(file: File): Promise<File>
+  async uploadImage(file: File): Promise<string>;
+  async deleteImage(url: string): Promise<boolean>;
+  async optimizeImage(file: File): Promise<File>;
 }
 ```
 
@@ -643,7 +667,7 @@ export const defaultLocale = 'es' as const;
 {
   "navigation": {
     "inicio": "Inicio",
-    "productos": "Productos", 
+    "productos": "Productos",
     "nosotros": "Nosotros",
     "contacto": "Contacto",
     "cotizar": "Cotizar"
@@ -657,7 +681,7 @@ export const defaultLocale = 'es' as const;
   "products": {
     "categories": {
       "frutas": "Frutas Tropicales",
-      "mariscos": "Productos Marinos", 
+      "mariscos": "Productos Marinos",
       "cafe": "Café de Altura",
       "camaron": "Camarón Ecuatoriano",
       "larvas": "Larvas de Acuicultura",
@@ -677,7 +701,7 @@ export const defaultLocale = 'es' as const;
   "navigation": {
     "inicio": "Home",
     "productos": "Products",
-    "nosotros": "About Us", 
+    "nosotros": "About Us",
     "contacto": "Contact",
     "cotizar": "Get Quote"
   },
@@ -702,13 +726,20 @@ export const metadata: Metadata = {
   // Migrated from existing meta tags
   title: {
     template: '%s | ZIVAH International S.A.',
-    default: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium'
+    default:
+      'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
   },
-  description: 'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas y oficina de distribución en Miami.',
+  description:
+    'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas y oficina de distribución en Miami.',
   keywords: [
-    'exportación ecuador', 'frutas tropicales', 'camarón ecuatoriano', 
-    'larvas acuicultura', 'cafe arabica', 'productos marinos', 
-    'miami exportadores', 'Samborondón cultivos'
+    'exportación ecuador',
+    'frutas tropicales',
+    'camarón ecuatoriano',
+    'larvas acuicultura',
+    'cafe arabica',
+    'productos marinos',
+    'miami exportadores',
+    'Samborondón cultivos',
   ],
   authors: [{ name: 'ZIVAH International S.A.' }],
   creator: 'ZIVAH International S.A.',
@@ -730,21 +761,25 @@ export const metadata: Metadata = {
     alternateLocale: 'en_US',
     url: 'https://zivahinternational.com',
     siteName: 'ZIVAH International S.A.',
-    title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
-    description: 'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
+    title:
+      'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    description:
+      'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
     images: [
       {
         url: '/images/og/zivah-og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'ZIVAH International - Productos Ecuatorianos Premium',
-      }
+      },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
-    description: 'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
+    title:
+      'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    description:
+      'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
     images: ['/images/og/zivah-twitter-card.jpg'],
   },
   verification: {
@@ -762,7 +797,8 @@ export function generateCompanySchema() {
     alternateName: 'ZIVAH International',
     url: 'https://zivahinternational.com',
     logo: 'https://zivahinternational.com/images/icons/favicon-96x96.png',
-    description: 'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
+    description:
+      'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
     foundingDate: '2020-11-23',
     address: [
       {
@@ -771,16 +807,16 @@ export function generateCompanySchema() {
         addressLocality: 'Samborondón',
         addressRegion: 'Guayas',
         postalCode: '092301',
-        addressCountry: 'EC'
-      }
+        addressCountry: 'EC',
+      },
     ],
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: '+593-4-XXX-XXXX',
       contactType: 'sales',
       email: 'info@zivahinternational.com',
-      availableLanguage: ['Spanish', 'English']
-    }
+      availableLanguage: ['Spanish', 'English'],
+    },
   };
 }
 ```
@@ -890,14 +926,14 @@ export interface User {
 export enum UserRole {
   ADMIN = 'ADMIN',
   MANAGER = 'MANAGER',
-  VIEWER = 'VIEWER'
+  VIEWER = 'VIEWER',
 }
 
 export enum QuoteStatus {
   PENDING = 'PENDING',
   PROCESSING = 'PROCESSING',
   SENT = 'SENT',
-  CLOSED = 'CLOSED'
+  CLOSED = 'CLOSED',
 }
 ```
 
@@ -910,8 +946,11 @@ export enum QuoteStatus {
 export abstract class AppError extends Error {
   abstract readonly statusCode: number;
   abstract readonly isOperational: boolean;
-  
-  constructor(message: string, public readonly context?: Record<string, any>) {
+
+  constructor(
+    message: string,
+    public readonly context?: Record<string, any>
+  ) {
     super(message);
     this.name = this.constructor.name;
   }
@@ -974,7 +1013,10 @@ export function createErrorResponse(error: AppError): ApiErrorResponse {
   };
 }
 
-export function createSuccessResponse<T>(data: T, message?: string): ApiSuccessResponse<T> {
+export function createSuccessResponse<T>(
+  data: T,
+  message?: string
+): ApiSuccessResponse<T> {
   return {
     error: false,
     data,
@@ -1087,17 +1129,17 @@ export class Logger {
 // lib/cache/cache-manager.ts
 export class CacheManager {
   // Next.js built-in caching
-  static async get<T>(key: string): Promise<T | null>
-  static async set<T>(key: string, value: T, ttl?: number): Promise<void>
-  static async delete(key: string): Promise<void>
-  static async invalidateTag(tag: string): Promise<void>
+  static async get<T>(key: string): Promise<T | null>;
+  static async set<T>(key: string, value: T, ttl?: number): Promise<void>;
+  static async delete(key: string): Promise<void>;
+  static async invalidateTag(tag: string): Promise<void>;
 }
 
 // Using Next.js 13+ caching
 export const revalidate = 3600; // 1 hour
 export async function getProducts() {
   return await fetch('/api/products', {
-    next: { tags: ['products'] }
+    next: { tags: ['products'] },
   });
 }
 ```
@@ -1115,14 +1157,14 @@ const products = await prisma.product.findMany({
   include: {
     category: true,
     _count: {
-      select: { quoteItems: true }
-    }
+      select: { quoteItems: true },
+    },
   },
   where: {
     isActive: true,
   },
   orderBy: {
-    createdAt: 'desc'
+    createdAt: 'desc',
   },
   take: 10,
   skip: (page - 1) * 10,
@@ -1232,10 +1274,10 @@ module.exports = nextConfig;
 import { Logger } from '@/lib/logger';
 
 export class AppLogger {
-  static info(message: string, context?: Record<string, any>): void
-  static warn(message: string, context?: Record<string, any>): void
-  static error(message: string, context?: Record<string, any>): void
-  static debug(message: string, context?: Record<string, any>): void
+  static info(message: string, context?: Record<string, any>): void;
+  static warn(message: string, context?: Record<string, any>): void;
+  static error(message: string, context?: Record<string, any>): void;
+  static debug(message: string, context?: Record<string, any>): void;
 }
 
 // Integration with Vercel Analytics
@@ -1273,7 +1315,7 @@ services:
       - DATABASE_URL=postgresql://postgres:password@db:5432/zivah_dev
     depends_on:
       - db
-  
+
   db:
     image: postgres:15
     environment:

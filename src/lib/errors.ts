@@ -6,7 +6,11 @@ export class AppError extends Error {
   public readonly statusCode: number;
   public readonly isOperational: boolean;
 
-  constructor(message: string, statusCode: number = 500, isOperational: boolean = true) {
+  constructor(
+    message: string,
+    statusCode: number = 500,
+    isOperational: boolean = true
+  ) {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = isOperational;
@@ -17,7 +21,10 @@ export class AppError extends Error {
 }
 
 export class ValidationError extends AppError {
-  constructor(message: string, public details?: any) {
+  constructor(
+    message: string,
+    public details?: any
+  ) {
     super(message, 400);
     this.details = details;
   }
@@ -48,25 +55,33 @@ export class ConflictError extends AppError {
 }
 
 export function handleApiError(error: unknown): NextResponse {
-  logger.error('API Error occurred', { error: error instanceof Error ? error.message : String(error) });
+  logger.error('API Error occurred', {
+    error: error instanceof Error ? error.message : String(error),
+  });
 
   // Zod validation errors
   if (error instanceof z.ZodError) {
-    return NextResponse.json({
-      error: true,
-      message: 'Datos inválidos',
-      details: error.issues,
-      timestamp: new Date().toISOString()
-    }, { status: 400 });
+    return NextResponse.json(
+      {
+        error: true,
+        message: 'Datos inválidos',
+        details: error.issues,
+        timestamp: new Date().toISOString(),
+      },
+      { status: 400 }
+    );
   }
 
   // Custom application errors
   if (error instanceof AppError) {
-    return NextResponse.json({
-      error: true,
-      message: error.message,
-      timestamp: new Date().toISOString()
-    }, { status: error.statusCode });
+    return NextResponse.json(
+      {
+        error: true,
+        message: error.message,
+        timestamp: new Date().toISOString(),
+      },
+      { status: error.statusCode }
+    );
   }
 
   // Prisma errors
@@ -75,18 +90,24 @@ export function handleApiError(error: unknown): NextResponse {
 
     switch (prismaError.code) {
       case 'P2002':
-        return NextResponse.json({
-          error: true,
-          message: 'Ya existe un registro con estos datos',
-          timestamp: new Date().toISOString()
-        }, { status: 409 });
+        return NextResponse.json(
+          {
+            error: true,
+            message: 'Ya existe un registro con estos datos',
+            timestamp: new Date().toISOString(),
+          },
+          { status: 409 }
+        );
 
       case 'P2025':
-        return NextResponse.json({
-          error: true,
-          message: 'Registro no encontrado',
-          timestamp: new Date().toISOString()
-        }, { status: 404 });
+        return NextResponse.json(
+          {
+            error: true,
+            message: 'Registro no encontrado',
+            timestamp: new Date().toISOString(),
+          },
+          { status: 404 }
+        );
 
       default:
         break;
@@ -94,11 +115,14 @@ export function handleApiError(error: unknown): NextResponse {
   }
 
   // Generic server error
-  return NextResponse.json({
-    error: true,
-    message: 'Error interno del servidor',
-    timestamp: new Date().toISOString()
-  }, { status: 500 });
+  return NextResponse.json(
+    {
+      error: true,
+      message: 'Error interno del servidor',
+      timestamp: new Date().toISOString(),
+    },
+    { status: 500 }
+  );
 }
 
 export function createApiResponse(
@@ -106,10 +130,13 @@ export function createApiResponse(
   message?: string,
   status: number = 200
 ): NextResponse {
-  return NextResponse.json({
-    error: false,
-    data,
-    message,
-    timestamp: new Date().toISOString()
-  }, { status });
+  return NextResponse.json(
+    {
+      error: false,
+      data,
+      message,
+      timestamp: new Date().toISOString(),
+    },
+    { status }
+  );
 }

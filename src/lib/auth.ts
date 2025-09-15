@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
       name: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' }
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -19,14 +19,17 @@ export const authOptions: NextAuthOptions = {
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { email: credentials.email },
         });
 
         if (!user || !user.isActive) {
           return null;
         }
 
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
 
         if (!isPasswordValid) {
           return null;
@@ -37,8 +40,8 @@ export const authOptions: NextAuthOptions = {
           where: { id: user.id },
           data: {
             lastLogin: new Date(),
-            loginCount: { increment: 1 }
-          }
+            loginCount: { increment: 1 },
+          },
         });
 
         return {
@@ -47,11 +50,11 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           role: user.role,
         };
-      }
-    })
+      },
+    }),
   ],
   session: {
-    strategy: 'jwt'
+    strategy: 'jwt',
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -66,10 +69,10 @@ export const authOptions: NextAuthOptions = {
         session.user.role = token.role as string;
       }
       return session;
-    }
+    },
   },
   pages: {
     signIn: '/auth/signin',
     signOut: '/auth/signout',
-  }
+  },
 };

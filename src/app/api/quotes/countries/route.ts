@@ -6,9 +6,10 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 export async function GET(request: NextRequest) {
   try {
     // Rate limiting: 50 requests per minute
-    const ip = request.headers.get('x-forwarded-for') ||
-               request.headers.get('x-real-ip') ||
-               'unknown';
+    const ip =
+      request.headers.get('x-forwarded-for') ||
+      request.headers.get('x-real-ip') ||
+      'unknown';
     const rateLimit = await checkRateLimit(
       `api:${ip}`,
       RATE_LIMITS.API_GENERAL.limit,
@@ -16,12 +17,16 @@ export async function GET(request: NextRequest) {
     );
 
     if (!rateLimit.success) {
-      return createApiResponse(null, 'Demasiadas solicitudes. Intente nuevamente más tarde.', 429);
+      return createApiResponse(
+        null,
+        'Demasiadas solicitudes. Intente nuevamente más tarde.',
+        429
+      );
     }
 
     const countries = await prisma.country.findMany({
       where: {
-        isActive: true
+        isActive: true,
       },
       select: {
         id: true,
@@ -30,15 +35,14 @@ export async function GET(request: NextRequest) {
         icon: true,
         currency: true,
         callingCode: true,
-        phoneFormat: true
+        phoneFormat: true,
       },
       orderBy: {
-        name: 'asc'
-      }
+        name: 'asc',
+      },
     });
 
     return createApiResponse(countries);
-
   } catch (error) {
     return handleApiError(error);
   }

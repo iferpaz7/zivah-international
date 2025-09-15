@@ -1,20 +1,20 @@
-import React from 'react'
-import { cn } from '@/lib/utils'
+import React from 'react';
+import { cn } from '@/lib/utils';
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
@@ -30,7 +30,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       {children}
     </div>
   )
-)
+);
 
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, children, ...props }, ref) => (
@@ -42,7 +42,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
       {children}
     </div>
   )
-)
+);
 
 const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
   ({ className, children, ...props }, ref) => (
@@ -50,7 +50,7 @@ const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
       {children}
     </div>
   )
-)
+);
 
 const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className, children, ...props }, ref) => (
@@ -62,11 +62,11 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
       {children}
     </div>
   )
-)
+);
 
-Card.displayName = 'Card'
-CardHeader.displayName = 'CardHeader'
-CardContent.displayName = 'CardContent'
-CardFooter.displayName = 'CardFooter'
+Card.displayName = 'Card';
+CardHeader.displayName = 'CardHeader';
+CardContent.displayName = 'CardContent';
+CardFooter.displayName = 'CardFooter';
 
-export { Card, CardHeader, CardContent, CardFooter }
+export { Card, CardHeader, CardContent, CardFooter };

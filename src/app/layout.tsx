@@ -1,30 +1,33 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Inter, Montserrat } from 'next/font/google'
-import { Suspense } from 'react'
-import ClientThemeProvider from '@/components/ClientThemeProvider'
-import CookieConsent from '@/components/CookieConsent'
-import Analytics from '@/components/Analytics'
-import BusinessIntelligence from '@/components/BusinessIntelligence'
-import ServiceWorkerRegistration from '@/components/ServiceWorker'
-import WebVitals from '@/components/WebVitals'
-import SEOOptimization from '@/components/SEOOptimization'
-import { ErrorBoundary, NetworkStatus } from '@/components/ErrorHandling'
+import './globals.css';
+import type { Metadata } from 'next';
+import { Inter, Montserrat } from 'next/font/google';
+import { Suspense } from 'react';
+import ClientThemeProvider from '@/components/ClientThemeProvider';
+import CookieConsent from '@/components/CookieConsent';
+import Analytics from '@/components/Analytics';
+import BusinessIntelligence from '@/components/BusinessIntelligence';
+import ServiceWorkerRegistration from '@/components/ServiceWorker';
+import WebVitals from '@/components/WebVitals';
+import SEOOptimization from '@/components/SEOOptimization';
+import { ErrorBoundary, NetworkStatus } from '@/components/ErrorHandling';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
-})
+});
 
-const montserrat = Montserrat({ 
+const montserrat = Montserrat({
   subsets: ['latin'],
   variable: '--font-montserrat',
-})
+});
 
 export const metadata: Metadata = {
-  title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium | Ecuador hacia el Mundo',
-  description: 'ZIVAH International S.A. - Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas y oficina de distribución en Miami. Frutas tropicales, mariscos, café, camarón, larvas de acuicultura y cultivo de árboles frutales. Más de 4 años conectando Ecuador con el mundo.',
-  keywords: 'exportación ecuador, frutas tropicales, camarón ecuatoriano, larvas acuicultura, cafe arabica, productos marinos, miami exportadores, Samborondón cultivos, arboles frutales, nueces ecuador, ZIVAH International, productos premium ecuador, exportadores miami, acuicultura ecuador, camarón vannamei, frutas exóticas, café altura, certificación internacional, BAP, HACCP, BRC, GlobalGAP',
+  title:
+    'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium | Ecuador hacia el Mundo',
+  description:
+    'ZIVAH International S.A. - Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas y oficina de distribución en Miami. Frutas tropicales, mariscos, café, camarón, larvas de acuicultura y cultivo de árboles frutales. Más de 4 años conectando Ecuador con el mundo.',
+  keywords:
+    'exportación ecuador, frutas tropicales, camarón ecuatoriano, larvas acuicultura, cafe arabica, productos marinos, miami exportadores, Samborondón cultivos, arboles frutales, nueces ecuador, ZIVAH International, productos premium ecuador, exportadores miami, acuicultura ecuador, camarón vannamei, frutas exóticas, café altura, certificación internacional, BAP, HACCP, BRC, GlobalGAP',
   authors: [{ name: 'ZIVAH International S.A.' }],
   robots: {
     index: true,
@@ -50,8 +53,10 @@ export const metadata: Metadata = {
     alternateLocale: ['en_US'],
     url: 'https://zivahinternational.com/',
     siteName: 'ZIVAH International S.A.',
-    title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
-    description: 'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas. Frutas tropicales, mariscos, café, camarón, larvas de acuicultura y cultivo de árboles frutales con certificación internacional.',
+    title:
+      'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    description:
+      'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas. Frutas tropicales, mariscos, café, camarón, larvas de acuicultura y cultivo de árboles frutales con certificación internacional.',
     images: [
       {
         url: 'https://zivahinternational.com/assets/images/zivah-og-image.jpg',
@@ -65,16 +70,21 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@ZivahIntl',
     creator: '@ZivahIntl',
-    title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
-    description: 'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas. Frutas tropicales, mariscos, café, camarón, larvas de acuicultura y cultivo de árboles frutales.',
-    images: ['https://zivahinternational.com/assets/images/zivah-twitter-image.jpg'],
+    title:
+      'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    description:
+      'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas. Frutas tropicales, mariscos, café, camarón, larvas de acuicultura y cultivo de árboles frutales.',
+    images: [
+      'https://zivahinternational.com/assets/images/zivah-twitter-image.jpg',
+    ],
   },
   other: {
     'geo.region': 'EC-G',
     'geo.placename': 'Samborondón, Guayas, Ecuador',
     'geo.position': '-2.1057;-79.8890',
-    'ICBM': '-2.1057, -79.8890',
-    'business:contact_data:street_address': 'Casa Matriz Mz 10 S L 31, Samborondón',
+    ICBM: '-2.1057, -79.8890',
+    'business:contact_data:street_address':
+      'Casa Matriz Mz 10 S L 31, Samborondón',
     'business:contact_data:locality': 'Samborondón',
     'business:contact_data:region': 'Guayas',
     'business:contact_data:postal_code': '092301',
@@ -94,9 +104,21 @@ export const metadata: Metadata = {
     icon: [
       { url: '/assets/images/icons/favicon.ico', sizes: 'any' },
       { url: '/assets/images/icons/favicon.svg', type: 'image/svg+xml' },
-      { url: '/assets/images/icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/assets/images/icons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/assets/images/icons/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      {
+        url: '/assets/images/icons/favicon-32x32.png',
+        sizes: '32x32',
+        type: 'image/png',
+      },
+      {
+        url: '/assets/images/icons/favicon-16x16.png',
+        sizes: '16x16',
+        type: 'image/png',
+      },
+      {
+        url: '/assets/images/icons/favicon-96x96.png',
+        sizes: '96x96',
+        type: 'image/png',
+      },
     ],
     apple: [
       { url: '/assets/images/icons/apple-icon-180x180.png', sizes: '180x180' },
@@ -110,14 +132,46 @@ export const metadata: Metadata = {
       { url: '/assets/images/icons/apple-icon-57x57.png', sizes: '57x57' },
     ],
     other: [
-      { rel: 'icon', url: '/assets/images/icons/web-app-manifest-512x512.png', sizes: '512x512' },
-      { rel: 'icon', url: '/assets/images/icons/web-app-manifest-192x192.png', sizes: '192x192' },
-      { rel: 'icon', url: '/assets/images/icons/android-icon-192x192.png', sizes: '192x192' },
-      { rel: 'icon', url: '/assets/images/icons/android-icon-144x144.png', sizes: '144x144' },
-      { rel: 'icon', url: '/assets/images/icons/android-icon-96x96.png', sizes: '96x96' },
-      { rel: 'icon', url: '/assets/images/icons/android-icon-72x72.png', sizes: '72x72' },
-      { rel: 'icon', url: '/assets/images/icons/android-icon-48x48.png', sizes: '48x48' },
-      { rel: 'icon', url: '/assets/images/icons/android-icon-36x36.png', sizes: '36x36' },
+      {
+        rel: 'icon',
+        url: '/assets/images/icons/web-app-manifest-512x512.png',
+        sizes: '512x512',
+      },
+      {
+        rel: 'icon',
+        url: '/assets/images/icons/web-app-manifest-192x192.png',
+        sizes: '192x192',
+      },
+      {
+        rel: 'icon',
+        url: '/assets/images/icons/android-icon-192x192.png',
+        sizes: '192x192',
+      },
+      {
+        rel: 'icon',
+        url: '/assets/images/icons/android-icon-144x144.png',
+        sizes: '144x144',
+      },
+      {
+        rel: 'icon',
+        url: '/assets/images/icons/android-icon-96x96.png',
+        sizes: '96x96',
+      },
+      {
+        rel: 'icon',
+        url: '/assets/images/icons/android-icon-72x72.png',
+        sizes: '72x72',
+      },
+      {
+        rel: 'icon',
+        url: '/assets/images/icons/android-icon-48x48.png',
+        sizes: '48x48',
+      },
+      {
+        rel: 'icon',
+        url: '/assets/images/icons/android-icon-36x36.png',
+        sizes: '36x36',
+      },
     ],
   },
   appleWebApp: {
@@ -126,29 +180,52 @@ export const metadata: Metadata = {
     title: 'ZIVAH International',
   },
   applicationName: 'ZIVAH International S.A.',
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${inter.variable} ${montserrat.variable}`} suppressHydrationWarning>
+    <html
+      lang='es'
+      className={`${inter.variable} ${montserrat.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        <meta name="msapplication-TileColor" content="#ff6347" />
-        <meta name="msapplication-TileImage" content="/assets/images/icons/ms-icon-144x144.png" />
-        <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml" />
-        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://www.google-analytics.com" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//www.google-analytics.com" />
-        <script dangerouslySetInnerHTML={{
-          __html: `
+        <meta name='msapplication-TileColor' content='#ff6347' />
+        <meta
+          name='msapplication-TileImage'
+          content='/assets/images/icons/ms-icon-144x144.png'
+        />
+        <meta
+          name='msapplication-config'
+          content='/assets/images/icons/browserconfig.xml'
+        />
+        <meta
+          name='theme-color'
+          content='#ffffff'
+          media='(prefers-color-scheme: light)'
+        />
+        <meta
+          name='theme-color'
+          content='#0f1419'
+          media='(prefers-color-scheme: dark)'
+        />
+        <link rel='preconnect' href='https://fonts.googleapis.com' />
+        <link
+          rel='preconnect'
+          href='https://fonts.gstatic.com'
+          crossOrigin='anonymous'
+        />
+        <link rel='preconnect' href='https://www.google-analytics.com' />
+        <link rel='preconnect' href='https://www.googletagmanager.com' />
+        <link rel='dns-prefetch' href='//fonts.googleapis.com' />
+        <link rel='dns-prefetch' href='//www.google-analytics.com' />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
             (function() {
               try {
                 // Prevent flash of wrong theme by setting initial theme immediately
@@ -162,10 +239,11 @@ export default function RootLayout({
                 // Silently fail - ThemeProvider will handle it
               }
             })();
-          `
-        }} />
+          `,
+          }}
+        />
       </head>
-      <body className="min-h-screen antialiased font-sans bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+      <body className='min-h-screen antialiased font-sans bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300'>
         <ErrorBoundary>
           <ClientThemeProvider>
             <Suspense fallback={null}>
@@ -181,5 +259,5 @@ export default function RootLayout({
         <NetworkStatus />
       </body>
     </html>
-  )
+  );
 }

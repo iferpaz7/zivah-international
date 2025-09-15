@@ -1,15 +1,13 @@
-'use client'
+'use client';
 
-import { ThemeProvider } from './ThemeProvider'
+import { ThemeProvider } from './ThemeProvider';
 
 interface ClientThemeProviderProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
-export default function ClientThemeProvider({ children }: ClientThemeProviderProps) {
-  return (
-    <ThemeProvider>
-      {children}
-    </ThemeProvider>
-  )
+export default function ClientThemeProvider({
+  children,
+}: ClientThemeProviderProps) {
+  return <ThemeProvider>{children}</ThemeProvider>;
 }

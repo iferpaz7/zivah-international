@@ -1,31 +1,32 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server';
 
 // HTTPS Enforcement Middleware
 export function enforceHTTPS(request: NextRequest): NextResponse | null {
   // Skip HTTPS enforcement in development
   if (process.env.NODE_ENV === 'development') {
-    return null
+    return null;
   }
 
-  const host = request.headers.get('host') || ''
-  const protocol = request.headers.get('x-forwarded-proto') ||
-                   request.headers.get('x-forwarded-protocol') ||
-                   (request.url.startsWith('https://') ? 'https' : 'http')
+  const host = request.headers.get('host') || '';
+  const protocol =
+    request.headers.get('x-forwarded-proto') ||
+    request.headers.get('x-forwarded-protocol') ||
+    (request.url.startsWith('https://') ? 'https' : 'http');
 
   // Check if request is already HTTPS
   if (protocol === 'https') {
-    return null
+    return null;
   }
 
   // Redirect to HTTPS
-  const httpsUrl = `https://${host}${request.nextUrl.pathname}${request.nextUrl.search}`
+  const httpsUrl = `https://${host}${request.nextUrl.pathname}${request.nextUrl.search}`;
 
   return NextResponse.redirect(httpsUrl, {
     status: 301, // Permanent redirect
     headers: {
       'Cache-Control': 'public, max-age=31536000', // Cache for 1 year
-    }
-  })
+    },
+  });
 }
 
 // Security headers for different environments
@@ -44,7 +45,7 @@ export const getSecurityHeaders = (environment: string = 'production') => {
       "base-uri 'self'",
       "form-action 'self'",
       "frame-ancestors 'none'",
-      "upgrade-insecure-requests"
+      'upgrade-insecure-requests',
     ].join('; '),
 
     // Prevent clickjacking
@@ -73,7 +74,7 @@ export const getSecurityHeaders = (environment: string = 'production') => {
       'autoplay=()',
       'encrypted-media=()',
       'fullscreen=(self)',
-      'picture-in-picture=()'
+      'picture-in-picture=()',
     ].join(', '),
 
     // HSTS (HTTP Strict Transport Security)
@@ -86,7 +87,7 @@ export const getSecurityHeaders = (environment: string = 'production') => {
     'Cross-Origin-Embedder-Policy': 'require-corp',
     'Cross-Origin-Opener-Policy': 'same-origin',
     'Cross-Origin-Resource-Policy': 'same-origin',
-  }
+  };
 
   // Add development-specific headers
   if (environment === 'development') {
@@ -94,79 +95,97 @@ export const getSecurityHeaders = (environment: string = 'production') => {
       ...baseHeaders,
       // Relax CSP for development
       'Content-Security-Policy': baseHeaders['Content-Security-Policy'].replace(
-        "upgrade-insecure-requests",
-        ""
+        'upgrade-insecure-requests',
+        ''
       ),
       // Disable HSTS in development
       'Strict-Transport-Security': '',
-    }
+    };
   }
 
-  return baseHeaders
-}
+  return baseHeaders;
+};
 
 // Validate request origin
-export function validateOrigin(request: NextRequest, allowedOrigins: string[]): boolean {
-  const origin = request.headers.get('origin')
-  const referer = request.headers.get('referer')
+export function validateOrigin(
+  request: NextRequest,
+  allowedOrigins: string[]
+): boolean {
+  const origin = request.headers.get('origin');
+  const referer = request.headers.get('referer');
 
-  if (!origin && !referer) return false
+  if (!origin && !referer) return false;
 
   const checkUrl = (url: string) => {
     try {
-      const urlObj = new URL(url)
+      const urlObj = new URL(url);
       return allowedOrigins.some(allowed => {
         if (allowed.startsWith('*.')) {
           // Wildcard subdomain
-          const domain = allowed.slice(2)
-          return urlObj.hostname === domain || urlObj.hostname.endsWith('.' + domain)
+          const domain = allowed.slice(2);
+          return (
+            urlObj.hostname === domain || urlObj.hostname.endsWith('.' + domain)
+          );
         }
-        return urlObj.origin === allowed
-      })
+        return urlObj.origin === allowed;
+      });
     } catch {
-      return false
+      return false;
     }
-  }
+  };
 
-  if (origin && checkUrl(origin)) return true
-  if (referer && checkUrl(referer)) return true
+  if (origin && checkUrl(origin)) return true;
+  if (referer && checkUrl(referer)) return true;
 
-  return false
+  return false;
 }
 
 // CORS headers
-export function getCORSHeaders(request: NextRequest, allowedOrigins: string[] = []) {
-  const origin = request.headers.get('origin') || ''
+export function getCORSHeaders(
+  request: NextRequest,
+  allowedOrigins: string[] = []
+) {
+  const origin = request.headers.get('origin') || '';
 
   const corsHeaders: Record<string, string> = {
-    'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : '',
+    'Access-Control-Allow-Origin': allowedOrigins.includes(origin)
+      ? origin
+      : '',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
+    'Access-Control-Allow-Headers':
+      'Content-Type, Authorization, X-Requested-With',
     'Access-Control-Max-Age': '86400', // 24 hours
-  }
+  };
 
   // Add credentials if origin is allowed
   if (corsHeaders['Access-Control-Allow-Origin']) {
-    corsHeaders['Access-Control-Allow-Credentials'] = 'true'
+    corsHeaders['Access-Control-Allow-Credentials'] = 'true';
   }
 
-  return corsHeaders
+  return corsHeaders;
 }
 
 // API Key validation
-export function validateAPIKey(request: NextRequest, validKeys: string[]): boolean {
-  const apiKey = request.headers.get('x-api-key') ||
-                 request.headers.get('authorization')?.replace('Bearer ', '')
+export function validateAPIKey(
+  request: NextRequest,
+  validKeys: string[]
+): boolean {
+  const apiKey =
+    request.headers.get('x-api-key') ||
+    request.headers.get('authorization')?.replace('Bearer ', '');
 
-  if (!apiKey) return false
+  if (!apiKey) return false;
 
-  return validKeys.includes(apiKey)
+  return validKeys.includes(apiKey);
 }
 
 // Request size limiting
-export function checkRequestSize(request: NextRequest, maxSizeBytes: number = 10 * 1024 * 1024): boolean {
-  const contentLength = parseInt(request.headers.get('content-length') || '0')
-  return contentLength <= maxSizeBytes
+export function checkRequestSize(
+  request: NextRequest,
+  maxSizeBytes: number = 10 * 1024 * 1024
+): boolean {
+  const contentLength = parseInt(request.headers.get('content-length') || '0');
+  return contentLength <= maxSizeBytes;
 }
 
 // Log security events
@@ -178,16 +197,17 @@ export function logSecurityEvent(
   const logEntry = {
     timestamp: new Date().toISOString(),
     event,
-    ip: request.headers.get('x-forwarded-for')?.split(',')[0] ||
-        request.headers.get('x-real-ip') ||
-        'unknown',
+    ip:
+      request.headers.get('x-forwarded-for')?.split(',')[0] ||
+      request.headers.get('x-real-ip') ||
+      'unknown',
     userAgent: request.headers.get('user-agent') || 'unknown',
     url: request.url,
     method: request.method,
-    ...details
-  }
+    ...details,
+  };
 
-  console.warn('SECURITY EVENT:', JSON.stringify(logEntry, null, 2))
+  console.warn('SECURITY EVENT:', JSON.stringify(logEntry, null, 2));
 
   // In production, you might want to send this to a logging service
   // like Datadog, LogRocket, or your own logging infrastructure

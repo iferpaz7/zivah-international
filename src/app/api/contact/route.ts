@@ -1,29 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { contactFormSchema, formRateLimiter, sanitizeString, sanitizeEmail, isXSS, isSQLInjection } from '@/lib/validation';
+import {
+  contactFormSchema,
+  formRateLimiter,
+  sanitizeString,
+  sanitizeEmail,
+  isXSS,
+  isSQLInjection,
+} from '@/lib/validation';
 import { handleApiError, createApiResponse } from '@/lib/errors';
 
 export async function POST(request: NextRequest) {
   try {
     // Get client IP for rate limiting
-    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-               request.headers.get('x-real-ip') ||
-               request.headers.get('cf-connecting-ip') ||
-               'unknown';
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
+      request.headers.get('cf-connecting-ip') ||
+      'unknown';
 
     // Check form submission rate limit
     const rateLimitCheck = formRateLimiter.canSubmit(`contact:${ip}`);
     if (!rateLimitCheck.allowed) {
-      return NextResponse.json({
-        error: true,
-        message: rateLimitCheck.reason || 'Demasiadas solicitudes. Intente nuevamente más tarde.',
-        timestamp: new Date().toISOString()
-      }, {
-        status: 429,
-        headers: {
-          'Retry-After': Math.ceil((rateLimitCheck.waitTime || 30000) / 1000).toString()
+      return NextResponse.json(
+        {
+          error: true,
+          message:
+            rateLimitCheck.reason ||
+            'Demasiadas solicitudes. Intente nuevamente más tarde.',
+          timestamp: new Date().toISOString(),
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil(
+              (rateLimitCheck.waitTime || 30000) / 1000
+            ).toString(),
+          },
         }
-      });
+      );
     }
 
     const body = await request.json();
@@ -39,13 +54,19 @@ export async function POST(request: NextRequest) {
     };
 
     // Check for malicious content
-    const textFields = [sanitizedBody.name, sanitizedBody.email, sanitizedBody.message];
+    const textFields = [
+      sanitizedBody.name,
+      sanitizedBody.email,
+      sanitizedBody.message,
+    ];
     if (sanitizedBody.company) textFields.push(sanitizedBody.company);
     if (sanitizedBody.subject) textFields.push(sanitizedBody.subject);
 
     for (const field of textFields) {
       if (isXSS(field) || isSQLInjection(field)) {
-        console.warn(`Malicious content detected in contact form from IP: ${ip}`);
+        console.warn(
+          `Malicious content detected in contact form from IP: ${ip}`
+        );
         return createApiResponse(null, 'Contenido no válido detectado.', 400);
       }
     }
@@ -54,7 +75,7 @@ export async function POST(request: NextRequest) {
     const validatedData = contactFormSchema.parse(sanitizedBody);
 
     const contactSubmission = await prisma.contactSubmission.create({
-      data: validatedData
+      data: validatedData,
     });
 
     // Track successful contact submission
@@ -70,9 +91,9 @@ export async function POST(request: NextRequest) {
         details: JSON.stringify({
           contactId: contactSubmission.id,
           email: validatedData.email,
-          company: validatedData.company
-        })
-      }
+          company: validatedData.company,
+        }),
+      },
     });
 
     return createApiResponse(
@@ -80,7 +101,6 @@ export async function POST(request: NextRequest) {
       'Mensaje enviado exitosamente. Nos pondremos en contacto contigo pronto.',
       201
     );
-
   } catch (error) {
     return handleApiError(error);
   }
@@ -89,12 +109,15 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    
+
     const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = Math.min(parseInt(searchParams.get('pageSize') || '10'), 100);
+    const pageSize = Math.min(
+      parseInt(searchParams.get('pageSize') || '10'),
+      100
+    );
     const type = searchParams.get('type');
     const status = searchParams.get('status');
-    
+
     const where: any = {};
     if (type) where.type = type;
     if (status) where.status = status;
@@ -103,12 +126,12 @@ export async function GET(request: NextRequest) {
       prisma.contactSubmission.findMany({
         where,
         orderBy: {
-          createdAt: 'desc'
+          createdAt: 'desc',
         },
         skip: (page - 1) * pageSize,
-        take: pageSize
+        take: pageSize,
       }),
-      prisma.contactSubmission.count({ where })
+      prisma.contactSubmission.count({ where }),
     ]);
 
     return createApiResponse({
@@ -119,10 +142,9 @@ export async function GET(request: NextRequest) {
         total,
         totalPages: Math.ceil(total / pageSize),
         hasNext: page * pageSize < total,
-        hasPrev: page > 1
-      }
+        hasPrev: page > 1,
+      },
     });
-
   } catch (error) {
     return handleApiError(error);
   }

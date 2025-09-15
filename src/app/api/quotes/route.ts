@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { quoteFormSchema, formRateLimiter, sanitizeString, sanitizeEmail, isXSS, isSQLInjection } from '@/lib/validation';
+import {
+  quoteFormSchema,
+  formRateLimiter,
+  sanitizeString,
+  sanitizeEmail,
+  isXSS,
+  isSQLInjection,
+} from '@/lib/validation';
 import { handleApiError, createApiResponse } from '@/lib/errors';
 import { emailService } from '@/lib/email';
 import { logger } from '@/lib/logger';
@@ -8,12 +15,15 @@ import { logger } from '@/lib/logger';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    
+
     const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = Math.min(parseInt(searchParams.get('pageSize') || '10'), 100);
+    const pageSize = Math.min(
+      parseInt(searchParams.get('pageSize') || '10'),
+      100
+    );
     const status = searchParams.get('status');
     const userId = searchParams.get('userId');
-    
+
     const where: any = {};
     if (status) where.status = status;
     if (userId) where.userId = parseInt(userId);
@@ -27,8 +37,8 @@ export async function GET(request: NextRequest) {
               id: true,
               name: true,
               email: true,
-              company: true
-            }
+              company: true,
+            },
           },
           items: {
             include: {
@@ -37,25 +47,25 @@ export async function GET(request: NextRequest) {
                   id: true,
                   name: true,
                   sku: true,
-                  basePrice: true
-                }
-              }
-            }
+                  basePrice: true,
+                },
+              },
+            },
           },
           communications: {
             orderBy: {
-              createdAt: 'desc'
+              createdAt: 'desc',
             },
-            take: 5
-          }
+            take: 5,
+          },
         },
         orderBy: {
-          createdAt: 'desc'
+          createdAt: 'desc',
         },
         skip: (page - 1) * pageSize,
-        take: pageSize
+        take: pageSize,
       }),
-      prisma.quote.count({ where })
+      prisma.quote.count({ where }),
     ]);
 
     return createApiResponse({
@@ -66,37 +76,43 @@ export async function GET(request: NextRequest) {
         total,
         totalPages: Math.ceil(total / pageSize),
         hasNext: page * pageSize < total,
-        hasPrev: page > 1
-      }
+        hasPrev: page > 1,
+      },
     });
-
   } catch (error) {
     return handleApiError(error);
   }
 }
 
-
 export async function POST(request: NextRequest) {
   try {
     // Get client IP for rate limiting
-    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-               request.headers.get('x-real-ip') ||
-               request.headers.get('cf-connecting-ip') ||
-               'unknown';
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
+      request.headers.get('cf-connecting-ip') ||
+      'unknown';
 
     // Check form submission rate limit
     const rateLimitCheck = formRateLimiter.canSubmit(`quote:${ip}`);
     if (!rateLimitCheck.allowed) {
-      return NextResponse.json({
-        error: true,
-        message: rateLimitCheck.reason || 'Demasiadas solicitudes. Intente nuevamente más tarde.',
-        timestamp: new Date().toISOString()
-      }, {
-        status: 429,
-        headers: {
-          'Retry-After': Math.ceil((rateLimitCheck.waitTime || 30000) / 1000).toString()
+      return NextResponse.json(
+        {
+          error: true,
+          message:
+            rateLimitCheck.reason ||
+            'Demasiadas solicitudes. Intente nuevamente más tarde.',
+          timestamp: new Date().toISOString(),
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil(
+              (rateLimitCheck.waitTime || 30000) / 1000
+            ).toString(),
+          },
         }
-      });
+      );
     }
 
     const body = await request.json();
@@ -105,30 +121,36 @@ export async function POST(request: NextRequest) {
     const sanitizedBody = {
       customerName: sanitizeString(body.customerName || ''),
       customerEmail: sanitizeEmail(body.customerEmail || ''),
-      customerPhone: body.customerPhone ? sanitizeString(body.customerPhone) : undefined,
+      customerPhone: body.customerPhone
+        ? sanitizeString(body.customerPhone)
+        : undefined,
       company: body.company ? sanitizeString(body.company) : undefined,
       countryId: body.countryId,
-      recipientEmail: body.recipientEmail ? sanitizeEmail(body.recipientEmail) : undefined,
+      recipientEmail: body.recipientEmail
+        ? sanitizeEmail(body.recipientEmail)
+        : undefined,
       shippingAddress: body.shippingAddress,
       message: body.message ? sanitizeString(body.message) : undefined,
-      items: body.items?.map((item: any) => ({
-        productId: item.productId,
-        measureId: item.measureId,
-        quantity: item.quantity,
-        unitPrice: item.unitPrice,
-        notes: item.notes ? sanitizeString(item.notes) : undefined,
-        specifications: item.specifications
-      })) || []
+      items:
+        body.items?.map((item: any) => ({
+          productId: item.productId,
+          measureId: item.measureId,
+          quantity: item.quantity,
+          unitPrice: item.unitPrice,
+          notes: item.notes ? sanitizeString(item.notes) : undefined,
+          specifications: item.specifications,
+        })) || [],
     };
 
     // Check for malicious content in text fields
     const textFields = [
       sanitizedBody.customerName,
       sanitizedBody.customerEmail,
-      sanitizedBody.message
+      sanitizedBody.message,
     ];
     if (sanitizedBody.company) textFields.push(sanitizedBody.company);
-    if (sanitizedBody.recipientEmail) textFields.push(sanitizedBody.recipientEmail);
+    if (sanitizedBody.recipientEmail)
+      textFields.push(sanitizedBody.recipientEmail);
     sanitizedBody.items.forEach((item: any) => {
       if (item.notes) textFields.push(item.notes);
     });
@@ -146,7 +168,7 @@ export async function POST(request: NextRequest) {
     // Generate quote number
     const lastQuote = await prisma.quote.findFirst({
       orderBy: { id: 'desc' },
-      select: { id: true }
+      select: { id: true },
     });
     const quoteNumber = `Q${String((lastQuote?.id || 0) + 1).padStart(6, '0')}`;
 
@@ -169,9 +191,9 @@ export async function POST(request: NextRequest) {
             unitPrice: item.unitPrice || 0,
             totalPrice: (item.unitPrice || 0) * item.quantity,
             notes: item.notes,
-            specifications: item.specifications
-          }))
-        }
+            specifications: item.specifications,
+          })),
+        },
       },
       include: {
         user: {
@@ -179,13 +201,13 @@ export async function POST(request: NextRequest) {
             id: true,
             name: true,
             email: true,
-            company: true
-          }
+            company: true,
+          },
         },
         countryRef: {
           select: {
-            name: true
-          }
+            name: true,
+          },
         },
         items: {
           include: {
@@ -194,12 +216,12 @@ export async function POST(request: NextRequest) {
                 id: true,
                 name: true,
                 sku: true,
-                basePrice: true
-              }
-            }
-          }
-        }
-      }
+                basePrice: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     // Send email if requested
@@ -213,32 +235,39 @@ export async function POST(request: NextRequest) {
           company: quote.company || undefined,
           country: (quote as any).countryRef?.name,
           currency: quote.currency,
-          totalAmount: quote.totalAmount ? Number(quote.totalAmount) : undefined,
+          totalAmount: quote.totalAmount
+            ? Number(quote.totalAmount)
+            : undefined,
           items: (quote as any).items.map((item: any) => ({
             productName: item.product?.name || 'Producto',
             quantity: item.quantity,
             unitPrice: Number(item.unitPrice),
-            totalPrice: Number(item.totalPrice)
+            totalPrice: Number(item.totalPrice),
           })),
           message: quote.message || undefined,
-          quoteNumber: quote.quoteNumber
+          quoteNumber: quote.quoteNumber,
         };
 
-        emailSent = await emailService.sendQuoteEmail(emailData, validatedData.recipientEmail);
+        emailSent = await emailService.sendQuoteEmail(
+          emailData,
+          validatedData.recipientEmail
+        );
 
         // Update email status
         await prisma.quote.update({
           where: { id: quote.id },
           data: {
             emailStatus: emailSent ? 'sent' : 'failed',
-            emailSentAt: emailSent ? new Date() : null
-          }
+            emailSentAt: emailSent ? new Date() : null,
+          },
         });
 
         logger.info('Quote email sent', { quoteId: quote.id, emailSent });
-
       } catch (emailError) {
-        logger.error('Failed to send quote email', { error: emailError, quoteId: quote.id });
+        logger.error('Failed to send quote email', {
+          error: emailError,
+          quoteId: quote.id,
+        });
         // Don't fail the quote creation, just log the email failure
       }
     }
@@ -254,16 +283,19 @@ export async function POST(request: NextRequest) {
           itemsCount: validatedData.items.length,
           company: quote.company,
           customerEmail: quote.customerEmail,
-          emailSent
-        })
-      }
+          emailSent,
+        }),
+      },
     });
 
-    return createApiResponse({
-      ...quote,
-      emailSent
-    }, 'Cotización creada exitosamente', 201);
-
+    return createApiResponse(
+      {
+        ...quote,
+        emailSent,
+      },
+      'Cotización creada exitosamente',
+      201
+    );
   } catch (error) {
     return handleApiError(error);
   }

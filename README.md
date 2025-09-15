@@ -5,6 +5,7 @@ Modern Next.js website for **ZIVAH International S.A.**, premium Ecuadorian prod
 ## ✅ **Project Status: PRODUCTION READY**
 
 ### 🚀 **Tech Stack**
+
 - **Framework**: Next.js 15.5.3 with App Router
 - **Database**: PostgreSQL with Prisma ORM 6.16.1
 - **Authentication**: NextAuth.js 4.24.11
@@ -87,6 +88,7 @@ zivah-international/
 ## 🎯 **Features**
 
 ### 🌙 **Dark/Light Mode**
+
 - System preference detection
 - localStorage persistence
 - Smooth transitions with CSS variables
@@ -94,6 +96,7 @@ zivah-international/
 - Theme toggle with animated icons
 
 ### 📱 **Dynamic Content**
+
 - PostgreSQL database with 3 categories, 30+ products
 - API-driven product catalog
 - Real-time category filtering
@@ -101,6 +104,7 @@ zivah-international/
 - Quote request system
 
 ### 🎨 **Modern UI/UX**
+
 - Responsive design (mobile-first)
 - Smooth scrolling navigation
 - Glass morphism effects
@@ -108,6 +112,7 @@ zivah-international/
 - Interactive hover states
 
 ### ⚡ **Performance & SEO**
+
 - Next.js 15 App Router optimization
 - Core Web Vitals monitoring
 - Image optimization with lazy loading
@@ -118,6 +123,7 @@ zivah-international/
 - Cookie consent with GDPR compliance
 
 ### 🔒 **Security & Compliance**
+
 - Rate limiting and DDoS protection
 - Input validation and sanitization
 - HTTPS enforcement
@@ -126,6 +132,7 @@ zivah-international/
 - Security headers and middleware
 
 ### 📊 **Business Intelligence**
+
 - Conversion tracking
 - User engagement analytics
 - Performance monitoring
@@ -135,12 +142,14 @@ zivah-international/
 ## 🛠️ **Development**
 
 ### Prerequisites
+
 - Node.js 18.18.0 or higher
 - PostgreSQL database
 - npm or yarn package manager
 - Git
 
 ### Installation
+
 ```bash
 # Clone repository
 git clone https://github.com/iferpaz7/zivah-international.git
@@ -167,6 +176,7 @@ npm run dev
 ```
 
 ### Environment Variables
+
 Create a `.env` file with the following variables:
 
 ```env
@@ -191,12 +201,16 @@ NODE_ENV="development"
 ```
 
 ### Available Scripts
+
 ```bash
 npm run dev          # Start development server
 npm run build        # Build for production
 npm run start        # Start production server
 npm run lint         # Run ESLint
+npm run lint:fix     # Run ESLint with auto-fix
 npm run format       # Format code with Prettier
+npm run format:check # Check if code is formatted correctly
+npm run type-check   # Run TypeScript type checking
 npm run db:generate  # Generate Prisma client
 npm run db:push      # Push schema changes to database
 npm run db:migrate   # Run database migrations
@@ -205,14 +219,92 @@ npm run db:seed      # Seed database with sample data
 npm run db:reset     # Reset database and reseed
 ```
 
+## 🎯 **Code Quality & Formatting**
+
+This project uses a comprehensive code formatting and linting setup to ensure consistent code quality across the team.
+
+### Prettier Configuration
+
+- **Single quotes** for strings
+- **Semicolons** always required
+- **Trailing commas** in multi-line structures
+- **Print width** of 80 characters
+- **Tab width** of 2 spaces
+- **JSX single quotes** enabled
+- Optimized for **Next.js**, **TypeScript**, **React**, and **Tailwind CSS**
+
+### ESLint Configuration
+
+- **Next.js** core web vitals rules
+- **TypeScript** recommended rules
+- **React** and **React Hooks** best practices
+- **JSX accessibility** (jsx-a11y) rules
+- **Import** organization and validation
+- **Prettier** integration to avoid conflicts
+- Custom rules for the project's specific needs
+
+### Available Commands
+
+```bash
+# Linting
+npm run lint         # Check for linting errors
+npm run lint:fix     # Auto-fix linting errors where possible
+
+# Formatting
+npm run format       # Format all code files
+npm run format:check # Check if code is properly formatted
+
+# Type Checking
+npm run type-check   # Run TypeScript type checking
+```
+
+### Pre-commit Hooks
+
+The project uses **Husky** and **lint-staged** to automatically:
+
+- Run ESLint on staged TypeScript/JavaScript files
+- Format staged files with Prettier
+- Prevent commits with linting or formatting errors
+
+### Editor Integration
+
+VS Code settings are configured for:
+
+- **Format on save** enabled
+- **ESLint** auto-fix on save
+- **Prettier** as default formatter
+- **Import organization** on save
+- Consistent **tab size** and **rulers**
+
+### File Exclusions
+
+The following files are excluded from formatting:
+
+- `node_modules/` - Dependencies
+- `.next/` - Next.js build output
+- `prisma/migrations/` - Database migrations
+- Environment files (`.env*`)
+- Lock files (`package-lock.json`, `yarn.lock`)
+- Generated files and logs
+
+### Best Practices
+
+1. **Always run `npm run lint:fix`** before committing
+2. **Use `npm run format`** to ensure consistent formatting
+3. **Enable format on save** in your editor
+4. **Review pre-commit hook output** for any issues
+5. **Run `npm run type-check`** regularly during development
+
 ## 🗄️ **Database Schema**
 
 ### Categories Table
+
 - id, name, slug, description
 - icon, color, sort_order
 - is_active, timestamps
 
 ### Products Table
+
 - id, name, slug, category_id
 - description, short_description, sku
 - base_price, price_unit, stock_quantity
@@ -221,6 +313,7 @@ npm run db:reset     # Reset database and reseed
 - is_active, is_featured, timestamps
 
 ### Quotes Table (Future)
+
 - Quote requests and items
 - Customer information
 - Product selections
@@ -228,27 +321,33 @@ npm run db:reset     # Reset database and reseed
 ## 🚀 **API Endpoints**
 
 ### Authentication
+
 - `GET/POST /api/auth/[...nextauth]` - NextAuth.js authentication
 
 ### Products
+
 - `GET /api/products` - Get all products with filtering and pagination
 - `GET /api/products?category=slug` - Filter products by category
 - `GET /api/products?search=term` - Search products by name/description
 
 ### Categories
+
 - `GET /api/categories` - Get all product categories
 - `GET /api/categories/[slug]` - Get specific category details
 
 ### Quotes
+
 - `POST /api/quotes` - Submit quote request
 - `GET /api/quotes/countries` - Get available countries for shipping
 - `GET /api/quotes/measures` - Get available measurement units
 - `GET /api/quotes/products/search` - Search products for quotes
 
 ### Contact
+
 - `POST /api/contact` - Submit contact form with rate limiting
 
 ### API Response Format
+
 ```json
 {
   "success": true,
@@ -259,6 +358,7 @@ npm run db:reset     # Reset database and reseed
 ```
 
 ### Error Response Format
+
 ```json
 {
   "success": false,
@@ -271,6 +371,7 @@ npm run db:reset     # Reset database and reseed
 ## 🚀 **Production Deployment**
 
 ### Environment Variables for Production
+
 ```env
 # Database
 DATABASE_URL="postgresql://user:pass@host:5432/dbname"
@@ -293,6 +394,7 @@ NODE_ENV="production"
 ```
 
 ### Build and Deploy
+
 ```bash
 # Build the application
 npm run build
@@ -308,6 +410,7 @@ npm run build
 ```
 
 ### Database Setup for Production
+
 ```bash
 # Generate Prisma client
 npx prisma generate
@@ -320,6 +423,7 @@ npx prisma db seed
 ```
 
 ### Performance Optimization
+
 - ✅ Automatic image optimization
 - ✅ Core Web Vitals monitoring
 - ✅ SEO optimization with structured data
@@ -351,6 +455,7 @@ SMTP_PASS="your-app-password"
 ### Troubleshooting
 
 #### Common Issues
+
 1. **Database Connection**: Ensure DATABASE_URL is correct and PostgreSQL is running
 2. **Build Errors**: Check Node.js version (18.18.0+) and run `npm install`
 3. **Environment Variables**: Copy `.env.example` to `.env` and fill required values
@@ -358,34 +463,38 @@ SMTP_PASS="your-app-password"
 5. **Port Conflicts**: Default port is 3000, change with `PORT=3001 npm run dev`
 
 #### Development Tips
+
 - Use `npm run db:studio` to view/edit database
 - Check browser console for client-side errors
-- Use `npm run lint` to check code quality
+- Use `npm run lint:fix` to auto-fix code quality issues
 - Run `npm run format` to format code consistently
+- Use `npm run type-check` for TypeScript validation
+- Enable "Format on Save" in your editor for automatic formatting
 
 ## � **Usage Examples**
 
 ### Product Display
+
 ```tsx
 // Display products with filtering
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
 function ProductCatalog() {
-  const [products, setProducts] = useState([])
-  const [category, setCategory] = useState('all')
+  const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState('all');
 
   useEffect(() => {
     fetch(`/api/products${category !== 'all' ? `?category=${category}` : ''}`)
       .then(res => res.json())
-      .then(data => setProducts(data.data))
-  }, [category])
+      .then(data => setProducts(data.data));
+  }, [category]);
 
   return (
     <div>
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
-        <option value="all">All Categories</option>
-        <option value="fruits">Fruits</option>
-        <option value="seafood">Seafood</option>
+      <select value={category} onChange={e => setCategory(e.target.value)}>
+        <option value='all'>All Categories</option>
+        <option value='fruits'>Fruits</option>
+        <option value='seafood'>Seafood</option>
       </select>
       {products.map(product => (
         <div key={product.id}>
@@ -394,52 +503,55 @@ function ProductCatalog() {
         </div>
       ))}
     </div>
-  )
+  );
 }
 ```
 
 ### Quote Request Form
+
 ```tsx
 // Submit quote request
-const handleQuoteSubmit = async (formData) => {
+const handleQuoteSubmit = async formData => {
   const response = await fetch('/api/quotes', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-  })
+    body: JSON.stringify(formData),
+  });
 
   if (response.ok) {
     // Handle success
-    console.log('Quote submitted successfully')
+    console.log('Quote submitted successfully');
   } else {
     // Handle error
-    console.error('Quote submission failed')
+    console.error('Quote submission failed');
   }
-}
+};
 ```
 
 ### Contact Form
+
 ```tsx
 // Send contact message
-const handleContactSubmit = async (formData) => {
+const handleContactSubmit = async formData => {
   const response = await fetch('/api/contact', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-  })
+    body: JSON.stringify(formData),
+  });
 
-  const result = await response.json()
+  const result = await response.json();
   if (result.success) {
-    alert('Message sent successfully!')
+    alert('Message sent successfully!');
   } else {
-    alert(`Error: ${result.error}`)
+    alert(`Error: ${result.error}`);
   }
-}
+};
 ```
 
 ## 📊 **Database Management & Analytics**
 
 ### Prisma Commands
+
 ```bash
 # Generate client after schema changes
 npx prisma generate
@@ -461,6 +573,7 @@ npx prisma db seed
 ```
 
 ### Analytics & Monitoring
+
 - **Core Web Vitals**: Automatic monitoring of LCP, FID, CLS, FCP, TTFB
 - **Google Analytics 4**: Comprehensive event tracking and conversion monitoring
 - **Business Intelligence**: Custom conversion tracking and user engagement metrics
@@ -468,6 +581,7 @@ npx prisma db seed
 - **SEO Monitoring**: Automated SEO validation and reporting
 
 ### Backup Strategy
+
 ```bash
 # Backup database
 pg_dump -h localhost -U username dbname > backup.sql
@@ -482,6 +596,7 @@ tar -czf backup.tar.gz /path/to/application
 ## � **Security & Compliance**
 
 ### Security Features
+
 - **Rate Limiting**: Redis-based rate limiting for API endpoints
 - **Input Validation**: Comprehensive Zod schema validation
 - **XSS Protection**: Input sanitization and HTML escaping
@@ -491,6 +606,7 @@ tar -czf backup.tar.gz /path/to/application
 - **Security Headers**: Comprehensive security headers middleware
 
 ### GDPR Compliance
+
 - **Cookie Consent**: Granular cookie preferences management
 - **Data Processing**: Transparent data collection and usage
 - **User Rights**: Data export, deletion, and access requests
@@ -498,12 +614,14 @@ tar -czf backup.tar.gz /path/to/application
 - **Privacy Policy**: Comprehensive privacy policy documentation
 
 ### Performance Security
+
 - **DDoS Protection**: Rate limiting and request throttling
 - **Resource Protection**: API endpoint protection and monitoring
 - **Error Handling**: Secure error responses without data leakage
 - **Logging**: Comprehensive security event logging
 
 ### Compliance Documentation
+
 - **Privacy Policy**: `/legal/privacy-policy`
 - **Terms of Service**: `/legal/terms-of-service`
 - **Cookie Policy**: `/legal/cookie-policy`
@@ -512,6 +630,7 @@ tar -czf backup.tar.gz /path/to/application
 ## 🔧 **Configuration**
 
 ### Next.js Configuration
+
 - **Framework**: Next.js 15.5.3 with App Router
 - **TypeScript**: Strict mode enabled
 - **Image Optimization**: Built-in Next.js Image component
@@ -519,12 +638,14 @@ tar -czf backup.tar.gz /path/to/application
 - **Middleware**: Security, rate limiting, and HTTPS enforcement
 
 ### Database Configuration
+
 - **ORM**: Prisma with PostgreSQL
 - **Connection**: Environment-based configuration
 - **Migrations**: Automated schema management
 - **Seeding**: Sample data for development
 
 ### Security Features
+
 - **Rate Limiting**: Upstash Redis-based rate limiting
 - **Input Validation**: Zod schema validation
 - **Sanitization**: XSS and SQL injection protection
@@ -532,6 +653,7 @@ tar -czf backup.tar.gz /path/to/application
 - **Security Headers**: Comprehensive security headers
 
 ### SEO & Performance
+
 - **Core Web Vitals**: Automatic monitoring and reporting
 - **Structured Data**: JSON-LD schema markup
 - **Sitemap**: Dynamic XML sitemap generation
@@ -539,6 +661,7 @@ tar -czf backup.tar.gz /path/to/application
 - **Analytics**: Google Analytics 4 integration
 
 ### Styling Configuration
+
 - **CSS Framework**: Tailwind CSS 4.1.13
 - **Theme System**: Dark/light mode with system preference
 - **Glass Morphism**: Custom CSS utilities
@@ -555,26 +678,29 @@ Unauthorized use, reproduction, or distribution is prohibited.
 ## 📞 **Support & Contact**
 
 ### Technical Support
+
 - **Email**: info@zivahinternational.com
 - **Repository**: https://github.com/iferpaz7/zivah-international
 - **Issues**: GitHub Issues for bug reports and feature requests
 
 ### Business Contact
+
 - **Website**: [zivahinternational.com](https://zivahinternational.com)
 - **Headquarters**: Samborondón, Guayas, Ecuador
 - **Distribution**: Miami, Florida, USA
 - **Phone**: +593-4-XXX-XXXX
 
 ### Development Team
+
 - **Lead Developer**: ZIVAH International S.A. Development Team
 - **Tech Stack**: Next.js, TypeScript, PostgreSQL, Tailwind CSS
 - **Status**: Production Ready with Comprehensive Features
 
 ---
 
-**🌊 ZIVAH International S.A.**  
-*Exportadores Premium de Productos Ecuatorianos*  
-🏢 *Sede Principal*: Samborondón, Guayas, Ecuador  
-🏢 *Oficina de Distribución*: Miami, Florida, USA  
-🌐 *Website*: [zivahinternational.com](https://zivahinternational.com)  
-📧 *Email*: info@zivahinternational.com
+**🌊 ZIVAH International S.A.**
+_Exportadores Premium de Productos Ecuatorianos_
+🏢 _Sede Principal_: Samborondón, Guayas, Ecuador
+🏢 _Oficina de Distribución_: Miami, Florida, USA
+🌐 _Website_: [zivahinternational.com](https://zivahinternational.com)
+📧 _Email_: info@zivahinternational.com

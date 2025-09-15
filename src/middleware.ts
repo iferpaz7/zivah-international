@@ -1,36 +1,48 @@
-import { NextRequest } from 'next/server'
-import { securityMiddleware } from '@/lib/security'
-import { enforceHTTPS, getSecurityHeaders, logSecurityEvent } from '@/lib/https'
+import { NextRequest } from 'next/server';
+import { securityMiddleware } from '@/lib/security';
+import {
+  enforceHTTPS,
+  getSecurityHeaders,
+  logSecurityEvent,
+} from '@/lib/https';
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const { pathname } = request.nextUrl;
 
   // Enforce HTTPS in production
-  const httpsRedirect = enforceHTTPS(request)
+  const httpsRedirect = enforceHTTPS(request);
   if (httpsRedirect) {
-    logSecurityEvent('https_redirect', {
-      from: request.url,
-      to: httpsRedirect.headers.get('location')
-    }, request)
-    return httpsRedirect
+    logSecurityEvent(
+      'https_redirect',
+      {
+        from: request.url,
+        to: httpsRedirect.headers.get('location'),
+      },
+      request
+    );
+    return httpsRedirect;
   }
 
   // Apply security middleware
-  const securityResponse = securityMiddleware(request)
+  const securityResponse = securityMiddleware(request);
   if (securityResponse) {
-    return securityResponse
+    return securityResponse;
   }
 
   // For API routes, add additional security checks
   if (pathname.startsWith('/api/')) {
     // Log API access
-    logSecurityEvent('api_access', {
-      pathname,
-      method: request.method
-    }, request)
+    logSecurityEvent(
+      'api_access',
+      {
+        pathname,
+        method: request.method,
+      },
+      request
+    );
   }
 
-  return securityResponse
+  return securityResponse;
 }
 
 export const config = {
@@ -49,4 +61,4 @@ export const config = {
      */
     '/api/:path*',
   ],
-}
+};

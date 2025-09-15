@@ -7,7 +7,10 @@ class InMemoryRateLimit {
     const now = Date.now();
     const key = `${identifier}:${Math.floor(now / windowMs)}`;
 
-    const current = this.requests.get(key) || { count: 0, resetTime: now + windowMs };
+    const current = this.requests.get(key) || {
+      count: 0,
+      resetTime: now + windowMs,
+    };
 
     if (now > current.resetTime) {
       current.count = 1;

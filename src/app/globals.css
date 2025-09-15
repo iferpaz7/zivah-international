@@ -1,29 +1,29 @@
-@import "../../styles.css";
+@import '../../styles.css';
 
 /* Zivah International Brand System - Custom CSS variables only */
 :root {
-  --zivah-lime: #7CB342;
-  --zivah-green: #2E7D32;
-  --zivah-dark-green: #1B5E20;
-  --zivah-navy: #0D47A1;
-  --zivah-blue: #1976D2;
-  --zivah-coral: #FF5722;
-  --zivah-light-coral: #FF8A65;
-  --zivah-blue-gray: #37474F;
+  --zivah-lime: #7cb342;
+  --zivah-green: #2e7d32;
+  --zivah-dark-green: #1b5e20;
+  --zivah-navy: #0d47a1;
+  --zivah-blue: #1976d2;
+  --zivah-coral: #ff5722;
+  --zivah-light-coral: #ff8a65;
+  --zivah-blue-gray: #37474f;
   --zivah-charcoal: #263238;
 }
 
 /* Dark mode adjustments for custom variables */
 .dark {
-  --zivah-lime: #8BC34A;
-  --zivah-green: #4CAF50;
-  --zivah-dark-green: #2E7D32;
-  --zivah-navy: #1565C0;
-  --zivah-blue: #2196F3;
-  --zivah-coral: #FF6B35;
-  --zivah-light-coral: #FF8A65;
-  --zivah-blue-gray: #546E7A;
-  --zivah-charcoal: #37474F;
+  --zivah-lime: #8bc34a;
+  --zivah-green: #4caf50;
+  --zivah-dark-green: #2e7d32;
+  --zivah-navy: #1565c0;
+  --zivah-blue: #2196f3;
+  --zivah-coral: #ff6b35;
+  --zivah-light-coral: #ff8a65;
+  --zivah-blue-gray: #546e7a;
+  --zivah-charcoal: #37474f;
 }
 
 /* Smooth scroll behavior */
@@ -32,9 +32,12 @@ html {
 }
 
 /* Font settings */
-html, body {
+html,
+body {
   font-family: Inter, system-ui, sans-serif;
-  font-feature-settings: "rlig" 1, "calt" 1;
+  font-feature-settings:
+    'rlig' 1,
+    'calt' 1;
 }
 
 /* Glass morphism utilities */
@@ -53,7 +56,7 @@ html, body {
   backdrop-filter: blur(24px);
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 
+  box-shadow:
     0 8px 32px 0 rgba(31, 38, 135, 0.37),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
 }
@@ -77,7 +80,7 @@ html, body {
   backdrop-filter: blur(16px);
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
+  box-shadow:
     0 4px 16px 0 rgba(31, 38, 135, 0.3),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 }
@@ -88,7 +91,7 @@ html, body {
 
 .glass-button:hover {
   background: rgba(255, 255, 255, 0.3);
-  box-shadow: 
+  box-shadow:
     0 6px 20px 0 rgba(31, 38, 135, 0.4),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
 }

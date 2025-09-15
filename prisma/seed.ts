@@ -19,8 +19,8 @@ async function main() {
       currency: 'USD',
       callingCode: '+593',
       phoneFormat: '+593 XX XXX XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const usa = await prisma.country.upsert({
@@ -34,8 +34,8 @@ async function main() {
       currency: 'USD',
       callingCode: '+1',
       phoneFormat: '+1 (XXX) XXX-XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const colombia = await prisma.country.upsert({
@@ -49,8 +49,8 @@ async function main() {
       currency: 'COP',
       callingCode: '+57',
       phoneFormat: '+57 XXX XXX XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const peru = await prisma.country.upsert({
@@ -64,8 +64,8 @@ async function main() {
       currency: 'PEN',
       callingCode: '+51',
       phoneFormat: '+51 XXX XXX XXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const chile = await prisma.country.upsert({
@@ -79,8 +79,8 @@ async function main() {
       currency: 'CLP',
       callingCode: '+56',
       phoneFormat: '+56 X XXXX XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const mexico = await prisma.country.upsert({
@@ -94,8 +94,8 @@ async function main() {
       currency: 'MXN',
       callingCode: '+52',
       phoneFormat: '+52 XX XXXX XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const spain = await prisma.country.upsert({
@@ -109,8 +109,8 @@ async function main() {
       currency: 'EUR',
       callingCode: '+34',
       phoneFormat: '+34 XXX XXX XXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const china = await prisma.country.upsert({
@@ -124,8 +124,8 @@ async function main() {
       currency: 'CNY',
       callingCode: '+86',
       phoneFormat: '+86 XXX XXXX XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const japan = await prisma.country.upsert({
@@ -139,8 +139,8 @@ async function main() {
       currency: 'JPY',
       callingCode: '+81',
       phoneFormat: '+81 XX XXXX XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const germany = await prisma.country.upsert({
@@ -154,8 +154,8 @@ async function main() {
       currency: 'EUR',
       callingCode: '+49',
       phoneFormat: '+49 XXX XXXXXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   // Additional countries that commonly import from Ecuador
@@ -170,8 +170,8 @@ async function main() {
       currency: 'EUR',
       callingCode: '+39',
       phoneFormat: '+39 XXX XXX XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const france = await prisma.country.upsert({
@@ -185,8 +185,8 @@ async function main() {
       currency: 'EUR',
       callingCode: '+33',
       phoneFormat: '+33 X XX XX XX XX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const uk = await prisma.country.upsert({
@@ -200,8 +200,8 @@ async function main() {
       currency: 'GBP',
       callingCode: '+44',
       phoneFormat: '+44 XXXX XXX XXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const canada = await prisma.country.upsert({
@@ -215,8 +215,8 @@ async function main() {
       currency: 'CAD',
       callingCode: '+1',
       phoneFormat: '+1 (XXX) XXX-XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const brazil = await prisma.country.upsert({
@@ -230,8 +230,8 @@ async function main() {
       currency: 'BRL',
       callingCode: '+55',
       phoneFormat: '+55 XX XXXXX-XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const argentina = await prisma.country.upsert({
@@ -245,8 +245,8 @@ async function main() {
       currency: 'ARS',
       callingCode: '+54',
       phoneFormat: '+54 XX XXXX-XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const southKorea = await prisma.country.upsert({
@@ -260,8 +260,8 @@ async function main() {
       currency: 'KRW',
       callingCode: '+82',
       phoneFormat: '+82 XX XXXX XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const australia = await prisma.country.upsert({
@@ -275,8 +275,8 @@ async function main() {
       currency: 'AUD',
       callingCode: '+61',
       phoneFormat: '+61 XXX XXX XXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const netherlands = await prisma.country.upsert({
@@ -290,8 +290,8 @@ async function main() {
       currency: 'EUR',
       callingCode: '+31',
       phoneFormat: '+31 XX XXX XXXX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const belgium = await prisma.country.upsert({
@@ -305,8 +305,8 @@ async function main() {
       currency: 'EUR',
       callingCode: '+32',
       phoneFormat: '+32 XXX XX XX XX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const switzerland = await prisma.country.upsert({
@@ -320,13 +320,13 @@ async function main() {
       currency: 'CHF',
       callingCode: '+41',
       phoneFormat: '+41 XX XXX XX XX',
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   // Create measurement units for export products
   console.log('📏 Creating measurement units...');
-  
+
   // Weight measures
   const kilogram = await prisma.measure.upsert({
     where: { name: 'Kilogram' },
@@ -340,8 +340,8 @@ async function main() {
       conversionFactor: 1.0,
       isActive: true,
       sortOrder: 1,
-      description: 'Standard metric unit for weight'
-    }
+      description: 'Standard metric unit for weight',
+    },
   });
 
   const metricTon = await prisma.measure.upsert({
@@ -356,8 +356,8 @@ async function main() {
       conversionFactor: 1000.0,
       isActive: true,
       sortOrder: 2,
-      description: 'Metric ton - 1000 kilograms'
-    }
+      description: 'Metric ton - 1000 kilograms',
+    },
   });
 
   const pound = await prisma.measure.upsert({
@@ -372,8 +372,8 @@ async function main() {
       conversionFactor: 0.453592,
       isActive: true,
       sortOrder: 3,
-      description: 'Imperial pound unit'
-    }
+      description: 'Imperial pound unit',
+    },
   });
 
   // Volume measures
@@ -389,8 +389,8 @@ async function main() {
       conversionFactor: 1.0,
       isActive: true,
       sortOrder: 10,
-      description: 'Standard metric unit for volume'
-    }
+      description: 'Standard metric unit for volume',
+    },
   });
 
   const cubicMeter = await prisma.measure.upsert({
@@ -405,8 +405,8 @@ async function main() {
       conversionFactor: 1000.0,
       isActive: true,
       sortOrder: 11,
-      description: 'Cubic meter - 1000 liters'
-    }
+      description: 'Cubic meter - 1000 liters',
+    },
   });
 
   const gallon = await prisma.measure.upsert({
@@ -421,8 +421,8 @@ async function main() {
       conversionFactor: 3.78541,
       isActive: true,
       sortOrder: 12,
-      description: 'US gallon'
-    }
+      description: 'US gallon',
+    },
   });
 
   // Container measures (common in export)
@@ -438,8 +438,8 @@ async function main() {
       conversionFactor: 1.0,
       isActive: true,
       sortOrder: 20,
-      description: 'Standard 20-foot shipping container'
-    }
+      description: 'Standard 20-foot shipping container',
+    },
   });
 
   const container40ft = await prisma.measure.upsert({
@@ -454,8 +454,8 @@ async function main() {
       conversionFactor: 1.0,
       isActive: true,
       sortOrder: 21,
-      description: 'Standard 40-foot shipping container'
-    }
+      description: 'Standard 40-foot shipping container',
+    },
   });
 
   const container40ftHC = await prisma.measure.upsert({
@@ -470,8 +470,8 @@ async function main() {
       conversionFactor: 1.0,
       isActive: true,
       sortOrder: 22,
-      description: 'High cube 40-foot shipping container'
-    }
+      description: 'High cube 40-foot shipping container',
+    },
   });
 
   // Quantity measures
@@ -487,8 +487,8 @@ async function main() {
       conversionFactor: 1.0,
       isActive: true,
       sortOrder: 30,
-      description: 'Individual pieces or units'
-    }
+      description: 'Individual pieces or units',
+    },
   });
 
   const dozen = await prisma.measure.upsert({
@@ -503,8 +503,8 @@ async function main() {
       conversionFactor: 12.0,
       isActive: true,
       sortOrder: 31,
-      description: 'Dozen - 12 pieces'
-    }
+      description: 'Dozen - 12 pieces',
+    },
   });
 
   const carton = await prisma.measure.upsert({
@@ -519,8 +519,8 @@ async function main() {
       conversionFactor: 1.0,
       isActive: true,
       sortOrder: 32,
-      description: 'Export carton packaging'
-    }
+      description: 'Export carton packaging',
+    },
   });
 
   const pallet = await prisma.measure.upsert({
@@ -535,8 +535,8 @@ async function main() {
       conversionFactor: 1.0,
       isActive: true,
       sortOrder: 33,
-      description: 'Export pallet'
-    }
+      description: 'Export pallet',
+    },
   });
 
   // Length measures (for some products)
@@ -552,8 +552,8 @@ async function main() {
       conversionFactor: 1.0,
       isActive: true,
       sortOrder: 40,
-      description: 'Standard metric unit for length'
-    }
+      description: 'Standard metric unit for length',
+    },
   });
 
   const feet = await prisma.measure.upsert({
@@ -568,8 +568,8 @@ async function main() {
       conversionFactor: 0.3048,
       isActive: true,
       sortOrder: 41,
-      description: 'Imperial feet unit'
-    }
+      description: 'Imperial feet unit',
+    },
   });
 
   console.log('👤 Creating admin users...');
@@ -577,7 +577,7 @@ async function main() {
   console.log('👤 Creating admin users...');
   const adminPassword = await bcrypt.hash('admin123!', 12);
   const managerPassword = await bcrypt.hash('manager123!', 12);
-  
+
   const adminUser = await prisma.user.upsert({
     where: { email: 'admin@zivahinternational.com' },
     update: {},
@@ -590,8 +590,8 @@ async function main() {
       isActive: true,
       department: 'Administración',
       phone: '+593-4-234-5678',
-      company: 'ZIVAH International'
-    }
+      company: 'ZIVAH International',
+    },
   });
 
   const managerUser = await prisma.user.upsert({
@@ -606,8 +606,8 @@ async function main() {
       isActive: true,
       department: 'Ventas',
       phone: '+593-4-234-5679',
-      company: 'ZIVAH International'
-    }
+      company: 'ZIVAH International',
+    },
   });
 
   // Create comprehensive categories according to Ecuador's main exports
@@ -618,12 +618,13 @@ async function main() {
     create: {
       name: 'Agrícolas',
       slug: 'agricolas',
-      description: 'Banano: Ecuador es uno de los mayores exportadores mundiales de banano. Cacao: El país es un importante exportador de cacao fino y de aroma, usado para la elaboración de chocolate de alta calidad. Flores: Ecuador es un gran productor de flores, especialmente rosas, y es uno de los principales exportadores mundiales de este producto. Café: El país cultiva diversas variedades de café, exportando un producto aromático y de alta demanda. Otras frutas: También se exportan otras frutas como la piña, el brócoli y los jugos y conservas de frutas.',
+      description:
+        'Banano: Ecuador es uno de los mayores exportadores mundiales de banano. Cacao: El país es un importante exportador de cacao fino y de aroma, usado para la elaboración de chocolate de alta calidad. Flores: Ecuador es un gran productor de flores, especialmente rosas, y es uno de los principales exportadores mundiales de este producto. Café: El país cultiva diversas variedades de café, exportando un producto aromático y de alta demanda. Otras frutas: También se exportan otras frutas como la piña, el brócoli y los jugos y conservas de frutas.',
       icon: '🌱',
       color: '#4CAF50',
       sortOrder: 1,
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const marinosCategory = await prisma.category.upsert({
@@ -631,13 +632,14 @@ async function main() {
     update: {},
     create: {
       name: 'Marinos y de la Pesca',
-      slug: 'marinos-y-pesca', 
-      description: 'Camarón: Ecuador es un líder mundial en la exportación de crustáceos, principalmente camarón y langostino. Pescado: Se exporta pescado, incluyendo atún, así como productos procesados y enlatados.',
+      slug: 'marinos-y-pesca',
+      description:
+        'Camarón: Ecuador es un líder mundial en la exportación de crustáceos, principalmente camarón y langostino. Pescado: Se exporta pescado, incluyendo atún, así como productos procesados y enlatados.',
       icon: '🦐',
       color: '#2196F3',
       sortOrder: 2,
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const otrosCategory = await prisma.category.upsert({
@@ -646,12 +648,13 @@ async function main() {
     create: {
       name: 'Otros Productos',
       slug: 'otros-productos',
-      description: 'Manufacturas: Se exportan algunas manufacturas, como las de metales y los elaborados de banano. Madera: La madera es otro producto de exportación del país. Aceites y grasas: También se incluyen productos como el aceite de palma y aceites de pescado.',
+      description:
+        'Manufacturas: Se exportan algunas manufacturas, como las de metales y los elaborados de banano. Madera: La madera es otro producto de exportación del país. Aceites y grasas: También se incluyen productos como el aceite de palma y aceites de pescado.',
       icon: '📦',
       color: '#795548',
       sortOrder: 3,
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   console.log('📦 Creating comprehensive products...');
@@ -666,8 +669,10 @@ async function main() {
       code: 'AGR-BAN-001', // Agricultural - Banano code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
-      description: 'Banano Cavendish de exportación premium cultivado en la costa ecuatoriana. Ecuador es uno de los mayores exportadores mundiales de banano con excelente calidad y vida útil.',
-      shortDescription: 'Banano premium de exportación con certificación internacional',
+      description:
+        'Banano Cavendish de exportación premium cultivado en la costa ecuatoriana. Ecuador es uno de los mayores exportadores mundiales de banano con excelente calidad y vida útil.',
+      shortDescription:
+        'Banano premium de exportación con certificación internacional',
       sku: 'BAN-CAV-001',
       specifications: {
         weight: '90-150g',
@@ -682,17 +687,17 @@ async function main() {
           'Longitud: 16-22cm',
           'Vida útil: 14-21 días',
           'Certificación GlobalGAP y Rainforest Alliance',
-          'Capacidad: ~20,000kg por contenedor 40ft'
-        ]
+          'Capacidad: ~20,000kg por contenedor 40ft',
+        ],
       },
-      basePrice: 17000.00, // $17,000 per 40ft container (~20 tons at $0.85/kg)
+      basePrice: 17000.0, // $17,000 per 40ft container (~20 tons at $0.85/kg)
       priceUnit: 'container',
       stockQuantity: 150, // containers available
       minOrderQty: 1, // minimum 1 container
       imageUrl: '/assets/images/products/banano-cavendish.jpg',
       imageGallery: [
         '/assets/images/products/banano-1.jpg',
-        '/assets/images/products/banano-2.jpg'
+        '/assets/images/products/banano-2.jpg',
       ],
       origin: 'Ecuador',
       harvestSeason: 'Todo el año',
@@ -703,13 +708,14 @@ async function main() {
         carbs: '23g',
         fiber: '2.6g',
         potassium: '358mg',
-        vitaminC: '8.7mg'
+        vitaminC: '8.7mg',
       },
       isActive: true,
       isFeatured: true,
       seoTitle: 'Banano Cavendish Premium Ecuador - Exportación',
-      seoDescription: 'Banano premium certificado de Ecuador, líder mundial en exportación'
-    }
+      seoDescription:
+        'Banano premium certificado de Ecuador, líder mundial en exportación',
+    },
   });
 
   // CACAO - Ecuador's fine aroma cacao
@@ -722,7 +728,8 @@ async function main() {
       code: 'AGR-CAC-001', // Agricultural - Cacao code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
-      description: 'Cacao Nacional ecuatoriano de fino aroma, reconocido mundialmente por su calidad superior para chocolate premium. Ecuador es líder en la exportación de cacao fino.',
+      description:
+        'Cacao Nacional ecuatoriano de fino aroma, reconocido mundialmente por su calidad superior para chocolate premium. Ecuador es líder en la exportación de cacao fino.',
       shortDescription: 'Cacao Nacional de aroma fino para chocolate premium',
       sku: 'CAC-NAL-001',
       specifications: {
@@ -738,27 +745,32 @@ async function main() {
           'Humedad: Máximo 7%',
           'Grano superior: 85% mínimo',
           'Aroma floral y frutal característico',
-          'Capacidad: ~15,000kg por contenedor 40ft'
-        ]
+          'Capacidad: ~15,000kg por contenedor 40ft',
+        ],
       },
-      basePrice: 63000.00, // $63,000 per 40ft container (~15 tons at $4.20/kg)
+      basePrice: 63000.0, // $63,000 per 40ft container (~15 tons at $4.20/kg)
       priceUnit: 'container',
       stockQuantity: 50, // containers available
       minOrderQty: 1, // minimum 1 container
       imageUrl: '/assets/images/products/cacao-nacional.jpg',
       origin: 'Ecuador',
       harvestSeason: 'Enero - Mayo, Octubre - Diciembre',
-      certifications: ['Orgánico', 'Comercio Justo', 'Rainforest Alliance', 'UTZ'],
+      certifications: [
+        'Orgánico',
+        'Comercio Justo',
+        'Rainforest Alliance',
+        'UTZ',
+      ],
       nutritionalInfo: {
         calories: 228,
         protein: '19.6g',
         carbs: '13.9g',
         fat: '13.7g',
-        fiber: '37g'
+        fiber: '37g',
       },
       isActive: true,
-      isFeatured: true
-    }
+      isFeatured: true,
+    },
   });
 
   // CAMARÓN - Ecuador's leading marine export
@@ -771,7 +783,8 @@ async function main() {
       code: 'MAR-CAM-001', // Marine - Camarón code
       categoryId: marinosCategory.id,
       measureId: pieces.id,
-      description: 'Camarón blanco Litopenaeus vannamei de granjas acuícolas ecuatorianas. Ecuador es líder mundial en exportación de camarón con la más alta calidad y certificaciones internacionales.',
+      description:
+        'Camarón blanco Litopenaeus vannamei de granjas acuícolas ecuatorianas. Ecuador es líder mundial en exportación de camarón con la más alta calidad y certificaciones internacionales.',
       shortDescription: 'Camarón blanco fresco certificado HACCP y BRC',
       sku: 'CMR-BLC-001',
       specifications: {
@@ -784,10 +797,10 @@ async function main() {
           'Presentaciones: Entero, Pelado, PUD',
           'Congelado IQF (-18°C)',
           'Certificación HACCP, BRC, BAP',
-          'Trazabilidad completa'
-        ]
+          'Trazabilidad completa',
+        ],
       },
-      basePrice: 8.50,
+      basePrice: 8.5,
       priceUnit: 'kg',
       stockQuantity: 5000,
       minOrderQty: 100,
@@ -801,11 +814,11 @@ async function main() {
         carbs: '0g',
         fat: '1.4g',
         sodium: '111mg',
-        omega3: '0.3g'
+        omega3: '0.3g',
       },
       isActive: true,
-      isFeatured: true
-    }
+      isFeatured: true,
+    },
   });
 
   // FLORES - Ecuador's rose exports
@@ -818,8 +831,10 @@ async function main() {
       code: 'AGR-FLO-001', // Agricultural - Flores code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
-      description: 'Rosas rojas ecuatorianas de exportación cultivadas en la sierra ecuatoriana. Ecuador es uno de los principales exportadores mundiales de flores, especialmente rosas de alta calidad.',
-      shortDescription: 'Rosas premium cultivadas en altura con certificación MPS',
+      description:
+        'Rosas rojas ecuatorianas de exportación cultivadas en la sierra ecuatoriana. Ecuador es uno de los principales exportadores mundiales de flores, especialmente rosas de alta calidad.',
+      shortDescription:
+        'Rosas premium cultivadas en altura con certificación MPS',
       sku: 'ROS-ROJ-001',
       specifications: {
         variety: 'Red Naomi, Explorer, Freedom',
@@ -832,8 +847,8 @@ async function main() {
           'Longitud: 50-70cm',
           'Cabeza: 4.5-7cm diámetro',
           'Cultivo hidropónico en invernadero',
-          'Vida en florero: 12-15 días'
-        ]
+          'Vida en florero: 12-15 días',
+        ],
       },
       basePrice: 16250, // $0.65/stem * 25,000 stems per container
       priceUnit: 'container',
@@ -844,8 +859,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['MPS', 'Rainforest Alliance', 'GlobalGAP', 'Flowerabel'],
       isActive: true,
-      isFeatured: true
-    }
+      isFeatured: true,
+    },
   });
 
   // LARVAS DE CAMARÓN - Ecuador's aquaculture specialty, moved to marine category
@@ -858,7 +873,8 @@ async function main() {
       code: 'MAR-LAR-001', // Marine - Larvas code
       categoryId: marinosCategory.id, // Now correctly categorized under marine products
       measureId: pieces.id,
-      description: 'Larvas de camarón libres de patógenos producidas en laboratorio certificado con tecnología de punta para acuicultura sustentable y desarrollo del sector camaronero ecuatoriano.',
+      description:
+        'Larvas de camarón libres de patógenos producidas en laboratorio certificado con tecnología de punta para acuicultura sustentable y desarrollo del sector camaronero ecuatoriano.',
       shortDescription: 'Larvas de camarón certificadas para acuicultura',
       sku: 'LAR-CAM-001',
       specifications: {
@@ -872,8 +888,8 @@ async function main() {
           'Estadio: Post-larva PL10-PL15',
           'Libres de patógenos específicos',
           'Control genético y sanitario',
-          'Asesoría técnica incluida'
-        ]
+          'Asesoría técnica incluida',
+        ],
       },
       basePrice: 0.008,
       priceUnit: 'unit',
@@ -884,8 +900,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['SENASA', 'OIRSA', 'Laboratorio Certificado', 'SPF'],
       isActive: true,
-      isFeatured: true
-    }
+      isFeatured: true,
+    },
   });
 
   // AGUACATE HASS - Premium export avocado
@@ -898,7 +914,8 @@ async function main() {
       code: 'AGR-AGU-001', // Agricultural - Aguacate code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
-      description: 'Aguacate Hass de calidad exportación cultivado en Ecuador. Textura cremosa, sabor intenso y certificación orgánica disponible.',
+      description:
+        'Aguacate Hass de calidad exportación cultivado en Ecuador. Textura cremosa, sabor intenso y certificación orgánica disponible.',
       shortDescription: 'Aguacate Hass premium export quality',
       sku: 'AGU-HAS-001',
       specifications: {
@@ -912,8 +929,8 @@ async function main() {
           'Calibre: 70-85mm',
           'Contenido de aceite: 21-26%',
           'Vida útil: 7-14 días',
-          'Certificación orgánica disponible'
-        ]
+          'Certificación orgánica disponible',
+        ],
       },
       basePrice: 70000, // $3.50/kg * 20,000 kg per container
       priceUnit: 'container',
@@ -929,11 +946,11 @@ async function main() {
         carbs: '9g',
         fiber: '7g',
         fat: '15g',
-        potassium: '485mg'
+        potassium: '485mg',
       },
       isActive: true,
-      isFeatured: true
-    }
+      isFeatured: true,
+    },
   });
 
   // MANGO PREMIUM - Tommy Atkins variety
@@ -946,7 +963,8 @@ async function main() {
       code: 'AGR-MAN-001', // Agricultural - Mango code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
-      description: 'Mango Tommy Atkins de exportación premium cultivado en la costa ecuatoriana. Frutos grandes, dulces y con excelente vida útil postcosecha.',
+      description:
+        'Mango Tommy Atkins de exportación premium cultivado en la costa ecuatoriana. Frutos grandes, dulces y con excelente vida útil postcosecha.',
       shortDescription: 'Mango premium Tommy Atkins export quality',
       sku: 'MAN-TOM-001',
       specifications: {
@@ -960,8 +978,8 @@ async function main() {
           'Peso: 350-600g por unidad',
           'Brix: 12-16 grados',
           'Vida útil: 15-21 días',
-          'Resistente al transporte'
-        ]
+          'Resistente al transporte',
+        ],
       },
       basePrice: 54000, // $2.80/kg * 19,000 kg per container (avg for mangos)
       priceUnit: 'container',
@@ -977,11 +995,11 @@ async function main() {
         carbs: '15g',
         fiber: '1.6g',
         vitaminC: '36.4mg',
-        vitaminA: '54mcg'
+        vitaminA: '54mcg',
       },
       isActive: true,
-      isFeatured: true
-    }
+      isFeatured: true,
+    },
   });
 
   // CAFÉ ARÁBICA - Highland coffee from Ecuador
@@ -994,7 +1012,8 @@ async function main() {
       code: 'AGR-CAF-001', // Agricultural - Café code
       categoryId: agricolasCategory.id,
       measureId: container40ft.id, // Agricultural products default to 40ft containers
-      description: 'Granos de café cultivados en las montañas andinas ecuatorianas entre 1200-1800 msnm, reconocidos mundialmente por su calidad excepcional y perfil único.',
+      description:
+        'Granos de café cultivados en las montañas andinas ecuatorianas entre 1200-1800 msnm, reconocidos mundialmente por su calidad excepcional y perfil único.',
       shortDescription: 'Café arábica de altura 100% premium',
       sku: 'CAF-ARA-001',
       specifications: {
@@ -1008,8 +1027,8 @@ async function main() {
           'Proceso: Lavado',
           'Microclimas únicos',
           'Perfil: Cítrico y floral',
-          'Comercio justo certificado'
-        ]
+          'Comercio justo certificado',
+        ],
       },
       basePrice: 108360, // $6.20/kg * 17,480 kg per container (coffee standard)
       priceUnit: 'container',
@@ -1018,10 +1037,15 @@ async function main() {
       imageUrl: '/assets/images/products/cafe-arabica.jpg',
       origin: 'Ecuador',
       harvestSeason: 'Abril - Agosto',
-      certifications: ['Orgánico', 'Comercio Justo', 'Rainforest Alliance', 'SCA'],
+      certifications: [
+        'Orgánico',
+        'Comercio Justo',
+        'Rainforest Alliance',
+        'SCA',
+      ],
       isActive: true,
-      isFeatured: true
-    }
+      isFeatured: true,
+    },
   });
 
   // ATÚN FRESCO - Fresh Pacific tuna
@@ -1034,7 +1058,8 @@ async function main() {
       code: 'MAR-ATU-001', // Marine - Atún code
       categoryId: marinosCategory.id,
       measureId: pieces.id, // Marine products default to pieces
-      description: 'Atún fresco capturado en las ricas aguas del Pacífico ecuatoriano con técnicas sustentables. Procesamiento inmediato post-captura.',
+      description:
+        'Atún fresco capturado en las ricas aguas del Pacífico ecuatoriano con técnicas sustentables. Procesamiento inmediato post-captura.',
       shortDescription: 'Atún fresco captura sustentable',
       sku: 'ATU-FRE-001',
       specifications: {
@@ -1048,10 +1073,10 @@ async function main() {
           'Captura sustentable MSC',
           'Procesamiento en barco',
           'Cadena de frío garantizada',
-          'Trazabilidad completa'
-        ]
+          'Trazabilidad completa',
+        ],
       },
-      basePrice: 12.50,
+      basePrice: 12.5,
       priceUnit: 'kg',
       stockQuantity: 1500,
       minOrderQty: 50,
@@ -1064,11 +1089,11 @@ async function main() {
         protein: '23g',
         fat: '5g',
         omega3: '1.3g',
-        iron: '1.0mg'
+        iron: '1.0mg',
       },
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // CALABAZA PREMIUM - Premium pumpkin
@@ -1080,7 +1105,8 @@ async function main() {
       slug: 'calabaza-premium',
       code: 'AGR-CAL-001', // Agricultural - Calabaza code
       categoryId: agricolasCategory.id,
-      description: 'Calabaza premium cultivada con métodos orgánicos en Ecuador. Rica en nutrientes y perfecta para exportación.',
+      description:
+        'Calabaza premium cultivada con métodos orgánicos en Ecuador. Rica en nutrientes y perfecta para exportación.',
       shortDescription: 'Calabaza orgánica premium',
       sku: 'CAL-PRE-001',
       specifications: {
@@ -1088,9 +1114,13 @@ async function main() {
         variety: 'Butternut, Kabocha',
         harvest: 'Junio - Diciembre',
         packaging: 'Cajas de 10kg',
-        features: ['Cultivo orgánico', 'Rica en nutrientes', 'Vida útil extendida']
+        features: [
+          'Cultivo orgánico',
+          'Rica en nutrientes',
+          'Vida útil extendida',
+        ],
       },
-      basePrice: 1.20,
+      basePrice: 1.2,
       priceUnit: 'kg',
       stockQuantity: 2000,
       minOrderQty: 200,
@@ -1099,8 +1129,8 @@ async function main() {
       harvestSeason: 'Junio - Diciembre',
       certifications: ['Orgánico', 'GlobalGAP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // CAMOTE DULCE - Sweet potato
@@ -1112,7 +1142,8 @@ async function main() {
       slug: 'camote-dulce',
       code: 'AGR-CAM-002', // Agricultural - Camote code
       categoryId: agricolasCategory.id,
-      description: 'Camote dulce ecuatoriano rico en nutrientes y vitaminas. Cultivo sustentable en la costa.',
+      description:
+        'Camote dulce ecuatoriano rico en nutrientes y vitaminas. Cultivo sustentable en la costa.',
       shortDescription: 'Camote dulce rico en nutrientes',
       sku: 'CAM-DUL-001',
       specifications: {
@@ -1120,9 +1151,13 @@ async function main() {
         variety: 'Orange flesh, Purple',
         harvest: 'Todo el año',
         packaging: 'Cajas de 15kg',
-        features: ['Rico en vitamina A', 'Antioxidantes naturales', 'Fibra alta']
+        features: [
+          'Rico en vitamina A',
+          'Antioxidantes naturales',
+          'Fibra alta',
+        ],
       },
-      basePrice: 0.90,
+      basePrice: 0.9,
       priceUnit: 'kg',
       stockQuantity: 3000,
       minOrderQty: 300,
@@ -1131,8 +1166,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['GlobalGAP', 'HACCP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // CAÑA DE AZÚCAR - Sugar cane
@@ -1144,7 +1179,8 @@ async function main() {
       slug: 'cana-azucar',
       code: 'AGR-CAN-001', // Agricultural - Caña code
       categoryId: agricolasCategory.id,
-      description: 'Caña de azúcar ecuatoriana para procesamiento natural. Cultivo sustentable en la costa.',
+      description:
+        'Caña de azúcar ecuatoriana para procesamiento natural. Cultivo sustentable en la costa.',
       shortDescription: 'Caña de azúcar procesamiento natural',
       sku: 'CAN-AZU-001',
       specifications: {
@@ -1152,7 +1188,11 @@ async function main() {
         brix: '18-22°',
         harvest: 'Mayo - Noviembre',
         packaging: 'Atados de 25kg',
-        features: ['Alto contenido de sacarosa', 'Procesamiento natural', 'Fibra aprovechable']
+        features: [
+          'Alto contenido de sacarosa',
+          'Procesamiento natural',
+          'Fibra aprovechable',
+        ],
       },
       basePrice: 0.35,
       priceUnit: 'kg',
@@ -1163,8 +1203,8 @@ async function main() {
       harvestSeason: 'Mayo - Noviembre',
       certifications: ['GlobalGAP', 'Orgánico'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // CEBOLLA PREMIUM - Premium onion
@@ -1176,7 +1216,8 @@ async function main() {
       slug: 'cebolla-premium',
       code: 'AGR-CEB-001', // Agricultural - Cebolla code
       categoryId: agricolasCategory.id,
-      description: 'Cebolla premium de variedades selectas cultivada en Ecuador. Sabor intenso y larga conservación.',
+      description:
+        'Cebolla premium de variedades selectas cultivada en Ecuador. Sabor intenso y larga conservación.',
       shortDescription: 'Cebolla variedades selectas',
       sku: 'CEB-PRE-001',
       specifications: {
@@ -1184,7 +1225,11 @@ async function main() {
         variety: 'Red, Yellow, White',
         harvest: 'Junio - Octubre',
         packaging: 'Sacos de 25kg',
-        features: ['Variedades selectas', 'Sabor intenso', 'Larga conservación']
+        features: [
+          'Variedades selectas',
+          'Sabor intenso',
+          'Larga conservación',
+        ],
       },
       basePrice: 0.75,
       priceUnit: 'kg',
@@ -1195,8 +1240,8 @@ async function main() {
       harvestSeason: 'Junio - Octubre',
       certifications: ['GlobalGAP', 'HACCP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // CHAYOTE ORGÁNICO - Organic chayote
@@ -1208,7 +1253,8 @@ async function main() {
       slug: 'chayote-organico',
       code: 'AGR-CHA-001', // Agricultural - Chayote code
       categoryId: agricolasCategory.id,
-      description: 'Chayote orgánico certificado internacionalmente. Bajo en calorías y rico en nutrientes.',
+      description:
+        'Chayote orgánico certificado internacionalmente. Bajo en calorías y rico en nutrientes.',
       shortDescription: 'Chayote certificado internacional',
       sku: 'CHA-ORG-001',
       specifications: {
@@ -1216,9 +1262,13 @@ async function main() {
         variety: 'Verde claro, Verde oscuro',
         harvest: 'Todo el año',
         packaging: 'Cajas de 12kg',
-        features: ['Certificación orgánica', 'Bajo en calorías', 'Rico en vitamina C']
+        features: [
+          'Certificación orgánica',
+          'Bajo en calorías',
+          'Rico en vitamina C',
+        ],
       },
-      basePrice: 1.10,
+      basePrice: 1.1,
       priceUnit: 'kg',
       stockQuantity: 2500,
       minOrderQty: 250,
@@ -1227,8 +1277,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['Orgánico', 'GlobalGAP', 'HACCP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // COCO TROPICAL - Tropical coconut
@@ -1240,7 +1290,8 @@ async function main() {
       slug: 'coco-tropical',
       code: 'AGR-COC-001', // Agricultural - Coco code
       categoryId: agricolasCategory.id,
-      description: 'Coco tropical de la costa ecuatoriana. Agua de coco natural y pulpa fresca.',
+      description:
+        'Coco tropical de la costa ecuatoriana. Agua de coco natural y pulpa fresca.',
       shortDescription: 'Coco costa ecuatoriana',
       sku: 'COC-TRO-001',
       specifications: {
@@ -1248,7 +1299,7 @@ async function main() {
         variety: 'Malayo Enano, Gigante',
         harvest: 'Todo el año',
         packaging: 'Cajas de 15 unidades',
-        features: ['Agua natural', 'Pulpa fresca', 'Rico en electrolitos']
+        features: ['Agua natural', 'Pulpa fresca', 'Rico en electrolitos'],
       },
       basePrice: 0.85,
       priceUnit: 'unit',
@@ -1259,8 +1310,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['GlobalGAP', 'HACCP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // CÚRCUMA - Turmeric
@@ -1272,7 +1323,8 @@ async function main() {
       slug: 'curcuma',
       code: 'AGR-CUR-001', // Agricultural - Cúrcuma code
       categoryId: agricolasCategory.id,
-      description: 'Cúrcuma ecuatoriana con propiedades medicinales. Rica en curcumina y antioxidantes.',
+      description:
+        'Cúrcuma ecuatoriana con propiedades medicinales. Rica en curcumina y antioxidantes.',
       shortDescription: 'Cúrcuma propiedades medicinales',
       sku: 'CUR-CUM-001',
       specifications: {
@@ -1280,9 +1332,13 @@ async function main() {
         curcumin: '3-5%',
         harvest: 'Agosto - Diciembre',
         packaging: 'Cajas de 5kg',
-        features: ['Rica en curcumina', 'Propiedades antiinflamatorias', 'Antioxidante natural']
+        features: [
+          'Rica en curcumina',
+          'Propiedades antiinflamatorias',
+          'Antioxidante natural',
+        ],
       },
-      basePrice: 4.50,
+      basePrice: 4.5,
       priceUnit: 'kg',
       stockQuantity: 1000,
       minOrderQty: 50,
@@ -1291,8 +1347,8 @@ async function main() {
       harvestSeason: 'Agosto - Diciembre',
       certifications: ['Orgánico', 'GlobalGAP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // JENGIBRE FRESCO - Fresh ginger
@@ -1304,7 +1360,8 @@ async function main() {
       slug: 'jengibre-fresco',
       code: 'AGR-JEN-001', // Agricultural - Jengibre code
       categoryId: agricolasCategory.id,
-      description: 'Jengibre fresco de calidad exportación. Sabor intenso y propiedades medicinales.',
+      description:
+        'Jengibre fresco de calidad exportación. Sabor intenso y propiedades medicinales.',
       shortDescription: 'Jengibre calidad exportación',
       sku: 'JEN-FRE-001',
       specifications: {
@@ -1312,9 +1369,13 @@ async function main() {
         moisture: '80-85%',
         harvest: 'Septiembre - Enero',
         packaging: 'Cajas de 10kg',
-        features: ['Sabor intenso', 'Propiedades digestivas', 'Antiinflamatorio natural']
+        features: [
+          'Sabor intenso',
+          'Propiedades digestivas',
+          'Antiinflamatorio natural',
+        ],
       },
-      basePrice: 3.20,
+      basePrice: 3.2,
       priceUnit: 'kg',
       stockQuantity: 1500,
       minOrderQty: 100,
@@ -1323,8 +1384,8 @@ async function main() {
       harvestSeason: 'Septiembre - Enero',
       certifications: ['GlobalGAP', 'HACCP', 'Orgánico'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // Continue with more products...
@@ -1338,7 +1399,8 @@ async function main() {
       slug: 'name-tropical',
       code: 'AGR-NAM-001', // Agricultural - Ñame code
       categoryId: agricolasCategory.id,
-      description: 'Ñame tropical de variedades autóctonas ecuatorianas. Tubérculo nutritivo y versátil.',
+      description:
+        'Ñame tropical de variedades autóctonas ecuatorianas. Tubérculo nutritivo y versátil.',
       shortDescription: 'Ñame variedades autóctonas',
       sku: 'NAM-TRO-001',
       specifications: {
@@ -1346,9 +1408,13 @@ async function main() {
         variety: 'Blanco, Morado',
         harvest: 'Julio - Noviembre',
         packaging: 'Sacos de 20kg',
-        features: ['Variedades autóctonas', 'Alto contenido nutricional', 'Versátil en cocina']
+        features: [
+          'Variedades autóctonas',
+          'Alto contenido nutricional',
+          'Versátil en cocina',
+        ],
       },
-      basePrice: 1.40,
+      basePrice: 1.4,
       priceUnit: 'kg',
       stockQuantity: 2000,
       minOrderQty: 200,
@@ -1357,8 +1423,8 @@ async function main() {
       harvestSeason: 'Julio - Noviembre',
       certifications: ['GlobalGAP', 'HACCP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // ÑAMPÍ - Andean tuber
@@ -1370,7 +1436,8 @@ async function main() {
       slug: 'nampi',
       code: 'AGR-NPI-001', // Agricultural - Ñampí code
       categoryId: agricolasCategory.id,
-      description: 'Ñampí, tubérculo andino tradicional ecuatoriano. Rico en almidón y minerales.',
+      description:
+        'Ñampí, tubérculo andino tradicional ecuatoriano. Rico en almidón y minerales.',
       shortDescription: 'Ñampí tubérculo andino',
       sku: 'NAM-PI-001',
       specifications: {
@@ -1378,9 +1445,13 @@ async function main() {
         variety: 'Tradicional andino',
         harvest: 'Junio - Octubre',
         packaging: 'Sacos de 18kg',
-        features: ['Tubérculo andino', 'Rico en almidón', 'Tradicional ecuatoriano']
+        features: [
+          'Tubérculo andino',
+          'Rico en almidón',
+          'Tradicional ecuatoriano',
+        ],
       },
-      basePrice: 1.60,
+      basePrice: 1.6,
       priceUnit: 'kg',
       stockQuantity: 1500,
       minOrderQty: 150,
@@ -1389,8 +1460,8 @@ async function main() {
       harvestSeason: 'Junio - Octubre',
       certifications: ['GlobalGAP', 'Orgánico'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // PALMITO ORGÁNICO - Organic palm heart
@@ -1402,7 +1473,8 @@ async function main() {
       slug: 'palmito-organico',
       code: 'AGR-PAL-001', // Agricultural - Palmito code
       categoryId: agricolasCategory.id,
-      description: 'Palmito orgánico sustentable certificado. Cosecha responsable de palma de pejibaye.',
+      description:
+        'Palmito orgánico sustentable certificado. Cosecha responsable de palma de pejibaye.',
       shortDescription: 'Palmito sustentable certificado',
       sku: 'PAL-ORG-001',
       specifications: {
@@ -1410,9 +1482,13 @@ async function main() {
         length: '15-20cm',
         harvest: 'Todo el año',
         packaging: 'Frascos de vidrio 450g',
-        features: ['Cultivo sustentable', 'Certificación orgánica', 'Cosecha responsable']
+        features: [
+          'Cultivo sustentable',
+          'Certificación orgánica',
+          'Cosecha responsable',
+        ],
       },
-      basePrice: 8.50,
+      basePrice: 8.5,
       priceUnit: 'kg',
       stockQuantity: 800,
       minOrderQty: 50,
@@ -1421,8 +1497,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['Orgánico', 'Rainforest Alliance', 'FSC'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // PAPAYA HAWAIANA - Hawaiian papaya
@@ -1434,7 +1510,8 @@ async function main() {
       slug: 'papaya-hawaiana',
       code: 'AGR-PAP-001', // Agricultural - Papaya code
       categoryId: agricolasCategory.id,
-      description: 'Papaya hawaiana de dulzura natural cultivada en Ecuador. Rica en enzimas digestivas.',
+      description:
+        'Papaya hawaiana de dulzura natural cultivada en Ecuador. Rica en enzimas digestivas.',
       shortDescription: 'Papaya dulzura natural',
       sku: 'PAP-HAW-001',
       specifications: {
@@ -1442,9 +1519,9 @@ async function main() {
         brix: '11-13°',
         harvest: 'Todo el año',
         packaging: 'Cajas de 12kg',
-        features: ['Dulzura natural', 'Rica en papaína', 'Enzimas digestivas']
+        features: ['Dulzura natural', 'Rica en papaína', 'Enzimas digestivas'],
       },
-      basePrice: 1.80,
+      basePrice: 1.8,
       priceUnit: 'kg',
       stockQuantity: 3000,
       minOrderQty: 300,
@@ -1453,8 +1530,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['GlobalGAP', 'HACCP', 'Orgánico'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // PIÑA GOLDEN - Golden pineapple MD2
@@ -1466,7 +1543,8 @@ async function main() {
       slug: 'pina-golden',
       code: 'AGR-PIN-001', // Agricultural - Piña code
       categoryId: agricolasCategory.id,
-      description: 'Piña Golden MD2 de máxima calidad cultivada en Ecuador. Dulzura excepcional y bajo contenido ácido.',
+      description:
+        'Piña Golden MD2 de máxima calidad cultivada en Ecuador. Dulzura excepcional y bajo contenido ácido.',
       shortDescription: 'Piña MD2 máxima calidad',
       sku: 'PIN-GOL-001',
       specifications: {
@@ -1475,9 +1553,13 @@ async function main() {
         variety: 'MD2 Golden',
         harvest: 'Todo el año',
         packaging: 'Cajas de 12kg',
-        features: ['Variedad MD2', 'Dulzura excepcional', 'Bajo contenido ácido']
+        features: [
+          'Variedad MD2',
+          'Dulzura excepcional',
+          'Bajo contenido ácido',
+        ],
       },
-      basePrice: 2.20,
+      basePrice: 2.2,
       priceUnit: 'kg',
       stockQuantity: 4000,
       minOrderQty: 400,
@@ -1486,8 +1568,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['GlobalGAP', 'HACCP', 'Rainforest Alliance'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // PLÁTANO VERDE - Green plantain
@@ -1499,7 +1581,8 @@ async function main() {
       slug: 'platano-verde',
       code: 'AGR-PLA-001', // Agricultural - Plátano code
       categoryId: agricolasCategory.id,
-      description: 'Plátano verde ecuatoriano para exportación. Ideal para procesamiento industrial y consumo.',
+      description:
+        'Plátano verde ecuatoriano para exportación. Ideal para procesamiento industrial y consumo.',
       shortDescription: 'Plátano verde para exportación',
       sku: 'PLA-VER-001',
       specifications: {
@@ -1507,9 +1590,13 @@ async function main() {
         length: '20-25cm',
         harvest: 'Todo el año',
         packaging: 'Cajas de 18kg',
-        features: ['Para exportación', 'Procesamiento industrial', 'Rico en almidón']
+        features: [
+          'Para exportación',
+          'Procesamiento industrial',
+          'Rico en almidón',
+        ],
       },
-      basePrice: 0.70,
+      basePrice: 0.7,
       priceUnit: 'kg',
       stockQuantity: 8000,
       minOrderQty: 1000,
@@ -1518,8 +1605,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['GlobalGAP', 'HACCP', 'Rainforest Alliance'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // YUCA PREMIUM - Premium cassava
@@ -1531,7 +1618,8 @@ async function main() {
       slug: 'yuca-premium',
       code: 'AGR-YUC-001', // Agricultural - Yuca code
       categoryId: agricolasCategory.id,
-      description: 'Yuca premium para procesamiento industrial. Tubérculo versátil y nutritivo.',
+      description:
+        'Yuca premium para procesamiento industrial. Tubérculo versátil y nutritivo.',
       shortDescription: 'Yuca procesamiento industrial',
       sku: 'YUC-PRE-001',
       specifications: {
@@ -1539,9 +1627,13 @@ async function main() {
         diameter: '3-8cm',
         harvest: 'Todo el año',
         packaging: 'Sacos de 25kg',
-        features: ['Procesamiento industrial', 'Alto contenido de almidón', 'Versátil uso']
+        features: [
+          'Procesamiento industrial',
+          'Alto contenido de almidón',
+          'Versátil uso',
+        ],
       },
-      basePrice: 0.60,
+      basePrice: 0.6,
       priceUnit: 'kg',
       stockQuantity: 6000,
       minOrderQty: 1000,
@@ -1550,8 +1642,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['GlobalGAP', 'HACCP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // ÁRBOLES DE MANGO - Mango trees
@@ -1563,7 +1655,8 @@ async function main() {
       slug: 'arboles-mango',
       code: 'OTR-ARB-001', // Other Products - Árboles code
       categoryId: otrosCategory.id,
-      description: 'Árboles de mango de variedades tropicales para cultivo. Plantas certificadas y adaptadas.',
+      description:
+        'Árboles de mango de variedades tropicales para cultivo. Plantas certificadas y adaptadas.',
       shortDescription: 'Árboles mango variedades tropicales',
       sku: 'ARB-MAN-001',
       specifications: {
@@ -1571,9 +1664,13 @@ async function main() {
         varieties: 'Tommy Atkins, Kent, Keitt',
         age: '6-12 meses',
         packaging: 'Bolsas individuales',
-        features: ['Variedades tropicales', 'Plantas certificadas', 'Adaptadas al clima']
+        features: [
+          'Variedades tropicales',
+          'Plantas certificadas',
+          'Adaptadas al clima',
+        ],
       },
-      basePrice: 15.00,
+      basePrice: 15.0,
       priceUnit: 'unit',
       stockQuantity: 500,
       minOrderQty: 50,
@@ -1582,8 +1679,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['SENASA', 'Fitosanitario'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // ÁRBOLES DE AGUACATE - Avocado trees
@@ -1595,7 +1692,8 @@ async function main() {
       slug: 'arboles-aguacate',
       code: 'OTR-AGU-001', // Other Products - Aguacate trees code
       categoryId: otrosCategory.id,
-      description: 'Árboles de aguacate Hass y criollos para cultivo comercial. Plantas injertadas certificadas.',
+      description:
+        'Árboles de aguacate Hass y criollos para cultivo comercial. Plantas injertadas certificadas.',
       shortDescription: 'Árboles aguacate Hass y criollos',
       sku: 'ARB-AGU-001',
       specifications: {
@@ -1603,9 +1701,13 @@ async function main() {
         varieties: 'Hass, Fuerte, Criollo',
         age: '8-18 meses',
         packaging: 'Contenedores individuales',
-        features: ['Plantas injertadas', 'Certificación fitosanitaria', 'Variedades comerciales']
+        features: [
+          'Plantas injertadas',
+          'Certificación fitosanitaria',
+          'Variedades comerciales',
+        ],
       },
-      basePrice: 18.00,
+      basePrice: 18.0,
       priceUnit: 'unit',
       stockQuantity: 400,
       minOrderQty: 25,
@@ -1614,8 +1716,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['SENASA', 'Fitosanitario'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // ÁRBOLES CÍTRICOS - Citrus trees
@@ -1627,7 +1729,8 @@ async function main() {
       slug: 'arboles-citricos',
       code: 'OTR-CIT-001', // Other Products - Cítricos code
       categoryId: otrosCategory.id,
-      description: 'Árboles cítricos: naranja, limón, mandarina para cultivo comercial. Variedades adaptadas.',
+      description:
+        'Árboles cítricos: naranja, limón, mandarina para cultivo comercial. Variedades adaptadas.',
       shortDescription: 'Árboles naranja, limón, mandarina',
       sku: 'ARB-CIT-001',
       specifications: {
@@ -1635,9 +1738,13 @@ async function main() {
         varieties: 'Naranja Valencia, Limón Tahití, Mandarina',
         age: '6-15 meses',
         packaging: 'Bolsas individuales',
-        features: ['Variedades comerciales', 'Adaptadas al trópico', 'Certificación sanitaria']
+        features: [
+          'Variedades comerciales',
+          'Adaptadas al trópico',
+          'Certificación sanitaria',
+        ],
       },
-      basePrice: 12.00,
+      basePrice: 12.0,
       priceUnit: 'unit',
       stockQuantity: 600,
       minOrderQty: 50,
@@ -1646,8 +1753,8 @@ async function main() {
       harvestSeason: 'Todo el año',
       certifications: ['SENASA', 'Fitosanitario'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // NUECES DE MACADAMIA - Macadamia nuts
@@ -1659,7 +1766,8 @@ async function main() {
       slug: 'nueces-macadamia',
       code: 'OTR-MAC-001', // Other Products - Macadamia code
       categoryId: otrosCategory.id,
-      description: 'Nueces de macadamia de cultivo especializado en Ecuador. Premium quality con certificación.',
+      description:
+        'Nueces de macadamia de cultivo especializado en Ecuador. Premium quality con certificación.',
       shortDescription: 'Nueces macadamia cultivo especializado',
       sku: 'NUE-MAC-001',
       specifications: {
@@ -1667,9 +1775,13 @@ async function main() {
         moisture: '1.5% máximo',
         harvest: 'Marzo - Agosto',
         packaging: 'Bolsas vacuum 5kg',
-        features: ['Cultivo especializado', 'Premium quality', 'Procesamiento artesanal']
+        features: [
+          'Cultivo especializado',
+          'Premium quality',
+          'Procesamiento artesanal',
+        ],
       },
-      basePrice: 25.00,
+      basePrice: 25.0,
       priceUnit: 'kg',
       stockQuantity: 300,
       minOrderQty: 20,
@@ -1678,8 +1790,8 @@ async function main() {
       harvestSeason: 'Marzo - Agosto',
       certifications: ['Orgánico', 'GlobalGAP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // NUECES PECANAS - Pecan nuts
@@ -1691,7 +1803,8 @@ async function main() {
       slug: 'nueces-pecanas',
       code: 'OTR-PEC-001', // Other Products - Pecanas code
       categoryId: otrosCategory.id,
-      description: 'Nueces pecanas adaptadas al trópico ecuatoriano. Cultivo innovador con técnicas especializadas.',
+      description:
+        'Nueces pecanas adaptadas al trópico ecuatoriano. Cultivo innovador con técnicas especializadas.',
       shortDescription: 'Nueces pecanas adaptadas al trópico',
       sku: 'NUE-PEC-001',
       specifications: {
@@ -1699,9 +1812,13 @@ async function main() {
         moisture: '3% máximo',
         harvest: 'Abril - Septiembre',
         packaging: 'Bolsas vacuum 5kg',
-        features: ['Adaptadas al trópico', 'Cultivo innovador', 'Técnicas especializadas']
+        features: [
+          'Adaptadas al trópico',
+          'Cultivo innovador',
+          'Técnicas especializadas',
+        ],
       },
-      basePrice: 22.00,
+      basePrice: 22.0,
       priceUnit: 'kg',
       stockQuantity: 200,
       minOrderQty: 15,
@@ -1710,8 +1827,8 @@ async function main() {
       harvestSeason: 'Abril - Septiembre',
       certifications: ['Orgánico', 'GlobalGAP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
   // ALMENDRAS TROPICALES - Tropical almonds
@@ -1723,7 +1840,8 @@ async function main() {
       slug: 'almendras-tropicales',
       code: 'OTR-ALM-001', // Other Products - Almendras code
       categoryId: otrosCategory.id,
-      description: 'Almendras tropicales de variedades ecuatorianas. Cultivo tradicional con métodos modernos.',
+      description:
+        'Almendras tropicales de variedades ecuatorianas. Cultivo tradicional con métodos modernos.',
       shortDescription: 'Almendras variedades ecuatorianas',
       sku: 'ALM-TRO-001',
       specifications: {
@@ -1731,9 +1849,13 @@ async function main() {
         moisture: '4% máximo',
         harvest: 'Febrero - Julio',
         packaging: 'Bolsas vacuum 5kg',
-        features: ['Variedades ecuatorianas', 'Cultivo tradicional', 'Métodos modernos']
+        features: [
+          'Variedades ecuatorianas',
+          'Cultivo tradicional',
+          'Métodos modernos',
+        ],
       },
-      basePrice: 18.00,
+      basePrice: 18.0,
       priceUnit: 'kg',
       stockQuantity: 400,
       minOrderQty: 25,
@@ -1742,23 +1864,35 @@ async function main() {
       harvestSeason: 'Febrero - Julio',
       certifications: ['Orgánico', 'GlobalGAP'],
       isActive: true,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   });
 
-  console.log('✅ Comprehensive Ecuadorian export database seeded successfully!');
+  console.log(
+    '✅ Comprehensive Ecuadorian export database seeded successfully!'
+  );
   console.log('📊 Created:');
-  console.log('  - 3 Ecuadorian export categories: Agrícolas, Marinos y de la Pesca, Otros Productos');
-  console.log('  - 26 premium export products: Complete catalog matching page.tsx products');
+  console.log(
+    '  - 3 Ecuadorian export categories: Agrícolas, Marinos y de la Pesca, Otros Productos'
+  );
+  console.log(
+    '  - 26 premium export products: Complete catalog matching page.tsx products'
+  );
   console.log('  - 2 admin users with contact details');
-  console.log('  - All products include detailed specifications, certifications, and export standards');
-  console.log('  - Categories reflect Ecuador\'s main export industries and products');
-  console.log('  - Larvas de Camarón correctly categorized under Marinos y de la Pesca');
+  console.log(
+    '  - All products include detailed specifications, certifications, and export standards'
+  );
+  console.log(
+    "  - Categories reflect Ecuador's main export industries and products"
+  );
+  console.log(
+    '  - Larvas de Camarón correctly categorized under Marinos y de la Pesca'
+  );
   console.log('  - All products from static page now available in database');
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('❌ Seed failed:', e);
     process.exit(1);
   })

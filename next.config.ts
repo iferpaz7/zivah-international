@@ -1,4 +1,4 @@
-import type { NextConfig } from 'next'
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   // React optimizations
@@ -17,7 +17,11 @@ const nextConfig: NextConfig = {
 
   // Image optimization
   images: {
-    domains: ['localhost', 'zivahinternational.com', 'www.zivahinternational.com'],
+    domains: [
+      'localhost',
+      'zivahinternational.com',
+      'www.zivahinternational.com',
+    ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -54,7 +58,8 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=300, s-maxage=600, stale-while-revalidate=86400',
+            value:
+              'public, max-age=300, s-maxage=600, stale-while-revalidate=86400',
           },
         ],
       },
@@ -76,14 +81,14 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-    ]
+    ];
   },
 
   // Webpack optimizations
   webpack: (config, { dev, isServer }) => {
     // Optimize bundle splitting
     if (!dev && !isServer) {
-      config.optimization.splitChunks.chunks = 'all'
+      config.optimization.splitChunks.chunks = 'all';
       config.optimization.splitChunks.cacheGroups = {
         ...config.optimization.splitChunks.cacheGroups,
         vendor: {
@@ -98,23 +103,23 @@ const nextConfig: NextConfig = {
           chunks: 'all',
           priority: 20,
         },
-      }
+      };
     }
 
     // Add bundle analyzer in development
     if (dev && !isServer) {
-      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
       if (process.env.ANALYZE === 'true') {
         config.plugins.push(
           new BundleAnalyzerPlugin({
             analyzerMode: 'server',
             openAnalyzer: true,
           })
-        )
+        );
       }
     }
 
-    return config
+    return config;
   },
 
   // Enable source maps in production for debugging
@@ -137,6 +142,6 @@ const nextConfig: NextConfig = {
 
   // Fix workspace root warning
   outputFileTracingRoot: __dirname,
-}
+};
 
-export default nextConfig
+export default nextConfig;

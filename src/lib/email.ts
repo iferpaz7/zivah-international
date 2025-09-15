@@ -34,7 +34,10 @@ class EmailService {
     });
   }
 
-  async sendQuoteEmail(quoteData: QuoteEmailData, recipientEmail: string): Promise<boolean> {
+  async sendQuoteEmail(
+    quoteData: QuoteEmailData,
+    recipientEmail: string
+  ): Promise<boolean> {
     try {
       const htmlContent = this.generateQuoteHTML(quoteData);
 
@@ -46,23 +49,33 @@ class EmailService {
       };
 
       const info = await this.transporter.sendMail(mailOptions);
-      logger.info('Quote email sent successfully', { quoteId: quoteData.quoteId, messageId: info.messageId });
+      logger.info('Quote email sent successfully', {
+        quoteId: quoteData.quoteId,
+        messageId: info.messageId,
+      });
       return true;
     } catch (error) {
-      logger.error('Failed to send quote email', { error: error instanceof Error ? error.message : String(error), quoteId: quoteData.quoteId });
+      logger.error('Failed to send quote email', {
+        error: error instanceof Error ? error.message : String(error),
+        quoteId: quoteData.quoteId,
+      });
       return false;
     }
   }
 
   private generateQuoteHTML(data: QuoteEmailData): string {
-    const itemsHTML = data.items.map(item => `
+    const itemsHTML = data.items
+      .map(
+        item => `
       <tr>
         <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.productName}</td>
         <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity}</td>
         <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${data.currency} ${item.unitPrice.toFixed(2)}</td>
         <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${data.currency} ${item.totalPrice.toFixed(2)}</td>
       </tr>
-    `).join('');
+    `
+      )
+      .join('');
 
     return `
       <!DOCTYPE html>
@@ -97,22 +110,30 @@ class EmailService {
             <tbody>
               ${itemsHTML}
             </tbody>
-            ${data.totalAmount ? `
+            ${
+              data.totalAmount
+                ? `
             <tfoot>
               <tr style="background: #ecf0f1;">
                 <td colspan="3" style="padding: 10px; text-align: right; font-weight: bold;">Total:</td>
                 <td style="padding: 10px; text-align: right; font-weight: bold; font-size: 18px;">${data.currency} ${data.totalAmount.toFixed(2)}</td>
               </tr>
             </tfoot>
-            ` : ''}
+            `
+                : ''
+            }
           </table>
 
-          ${data.message ? `
+          ${
+            data.message
+              ? `
           <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
             <h3>Mensaje del Cliente:</h3>
             <p>${data.message}</p>
           </div>
-          ` : ''}
+          `
+              : ''
+          }
 
           <div style="background: #d4edda; padding: 15px; border-radius: 5px;">
             <h3>Información de Contacto:</h3>

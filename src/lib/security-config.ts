@@ -72,11 +72,21 @@ export const securityConfig = {
     },
     csp: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://www.googletagmanager.com', 'https://www.google-analytics.com'],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "'unsafe-eval'",
+        'https://www.googletagmanager.com',
+        'https://www.google-analytics.com',
+      ],
       styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
-      connectSrc: ["'self'", 'https://www.google-analytics.com', 'https://www.googletagmanager.com'],
+      connectSrc: [
+        "'self'",
+        'https://www.google-analytics.com',
+        'https://www.googletagmanager.com',
+      ],
       frameSrc: ["'none'"],
       objectSrc: ["'none'"],
       baseUri: ["'self'"],
@@ -137,20 +147,20 @@ export const securityConfig = {
     rateLimitViolations: true,
     suspiciousActivity: true,
   },
-}
+};
 
 // Environment-specific overrides
 if (process.env.NODE_ENV === 'development') {
   // Relax some restrictions for development
-  securityConfig.cors.allowedOrigins.push('http://localhost:3000')
-  securityConfig.headers.csp.upgradeInsecureRequests = false
-  securityConfig.headers.hsts.maxAge = 0
+  securityConfig.cors.allowedOrigins.push('http://localhost:3000');
+  securityConfig.headers.csp.upgradeInsecureRequests = false;
+  securityConfig.headers.hsts.maxAge = 0;
 }
 
 if (process.env.NODE_ENV === 'test') {
   // Minimal security for testing
-  securityConfig.rateLimit.maxRequests = 1000
-  securityConfig.formLimits.maxSubmissions = 100
+  securityConfig.rateLimit.maxRequests = 1000;
+  securityConfig.formLimits.maxSubmissions = 100;
 }
 
-export default securityConfig
+export default securityConfig;

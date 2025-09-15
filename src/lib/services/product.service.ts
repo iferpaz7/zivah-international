@@ -1,10 +1,19 @@
 import { prisma } from '@/lib/prisma';
-import { Product, Category, ProductFilters, CreateProductInput, UpdateProductInput, PaginatedResponse } from '@/types';
+import {
+  Product,
+  Category,
+  ProductFilters,
+  CreateProductInput,
+  UpdateProductInput,
+  PaginatedResponse,
+} from '@/types';
 import type { Prisma } from '@prisma/client';
 
 export class ProductService {
   // Get paginated products with filters
-  static async getProducts(filters: ProductFilters = {}): Promise<PaginatedResponse<Product>> {
+  static async getProducts(
+    filters: ProductFilters = {}
+  ): Promise<PaginatedResponse<Product>> {
     const {
       categoryId,
       isActive,
@@ -16,7 +25,7 @@ export class ProductService {
       certifications,
       inStock,
       page = 1,
-      pageSize = 10
+      pageSize = 10,
     } = filters;
 
     const where: Prisma.ProductWhereInput = {};
@@ -38,7 +47,7 @@ export class ProductService {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
         { description: { contains: search, mode: 'insensitive' } },
-        { shortDescription: { contains: search, mode: 'insensitive' } }
+        { shortDescription: { contains: search, mode: 'insensitive' } },
       ];
     }
 
@@ -46,7 +55,7 @@ export class ProductService {
     if (certifications && certifications.length > 0) {
       where.certifications = {
         path: ['$'],
-        array_contains: certifications
+        array_contains: certifications,
       };
     }
 
@@ -58,17 +67,14 @@ export class ProductService {
         include: {
           category: true,
           _count: {
-            select: { quoteItems: true }
-          }
+            select: { quoteItems: true },
+          },
         },
-        orderBy: [
-          { isFeatured: 'desc' },
-          { createdAt: 'desc' }
-        ],
+        orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
         skip,
-        take: pageSize
+        take: pageSize,
       }),
-      prisma.product.count({ where })
+      prisma.product.count({ where }),
     ]);
 
     const totalPages = Math.ceil(total / pageSize);
@@ -81,8 +87,8 @@ export class ProductService {
         total,
         totalPages,
         hasNext: page < totalPages,
-        hasPrev: page > 1
-      }
+        hasPrev: page > 1,
+      },
     };
   }
 
@@ -94,16 +100,16 @@ export class ProductService {
         category: true,
         variants: {
           where: { isActive: true },
-          orderBy: { id: 'asc' }
+          orderBy: { id: 'asc' },
         },
         quoteItems: {
           include: {
-            quote: true
+            quote: true,
           },
           take: 10,
-          orderBy: { createdAt: 'desc' }
-        }
-      }
+          orderBy: { createdAt: 'desc' },
+        },
+      },
     });
 
     return product as Product | null;
@@ -117,9 +123,9 @@ export class ProductService {
         category: true,
         variants: {
           where: { isActive: true },
-          orderBy: { id: 'asc' }
-        }
-      }
+          orderBy: { id: 'asc' },
+        },
+      },
     });
 
     return product as Product | null;
@@ -130,36 +136,36 @@ export class ProductService {
     const products = await prisma.product.findMany({
       where: {
         isActive: true,
-        isFeatured: true
+        isFeatured: true,
       },
       include: {
-        category: true
+        category: true,
       },
       orderBy: { createdAt: 'desc' },
-      take: limit
+      take: limit,
     });
 
     return products as Product[];
   }
 
   // Get products by category
-  static async getProductsByCategory(categorySlug: string, limit?: number): Promise<Product[]> {
+  static async getProductsByCategory(
+    categorySlug: string,
+    limit?: number
+  ): Promise<Product[]> {
     const products = await prisma.product.findMany({
       where: {
         isActive: true,
         category: {
           slug: categorySlug,
-          isActive: true
-        }
+          isActive: true,
+        },
       },
       include: {
-        category: true
+        category: true,
       },
-      orderBy: [
-        { isFeatured: 'desc' },
-        { createdAt: 'desc' }
-      ],
-      ...(limit && { take: limit })
+      orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
+      ...(limit && { take: limit }),
     });
 
     return products as Product[];
@@ -178,15 +184,18 @@ export class ProductService {
     const product = await prisma.product.create({
       data: data as Prisma.ProductCreateInput,
       include: {
-        category: true
-      }
+        category: true,
+      },
     });
 
     return product as Product;
   }
 
   // Update product
-  static async updateProduct(id: number, data: UpdateProductInput): Promise<Product> {
+  static async updateProduct(
+    id: number,
+    data: UpdateProductInput
+  ): Promise<Product> {
     // If name is being updated and no slug provided, regenerate slug
     if (data.name && !data.slug) {
       data.slug = this.generateSlug(data.name);
@@ -197,8 +206,8 @@ export class ProductService {
       where: { id },
       data: data as Prisma.ProductUpdateInput,
       include: {
-        category: true
-      }
+        category: true,
+      },
     });
 
     return product as Product;
@@ -209,7 +218,7 @@ export class ProductService {
     try {
       await prisma.product.update({
         where: { id },
-        data: { isActive: false }
+        data: { isActive: false },
       });
       return true;
     } catch (error) {
@@ -224,8 +233,8 @@ export class ProductService {
       where: { id },
       data: { stockQuantity: quantity },
       include: {
-        category: true
-      }
+        category: true,
+      },
     });
 
     return product as Product;
@@ -238,37 +247,37 @@ export class ProductService {
         isActive: true,
         stockQuantity: {
           lte: threshold,
-          gt: 0
-        }
+          gt: 0,
+        },
       },
       include: {
-        category: true
+        category: true,
       },
-      orderBy: { stockQuantity: 'asc' }
+      orderBy: { stockQuantity: 'asc' },
     });
 
     return products as Product[];
   }
 
   // Search products with full-text search
-  static async searchProducts(query: string, limit: number = 20): Promise<Product[]> {
+  static async searchProducts(
+    query: string,
+    limit: number = 20
+  ): Promise<Product[]> {
     const products = await prisma.product.findMany({
       where: {
         isActive: true,
         OR: [
           { name: { contains: query, mode: 'insensitive' } },
           { description: { contains: query, mode: 'insensitive' } },
-          { shortDescription: { contains: query, mode: 'insensitive' } }
-        ]
+          { shortDescription: { contains: query, mode: 'insensitive' } },
+        ],
       },
       include: {
-        category: true
+        category: true,
       },
-      orderBy: [
-        { isFeatured: 'desc' },
-        { name: 'asc' }
-      ],
-      take: limit
+      orderBy: [{ isFeatured: 'desc' }, { name: 'asc' }],
+      take: limit,
     });
 
     return products as Product[];
@@ -282,33 +291,35 @@ export class ProductService {
       featuredProducts,
       categoriesCount,
       lowStockCount,
-      topSellingProducts
+      topSellingProducts,
     ] = await Promise.all([
       prisma.product.count(),
       prisma.product.count({ where: { isActive: true } }),
       prisma.product.count({ where: { isActive: true, isFeatured: true } }),
       prisma.category.count({ where: { isActive: true } }),
-      prisma.product.count({ where: { isActive: true, stockQuantity: { lte: 10, gt: 0 } } }),
+      prisma.product.count({
+        where: { isActive: true, stockQuantity: { lte: 10, gt: 0 } },
+      }),
       prisma.product.findMany({
         include: {
           _count: {
-            select: { quoteItems: true }
-          }
+            select: { quoteItems: true },
+          },
         },
         orderBy: {
           quoteItems: {
-            _count: 'desc'
-          }
+            _count: 'desc',
+          },
         },
-        take: 5
-      })
+        take: 5,
+      }),
     ]);
 
     const totalValue = await prisma.product.aggregate({
       where: { isActive: true, basePrice: { not: null } },
       _sum: {
-        basePrice: true
-      }
+        basePrice: true,
+      },
     });
 
     return {
@@ -322,8 +333,8 @@ export class ProductService {
         productId: product.id,
         productName: product.name,
         quotesCount: (product as any)._count.quoteItems,
-        totalQuantity: 0 // Would need separate query for actual quantities
-      }))
+        totalQuantity: 0, // Would need separate query for actual quantities
+      })),
     };
   }
 
@@ -336,7 +347,10 @@ export class ProductService {
       .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
   }
 
-  private static async ensureUniqueSlug(slug: string, excludeId?: number): Promise<string> {
+  private static async ensureUniqueSlug(
+    slug: string,
+    excludeId?: number
+  ): Promise<string> {
     let uniqueSlug = slug;
     let counter = 1;
 
@@ -344,8 +358,8 @@ export class ProductService {
       const existing = await prisma.product.findFirst({
         where: {
           slug: uniqueSlug,
-          ...(excludeId && { id: { not: excludeId } })
-        }
+          ...(excludeId && { id: { not: excludeId } }),
+        },
       });
 
       if (!existing) break;

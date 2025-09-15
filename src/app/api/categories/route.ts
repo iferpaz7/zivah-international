@@ -6,10 +6,10 @@ import { z } from 'zod';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    
+
     const includeProducts = searchParams.get('includeProducts') === 'true';
     const isActive = searchParams.get('isActive');
-    
+
     const where: any = {};
     if (isActive !== null) {
       where.isActive = isActive === 'true';
@@ -22,47 +22,46 @@ export async function GET(request: NextRequest) {
           select: {
             products: {
               where: {
-                isActive: true
-              }
-            }
-          }
+                isActive: true,
+              },
+            },
+          },
         },
         ...(includeProducts && {
           products: {
             where: {
-              isActive: true
+              isActive: true,
             },
             select: {
               id: true,
               name: true,
               slug: true,
               basePrice: true,
-              isFeatured: true
+              isFeatured: true,
             },
-            take: 5
-          }
-        })
+            take: 5,
+          },
+        }),
       },
-      orderBy: [
-        { isActive: 'desc' },
-        { name: 'asc' }
-      ]
+      orderBy: [{ isActive: 'desc' }, { name: 'asc' }],
     });
 
     return NextResponse.json({
       error: false,
       data: categories,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error('Error fetching categories:', error);
-    
-    return NextResponse.json({
-      error: true,
-      message: 'Error interno del servidor al obtener categorías',
-      timestamp: new Date().toISOString()
-    }, { status: 500 });
+
+    return NextResponse.json(
+      {
+        error: true,
+        message: 'Error interno del servidor al obtener categorías',
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -70,7 +69,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const validatedData = createCategorySchema.parse(body);
-    
+
     // Auto-generate slug if not provided
     if (!validatedData.slug) {
       validatedData.slug = validatedData.name
@@ -79,18 +78,21 @@ export async function POST(request: NextRequest) {
         .replace(/\s+/g, '-')
         .trim();
     }
-    
+
     // Check if slug is unique
     const existingCategory = await prisma.category.findUnique({
-      where: { slug: validatedData.slug }
+      where: { slug: validatedData.slug },
     });
 
     if (existingCategory) {
-      return NextResponse.json({
-        error: true,
-        message: 'Ya existe una categoría con este slug',
-        timestamp: new Date().toISOString()
-      }, { status: 409 });
+      return NextResponse.json(
+        {
+          error: true,
+          message: 'Ya existe una categoría con este slug',
+          timestamp: new Date().toISOString(),
+        },
+        { status: 409 }
+      );
     }
 
     const category = await prisma.category.create({
@@ -98,35 +100,43 @@ export async function POST(request: NextRequest) {
       include: {
         _count: {
           select: {
-            products: true
-          }
-        }
-      }
+            products: true,
+          },
+        },
+      },
     });
 
-    return NextResponse.json({
-      error: false,
-      data: category,
-      message: 'Categoría creada exitosamente',
-      timestamp: new Date().toISOString()
-    }, { status: 201 });
-
+    return NextResponse.json(
+      {
+        error: false,
+        data: category,
+        message: 'Categoría creada exitosamente',
+        timestamp: new Date().toISOString(),
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error('Error creating category:', error);
-    
+
     if (error instanceof z.ZodError) {
-      return NextResponse.json({
-        error: true,
-        message: 'Datos de categoría inválidos',
-        details: error.issues,
-        timestamp: new Date().toISOString()
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: true,
+          message: 'Datos de categoría inválidos',
+          details: error.issues,
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({
-      error: true,
-      message: 'Error interno del servidor al crear categoría',
-      timestamp: new Date().toISOString()
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: true,
+        message: 'Error interno del servidor al crear categoría',
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 }
+    );
   }
 }

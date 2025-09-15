@@ -47,7 +47,13 @@ class Logger {
   }
 
   // Request logging middleware helper
-  logRequest(method: string, url: string, statusCode: number, duration: number, userId?: string) {
+  logRequest(
+    method: string,
+    url: string,
+    statusCode: number,
+    duration: number,
+    userId?: string
+  ) {
     const level = statusCode >= 400 ? LogLevel.WARN : LogLevel.INFO;
     const message = `${method} ${url} ${statusCode} ${duration}ms`;
     const meta = userId ? { userId } : undefined;

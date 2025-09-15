@@ -63,14 +63,14 @@ export enum QuoteStatus {
   ACCEPTED = 'ACCEPTED',
   REJECTED = 'REJECTED',
   CLOSED = 'CLOSED',
-  EXPIRED = 'EXPIRED'
+  EXPIRED = 'EXPIRED',
 }
 
 export enum QuotePriority {
   LOW = 'LOW',
   NORMAL = 'NORMAL',
   HIGH = 'HIGH',
-  URGENT = 'URGENT'
+  URGENT = 'URGENT',
 }
 
 export interface Quote extends BaseEntity {
@@ -115,7 +115,7 @@ export enum CommunicationType {
   EMAIL = 'EMAIL',
   PHONE = 'PHONE',
   NOTE = 'NOTE',
-  SYSTEM = 'SYSTEM'
+  SYSTEM = 'SYSTEM',
 }
 
 export interface QuoteCommunication {
@@ -137,7 +137,7 @@ export enum UserRole {
   ADMIN = 'ADMIN',
   MANAGER = 'MANAGER',
   SALES = 'SALES',
-  VIEWER = 'VIEWER'
+  VIEWER = 'VIEWER',
 }
 
 export interface User extends BaseEntity {
@@ -166,7 +166,7 @@ export enum SettingType {
   JSON = 'JSON',
   EMAIL = 'EMAIL',
   URL = 'URL',
-  IMAGE = 'IMAGE'
+  IMAGE = 'IMAGE',
 }
 
 export interface SiteSetting {
@@ -498,7 +498,7 @@ export enum MeasureType {
   LENGTH = 'LENGTH',
   AREA = 'AREA',
   QUANTITY = 'QUANTITY',
-  CONTAINER = 'CONTAINER'
+  CONTAINER = 'CONTAINER',
 }
 
 export interface Measure extends BaseEntity {
