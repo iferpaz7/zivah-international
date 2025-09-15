@@ -6,10 +6,17 @@ Modern Next.js website for **ZIVAH International S.A.**, premium Ecuadorian prod
 
 ### 🚀 **Tech Stack**
 - **Framework**: Next.js 15.5.3 with App Router
-- **Database**: PostgreSQL with Prisma ORM
+- **Database**: PostgreSQL with Prisma ORM 6.16.1
+- **Authentication**: NextAuth.js 4.24.11
 - **Styling**: Tailwind CSS 4.1.13 with custom theme
-- **Language**: TypeScript
-- **Features**: Dark/Light mode, Smooth scrolling, Glass morphism effects
+- **Language**: TypeScript 5.9.2 with strict mode
+- **State Management**: React hooks with context
+- **Forms**: React Hook Form with Zod validation
+- **Email**: Nodemailer for contact forms
+- **Analytics**: Google Analytics 4 with custom events
+- **Performance**: Web Vitals monitoring
+- **Security**: Rate limiting, input validation, HTTPS
+- **PWA**: Service worker with offline functionality
 - **Deployment**: cPanel Node.js hosting compatible
 
 ### 🏗️ **Project Structure**
@@ -21,19 +28,44 @@ zivah-international/
 │   │   ├── globals.css        # Global styles with theme variables
 │   │   ├── layout.tsx         # Root layout with theme provider
 │   │   ├── page.tsx           # Homepage with dynamic content
+│   │   ├── sitemap.ts         # Dynamic sitemap generation
+│   │   ├── legal/             # Legal pages (privacy, terms, etc.)
 │   │   └── api/               # API routes
+│   │       ├── auth/          # NextAuth authentication
 │   │       ├── categories/    # Product categories endpoint
+│   │       ├── contact/       # Contact form endpoint
 │   │       ├── products/      # Products endpoint
-│   │       ├── quotes/        # Quote requests endpoint
-│   │       └── contact/       # Contact form endpoint
+│   │       └── quotes/        # Quote requests endpoint
 │   ├── components/            # React components
+│   │   ├── Analytics.tsx      # Google Analytics integration
+│   │   ├── BusinessIntelligence.tsx # Business tracking
+│   │   ├── CookieConsent.tsx  # GDPR cookie consent
+│   │   ├── ErrorHandling.tsx  # Error boundaries and loading states
+│   │   ├── LazyLoad.tsx       # Lazy loading utilities
+│   │   ├── Navigation.tsx     # Navigation component
+│   │   ├── OptimizedImage.tsx # Image optimization
+│   │   ├── QuoteForm.tsx      # Quote request form
+│   │   ├── SEO.tsx           # SEO optimization
+│   │   ├── SEOOptimization.tsx # Comprehensive SEO suite
+│   │   ├── ServiceWorker.tsx  # PWA service worker
 │   │   ├── ThemeProvider.tsx  # Theme context provider
-│   │   ├── ClientThemeProvider.tsx # Client wrapper
-│   │   └── ThemeToggle.tsx    # Dark/light mode toggle
+│   │   ├── ThemeToggle.tsx    # Dark/light mode toggle
+│   │   ├── WebVitals.tsx      # Core Web Vitals monitoring
+│   │   └── index.ts          # Component exports
 │   ├── lib/                   # Utilities and services
+│   │   ├── auth.ts           # Authentication utilities
+│   │   ├── email.ts          # Email service
+│   │   ├── errors.ts         # Error handling utilities
+│   │   ├── https.ts          # HTTPS and security utilities
+│   │   ├── logger.ts         # Logging utilities
 │   │   ├── prisma.ts         # Database client
+│   │   ├── rate-limit.ts     # Rate limiting
+│   │   ├── security.ts       # Security middleware
 │   │   ├── utils.ts          # Helper functions
-│   │   └── services/         # Business logic
+│   │   ├── validation.ts     # Input validation
+│   │   ├── services/         # Business logic services
+│   │   └── validations/      # Validation schemas
+│   ├── middleware.ts         # Next.js middleware
 │   └── types/                # TypeScript definitions
 ├── prisma/                   # Database layer
 │   ├── schema.prisma        # Database schema
@@ -48,7 +80,8 @@ zivah-international/
     ├── next.config.ts      # Next.js configuration
     ├── tailwind.config.ts  # Tailwind CSS setup
     ├── tsconfig.json      # TypeScript config
-    └── package.json       # Dependencies and scripts
+    ├── package.json       # Dependencies and scripts
+    └── .env.example       # Environment variables template
 ```
 
 ## 🎯 **Features**
@@ -74,19 +107,38 @@ zivah-international/
 - Professional ZIVAH branding
 - Interactive hover states
 
-### ⚡ **Performance**
+### ⚡ **Performance & SEO**
 - Next.js 15 App Router optimization
-- Image optimization with Next.js Image
-- CSS-in-JS with Tailwind
-- TypeScript for type safety
-- API route optimization
+- Core Web Vitals monitoring
+- Image optimization with lazy loading
+- Comprehensive SEO suite with structured data
+- Google Analytics 4 integration
+- Service worker for PWA functionality
+- Dynamic sitemap generation
+- Cookie consent with GDPR compliance
+
+### 🔒 **Security & Compliance**
+- Rate limiting and DDoS protection
+- Input validation and sanitization
+- HTTPS enforcement
+- CSRF protection
+- GDPR cookie compliance
+- Security headers and middleware
+
+### 📊 **Business Intelligence**
+- Conversion tracking
+- User engagement analytics
+- Performance monitoring
+- Business metrics dashboard
+- Automated reporting
 
 ## 🛠️ **Development**
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 18.18.0 or higher
 - PostgreSQL database
 - npm or yarn package manager
+- Git
 
 ### Installation
 ```bash
@@ -99,7 +151,7 @@ npm install
 
 # Set up environment variables
 cp .env.example .env
-# Edit .env with your database credentials
+# Edit .env with your database credentials and configuration
 
 # Generate Prisma client
 npm run db:generate
@@ -114,6 +166,30 @@ npm run db:seed
 npm run dev
 ```
 
+### Environment Variables
+Create a `.env` file with the following variables:
+
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/zivah_db"
+
+# NextAuth.js
+NEXTAUTH_SECRET="your-secret-key-here"
+NEXTAUTH_URL="http://localhost:3000"
+
+# Google Analytics (optional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
+
+# Email service (optional)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-app-password"
+
+# Production
+NODE_ENV="development"
+```
+
 ### Available Scripts
 ```bash
 npm run dev          # Start development server
@@ -121,14 +197,12 @@ npm run build        # Build for production
 npm run start        # Start production server
 npm run lint         # Run ESLint
 npm run format       # Format code with Prettier
-
-# Database commands
 npm run db:generate  # Generate Prisma client
-npm run db:push      # Push schema changes
-npm run db:migrate   # Run migrations
-npm run db:studio    # Open Prisma Studio
-npm run db:seed      # Seed database
-npm run db:reset     # Reset and reseed database
+npm run db:push      # Push schema changes to database
+npm run db:migrate   # Run database migrations
+npm run db:studio    # Open Prisma Studio (database GUI)
+npm run db:seed      # Seed database with sample data
+npm run db:reset     # Reset database and reseed
 ```
 
 ## 🗄️ **Database Schema**
@@ -151,55 +225,89 @@ npm run db:reset     # Reset and reseed database
 - Customer information
 - Product selections
 
+## 🚀 **API Endpoints**
+
+### Authentication
+- `GET/POST /api/auth/[...nextauth]` - NextAuth.js authentication
+
+### Products
+- `GET /api/products` - Get all products with filtering and pagination
+- `GET /api/products?category=slug` - Filter products by category
+- `GET /api/products?search=term` - Search products by name/description
+
+### Categories
+- `GET /api/categories` - Get all product categories
+- `GET /api/categories/[slug]` - Get specific category details
+
+### Quotes
+- `POST /api/quotes` - Submit quote request
+- `GET /api/quotes/countries` - Get available countries for shipping
+- `GET /api/quotes/measures` - Get available measurement units
+- `GET /api/quotes/products/search` - Search products for quotes
+
+### Contact
+- `POST /api/contact` - Submit contact form with rate limiting
+
+### API Response Format
+```json
+{
+  "success": true,
+  "data": { ... },
+  "message": "Operation successful",
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}
+```
+
+### Error Response Format
+```json
+{
+  "success": false,
+  "error": "Error message",
+  "code": "ERROR_CODE",
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}
+```
+
 ## 🚀 **Production Deployment**
 
-### cPanel Node.js Hosting (InterServer)
+### Environment Variables for Production
+```env
+# Database
+DATABASE_URL="postgresql://user:pass@host:5432/dbname"
 
-#### Prerequisites
-- cPanel hosting account with Node.js support
-- SSH access (recommended)
-- PostgreSQL database created in cPanel
+# NextAuth.js
+NEXTAUTH_SECRET="your-production-secret-key"
+NEXTAUTH_URL="https://yourdomain.com"
 
-#### Deployment Steps
+# Google Analytics
+NEXT_PUBLIC_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
 
-1. **Prepare Production Build**
+# Email service
+SMTP_HOST="smtp.yourprovider.com"
+SMTP_PORT="587"
+SMTP_USER="noreply@yourdomain.com"
+SMTP_PASS="your-smtp-password"
+
+# Production settings
+NODE_ENV="production"
+```
+
+### Build and Deploy
 ```bash
 # Build the application
 npm run build
 
-# Verify build output
-ls -la .next/
+# The .next folder contains the production build
+# Upload the entire project to your hosting provider
+
+# For cPanel Node.js hosting:
+# 1. Upload all files to public_html or subdomain directory
+# 2. Set Node.js version to 18+
+# 3. Set application startup file to: npm start
+# 4. Configure environment variables in cPanel
 ```
 
-2. **Upload Files via cPanel File Manager**
-```
-Upload these directories/files:
-├── .next/                 # Build output
-├── public/               # Static assets  
-├── prisma/               # Database schema
-├── src/                  # Source code
-├── package.json          # Dependencies
-├── next.config.ts        # Next.js config
-├── tailwind.config.ts    # Tailwind config
-└── tsconfig.json         # TypeScript config
-```
-
-3. **Configure Environment Variables in cPanel**
-```env
-DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
-NEXTAUTH_SECRET="your-secret-key"
-NEXTAUTH_URL="https://yourdomain.com"
-NODE_ENV="production"
-```
-
-4. **Install Dependencies**
-```bash
-# Via SSH or cPanel Terminal
-cd /path/to/your/app
-npm install --production
-```
-
-5. **Database Setup**
+### Database Setup for Production
 ```bash
 # Generate Prisma client
 npx prisma generate
@@ -207,46 +315,17 @@ npx prisma generate
 # Run migrations
 npx prisma migrate deploy
 
-# Seed database (optional)
+# Seed production database (optional)
 npx prisma db seed
 ```
 
-6. **Configure Node.js App in cPanel**
-- App Root: `/public_html/your-app` 
-- App URL: `your-domain.com`
-- App Startup File: `server.js` or `next start`
-- Node.js Version: 18+ recommended
-
-7. **Create Startup Script** (if needed)
-```javascript
-// server.js
-const { createServer } = require('http')
-const { parse } = require('url')
-const next = require('next')
-
-const dev = process.env.NODE_ENV !== 'production'
-const hostname = 'localhost'
-const port = process.env.PORT || 3000
-
-const app = next({ dev, hostname, port })
-const handle = app.getRequestHandler()
-
-app.prepare().then(() => {
-  createServer(async (req, res) => {
-    const parsedUrl = parse(req.url, true)
-    await handle(req, res, parsedUrl)
-  }).listen(port, (err) => {
-    if (err) throw err
-    console.log(`> Ready on http://${hostname}:${port}`)
-  })
-})
-```
-
-8. **Verify Deployment**
-- Check application logs in cPanel
-- Test website functionality
-- Verify database connectivity
-- Test API endpoints
+### Performance Optimization
+- ✅ Automatic image optimization
+- ✅ Core Web Vitals monitoring
+- ✅ SEO optimization with structured data
+- ✅ Service worker for caching
+- ✅ Lazy loading for images and components
+- ✅ Bundle splitting and code optimization
 
 ### Environment Configuration
 
@@ -259,30 +338,106 @@ NEXTAUTH_SECRET="random-secret-string"
 NEXTAUTH_URL="https://yourdomain.com"
 NODE_ENV="production"
 
-# Optional
-ANALYZE="false"
+# Google Analytics (optional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
+
+# Email service (optional)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-app-password"
 ```
 
 ### Troubleshooting
 
 #### Common Issues
-1. **Build Errors**: Check Node.js version compatibility
-2. **Database Connection**: Verify DATABASE_URL format
-3. **Static Files**: Ensure public/ directory is uploaded
-4. **Permissions**: Check file permissions (755 for directories, 644 for files)
+1. **Database Connection**: Ensure DATABASE_URL is correct and PostgreSQL is running
+2. **Build Errors**: Check Node.js version (18.18.0+) and run `npm install`
+3. **Environment Variables**: Copy `.env.example` to `.env` and fill required values
+4. **Prisma Issues**: Run `npm run db:generate` after schema changes
+5. **Port Conflicts**: Default port is 3000, change with `PORT=3001 npm run dev`
 
-#### Logs Location
-- cPanel: `/home/username/logs/`
-- Application: Check cPanel Node.js app logs
-- Database: PostgreSQL logs in cPanel
+#### Development Tips
+- Use `npm run db:studio` to view/edit database
+- Check browser console for client-side errors
+- Use `npm run lint` to check code quality
+- Run `npm run format` to format code consistently
 
-### Performance Optimization
-- Enable gzip compression in cPanel
-- Configure browser caching
-- Use CDN for static assets (optional)
-- Monitor database performance
+## � **Usage Examples**
 
-## 📊 **Database Management**
+### Product Display
+```tsx
+// Display products with filtering
+import { useState, useEffect } from 'react'
+
+function ProductCatalog() {
+  const [products, setProducts] = useState([])
+  const [category, setCategory] = useState('all')
+
+  useEffect(() => {
+    fetch(`/api/products${category !== 'all' ? `?category=${category}` : ''}`)
+      .then(res => res.json())
+      .then(data => setProducts(data.data))
+  }, [category])
+
+  return (
+    <div>
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="all">All Categories</option>
+        <option value="fruits">Fruits</option>
+        <option value="seafood">Seafood</option>
+      </select>
+      {products.map(product => (
+        <div key={product.id}>
+          <h3>{product.name}</h3>
+          <p>{product.description}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+### Quote Request Form
+```tsx
+// Submit quote request
+const handleQuoteSubmit = async (formData) => {
+  const response = await fetch('/api/quotes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+  })
+
+  if (response.ok) {
+    // Handle success
+    console.log('Quote submitted successfully')
+  } else {
+    // Handle error
+    console.error('Quote submission failed')
+  }
+}
+```
+
+### Contact Form
+```tsx
+// Send contact message
+const handleContactSubmit = async (formData) => {
+  const response = await fetch('/api/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+  })
+
+  const result = await response.json()
+  if (result.success) {
+    alert('Message sent successfully!')
+  } else {
+    alert(`Error: ${result.error}`)
+  }
+}
+```
+
+## 📊 **Database Management & Analytics**
 
 ### Prisma Commands
 ```bash
@@ -298,48 +453,128 @@ npx prisma migrate deploy
 # Reset database (development only)
 npx prisma migrate reset
 
-# Open Prisma Studio
+# Open Prisma Studio (database GUI)
 npx prisma studio
+
+# Seed database with sample data
+npx prisma db seed
 ```
+
+### Analytics & Monitoring
+- **Core Web Vitals**: Automatic monitoring of LCP, FID, CLS, FCP, TTFB
+- **Google Analytics 4**: Comprehensive event tracking and conversion monitoring
+- **Business Intelligence**: Custom conversion tracking and user engagement metrics
+- **Performance Monitoring**: Real-time performance metrics and error tracking
+- **SEO Monitoring**: Automated SEO validation and reporting
 
 ### Backup Strategy
 ```bash
 # Backup database
 pg_dump -h localhost -U username dbname > backup.sql
 
-# Restore database  
+# Restore database
 psql -h localhost -U username dbname < backup.sql
+
+# Backup application files
+tar -czf backup.tar.gz /path/to/application
 ```
+
+## � **Security & Compliance**
+
+### Security Features
+- **Rate Limiting**: Redis-based rate limiting for API endpoints
+- **Input Validation**: Comprehensive Zod schema validation
+- **XSS Protection**: Input sanitization and HTML escaping
+- **SQL Injection Prevention**: Parameterized queries with Prisma
+- **CSRF Protection**: Security headers and token validation
+- **HTTPS Enforcement**: Automatic SSL redirection
+- **Security Headers**: Comprehensive security headers middleware
+
+### GDPR Compliance
+- **Cookie Consent**: Granular cookie preferences management
+- **Data Processing**: Transparent data collection and usage
+- **User Rights**: Data export, deletion, and access requests
+- **Analytics Compliance**: GDPR-compliant Google Analytics setup
+- **Privacy Policy**: Comprehensive privacy policy documentation
+
+### Performance Security
+- **DDoS Protection**: Rate limiting and request throttling
+- **Resource Protection**: API endpoint protection and monitoring
+- **Error Handling**: Secure error responses without data leakage
+- **Logging**: Comprehensive security event logging
+
+### Compliance Documentation
+- **Privacy Policy**: `/legal/privacy-policy`
+- **Terms of Service**: `/legal/terms-of-service`
+- **Cookie Policy**: `/legal/cookie-policy`
+- **Data Protection**: `/legal/data-protection`
 
 ## 🔧 **Configuration**
 
-### Tailwind CSS
-- Custom theme with ZIVAH brand colors
-- Dark mode configuration: `darkMode: 'class'`
-- Glass morphism utilities
-- Responsive breakpoints
+### Next.js Configuration
+- **Framework**: Next.js 15.5.3 with App Router
+- **TypeScript**: Strict mode enabled
+- **Image Optimization**: Built-in Next.js Image component
+- **API Routes**: RESTful endpoints with proper error handling
+- **Middleware**: Security, rate limiting, and HTTPS enforcement
 
-### Next.js
-- App Router configuration
-- API routes for dynamic content
-- Image optimization enabled
-- TypeScript strict mode
+### Database Configuration
+- **ORM**: Prisma with PostgreSQL
+- **Connection**: Environment-based configuration
+- **Migrations**: Automated schema management
+- **Seeding**: Sample data for development
 
-### Environment Variables
-Required for production:
-- `DATABASE_URL`: PostgreSQL connection string
-- `NEXTAUTH_SECRET`: Authentication secret
-- `NEXTAUTH_URL`: Application URL
-- `NODE_ENV`: Set to "production"
+### Security Features
+- **Rate Limiting**: Upstash Redis-based rate limiting
+- **Input Validation**: Zod schema validation
+- **Sanitization**: XSS and SQL injection protection
+- **HTTPS Enforcement**: Middleware-based SSL enforcement
+- **Security Headers**: Comprehensive security headers
+
+### SEO & Performance
+- **Core Web Vitals**: Automatic monitoring and reporting
+- **Structured Data**: JSON-LD schema markup
+- **Sitemap**: Dynamic XML sitemap generation
+- **Meta Tags**: Comprehensive SEO meta tags
+- **Analytics**: Google Analytics 4 integration
+
+### Styling Configuration
+- **CSS Framework**: Tailwind CSS 4.1.13
+- **Theme System**: Dark/light mode with system preference
+- **Glass Morphism**: Custom CSS utilities
+- **Responsive Design**: Mobile-first approach
+- **Performance**: Optimized CSS with purging
 
 ## 📝 **License**
 
 Copyright © 2025 ZIVAH International S.A. All rights reserved.
 
+This project is proprietary software developed for ZIVAH International S.A.
+Unauthorized use, reproduction, or distribution is prohibited.
+
+## 📞 **Support & Contact**
+
+### Technical Support
+- **Email**: info@zivahinternational.com
+- **Repository**: https://github.com/iferpaz7/zivah-international
+- **Issues**: GitHub Issues for bug reports and feature requests
+
+### Business Contact
+- **Website**: [zivahinternational.com](https://zivahinternational.com)
+- **Headquarters**: Samborondón, Guayas, Ecuador
+- **Distribution**: Miami, Florida, USA
+- **Phone**: +593-4-XXX-XXXX
+
+### Development Team
+- **Lead Developer**: ZIVAH International S.A. Development Team
+- **Tech Stack**: Next.js, TypeScript, PostgreSQL, Tailwind CSS
+- **Status**: Production Ready with Comprehensive Features
+
 ---
 
-**ZIVAH International S.A.**  
-Exportadores Premium de Productos Ecuatorianos  
-🏢 Sede Principal: Samborondón, Guayas, Ecuador  
-🏢 Oficina de Distribución: Miami, Florida, USA  
-🌐 Website: [zivahinternational.com](https://zivahinternational.com)
+**🌊 ZIVAH International S.A.**  
+*Exportadores Premium de Productos Ecuatorianos*  
+🏢 *Sede Principal*: Samborondón, Guayas, Ecuador  
+🏢 *Oficina de Distribución*: Miami, Florida, USA  
+🌐 *Website*: [zivahinternational.com](https://zivahinternational.com)  
+📧 *Email*: info@zivahinternational.com

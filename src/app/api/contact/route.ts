@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { contactFormSchema, formRateLimiter, sanitizeString, sanitizeEmail, isXSS, isSQLInjection } from '@/lib/validation';
 import { handleApiError, createApiResponse } from '@/lib/errors';
-import { useBusinessTracking } from '@/components/BusinessIntelligence';
 
 export async function POST(request: NextRequest) {
   try {
