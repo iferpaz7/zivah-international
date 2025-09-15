@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import ThemeToggle from '@/components/ThemeToggle'
+import QuoteForm from '@/components/QuoteForm'
 
 // Types for our data
 interface Category {
@@ -296,12 +297,12 @@ export default function HomePage() {
                       )}
                     </ul>
                     <div className="flex gap-3">
-                      <a 
-                        href="#cotizar" 
+                      <button
+                        onClick={() => scrollToSection('cotizar')}
                         className={`inline-block ${buttonColors[index % buttonColors.length]} text-white px-6 py-3 rounded-lg transition-colors`}
                       >
                         Solicitar Cotización
-                      </a>
+                      </button>
                       <button
                         onClick={() => {
                           setSelectedCategory(category.slug)
@@ -445,132 +446,37 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <div className="inline-block bg-white/20 px-4 py-2 rounded-full text-sm font-medium mb-4">
-                Solicitar Cotización
+                Sistema Avanzado de Cotizaciones
               </div>
               <h2 className="text-4xl font-bold mb-6">
-                Obtén tu Cotización Personalizada
+                Cotizaciones Interactivas y Personalizadas
               </h2>
-              <p className="text-xl opacity-90">
-                Completa el formulario y nuestro equipo te contactará en menos de 24 horas con una propuesta personalizada
+              <p className="text-xl opacity-90 mb-8">
+                Nuestro nuevo sistema de cotizaciones te permite seleccionar productos específicos, calcular precios en tiempo real
+                y recibir propuestas personalizadas por email automáticamente.
               </p>
-            </div>
 
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl">
-              <form className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="company" className="block text-sm font-medium mb-2">Empresa *</label>
-                  <input 
-                    type="text" 
-                    id="company" 
-                    name="company" 
-                    required 
-                    placeholder="Nombre de tu empresa"
-                    className="w-full px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
-                  />
+              <div className="grid md:grid-cols-3 gap-6 mb-12">
+                <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl">
+                  <div className="text-3xl mb-4">🔍</div>
+                  <h3 className="text-lg font-semibold mb-2">Búsqueda Inteligente</h3>
+                  <p className="opacity-90 text-sm">Encuentra productos rápidamente con nuestro sistema de búsqueda avanzado</p>
                 </div>
 
-                <div>
-                  <label htmlFor="contact" className="block text-sm font-medium mb-2">Persona de Contacto *</label>
-                  <input 
-                    type="text" 
-                    id="contact" 
-                    name="contact" 
-                    required 
-                    placeholder="Tu nombre completo"
-                    className="w-full px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
-                  />
+                <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl">
+                  <div className="text-3xl mb-4">🛒</div>
+                  <h3 className="text-lg font-semibold mb-2">Selección Múltiple</h3>
+                  <p className="opacity-90 text-sm">Combina múltiples productos en una sola cotización con cantidades personalizadas</p>
                 </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">Email *</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    required 
-                    placeholder="email@empresa.com"
-                    className="w-full px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
-                  />
+                <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl">
+                  <div className="text-3xl mb-4">📧</div>
+                  <h3 className="text-lg font-semibold mb-2">Envío Automático</h3>
+                  <p className="opacity-90 text-sm">Recibe cotizaciones profesionales por email con seguimiento automático</p>
                 </div>
+              </div>
 
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium mb-2">Teléfono</label>
-                  <input 
-                    type="tel" 
-                    id="phone" 
-                    name="phone" 
-                    placeholder="+1 (XXX) XXX-XXXX"
-                    className="w-full px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="country" className="block text-sm font-medium mb-2">País de Destino *</label>
-                  <select 
-                    id="country" 
-                    name="country" 
-                    required
-                    className="w-full px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
-                  >
-                    <option value="">Selecciona un país</option>
-                    <option value="US">Estados Unidos</option>
-                    <option value="CA">Canadá</option>
-                    <option value="MX">México</option>
-                    <option value="ES">España</option>
-                    <option value="FR">Francia</option>
-                    <option value="IT">Italia</option>
-                    <option value="DE">Alemania</option>
-                    <option value="UK">Reino Unido</option>
-                    <option value="JP">Japón</option>
-                    <option value="KR">Corea del Sur</option>
-                    <option value="CN">China</option>
-                    <option value="AU">Australia</option>
-                    <option value="BR">Brasil</option>
-                    <option value="AR">Argentina</option>
-                    <option value="CL">Chile</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="products" className="block text-sm font-medium mb-2">Productos de Interés *</label>
-                  <select 
-                    id="products" 
-                    name="products" 
-                    required
-                    className="w-full px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
-                  >
-                    <option value="">Selecciona una categoría</option>
-                    <option value="frutas">Frutas Tropicales</option>
-                    <option value="cafe">Café Arábica</option>
-                    <option value="mariscos">Productos del Mar</option>
-                    <option value="camaron">Camarón Premium</option>
-                    <option value="larvas">Larvas de Camarón</option>
-                    <option value="arboles">Árboles Frutales</option>
-                    <option value="nueces">Nueces y Frutos Secos</option>
-                    <option value="otros">Otros Productos</option>
-                  </select>
-                </div>
-
-                <div className="md:col-span-2">
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">Mensaje Adicional</label>
-                  <textarea 
-                    id="message" 
-                    name="message" 
-                    rows={4}
-                    placeholder="Cuéntanos más detalles sobre tu requerimiento: frecuencia de pedidos, especificaciones especiales, certificaciones requeridas, etc."
-                    className="w-full px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
-                  ></textarea>
-                </div>
-
-                <div className="md:col-span-2">
-                  <button 
-                    type="submit"
-                    className="w-full bg-white dark:bg-gray-100 text-green-600 dark:text-green-700 font-bold py-4 px-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition-colors"
-                  >
-                    Enviar Solicitud de Cotización
-                  </button>
-                </div>
-              </form>
+              <QuoteForm />
             </div>
           </div>
         </div>

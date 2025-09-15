@@ -1,7 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createQuoteSchema, updateQuoteSchema } from '@/lib/validations';
-import { z } from 'zod';
+import { createQuoteSchema, productFiltersSchema } from '@/lib/validations';
+import { handleApiError, createApiResponse } from '@/lib/errors';
+import { checkRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
+import { emailService } from '@/lib/email';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   try {
@@ -56,8 +59,7 @@ export async function GET(request: NextRequest) {
       prisma.quote.count({ where })
     ]);
 
-    return NextResponse.json({
-      error: false,
+    return createApiResponse({
       data: quotes,
       pagination: {
         page,
@@ -66,33 +68,49 @@ export async function GET(request: NextRequest) {
         totalPages: Math.ceil(total / pageSize),
         hasNext: page * pageSize < total,
         hasPrev: page > 1
-      },
-      timestamp: new Date().toISOString()
+      }
     });
 
   } catch (error) {
-    console.error('Error fetching quotes:', error);
-    
-    return NextResponse.json({
-      error: true,
-      message: 'Error interno del servidor al obtener cotizaciones',
-      timestamp: new Date().toISOString()
-    }, { status: 500 });
+    return handleApiError(error);
   }
 }
 
+
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 5 quotes per hour per IP
+    const ip = request.headers.get('x-forwarded-for') ||
+               request.headers.get('x-real-ip') ||
+               'unknown';
+    const rateLimit = await checkRateLimit(
+      `quote:${ip}`,
+      RATE_LIMITS.QUOTE_CREATE.limit,
+      RATE_LIMITS.QUOTE_CREATE.windowMs
+    );
+
+    if (!rateLimit.success) {
+      return createApiResponse(null, 'Demasiadas solicitudes. Intente nuevamente más tarde.', 429);
+    }
+
     const body = await request.json();
     const validatedData = createQuoteSchema.parse(body);
-    
+
+    // Generate quote number
+    const lastQuote = await prisma.quote.findFirst({
+      orderBy: { id: 'desc' },
+      select: { id: true }
+    });
+    const quoteNumber = `Q${String((lastQuote?.id || 0) + 1).padStart(6, '0')}`;
+
     const quote = await prisma.quote.create({
       data: {
+        quoteNumber,
         customerName: validatedData.customerName,
         customerEmail: validatedData.customerEmail,
         customerPhone: validatedData.customerPhone,
         company: validatedData.company,
-        country: validatedData.country,
+        countryId: validatedData.countryId,
         shippingAddress: validatedData.shippingAddress,
         message: validatedData.message,
         status: 'PENDING',
@@ -100,7 +118,8 @@ export async function POST(request: NextRequest) {
           create: validatedData.items.map(item => ({
             productId: item.productId,
             quantity: item.quantity,
-            unitPrice: item.unitPrice,
+            unitPrice: item.unitPrice || 0,
+            totalPrice: (item.unitPrice || 0) * item.quantity,
             notes: item.notes,
             specifications: item.specifications
           }))
@@ -113,6 +132,11 @@ export async function POST(request: NextRequest) {
             name: true,
             email: true,
             company: true
+          }
+        },
+        countryRef: {
+          select: {
+            name: true
           }
         },
         items: {
@@ -130,6 +154,47 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    // Send email if requested
+    let emailSent = false;
+    if (validatedData.recipientEmail) {
+      try {
+        const emailData = {
+          quoteId: quote.id,
+          customerName: quote.customerName,
+          customerEmail: quote.customerEmail,
+          company: quote.company || undefined,
+          country: quote.countryRef?.name,
+          currency: quote.currency,
+          totalAmount: quote.totalAmount ? Number(quote.totalAmount) : undefined,
+          items: quote.items.map(item => ({
+            productName: item.product?.name || 'Producto',
+            quantity: item.quantity,
+            unitPrice: Number(item.unitPrice),
+            totalPrice: Number(item.totalPrice)
+          })),
+          message: quote.message || undefined,
+          quoteNumber: quote.quoteNumber
+        };
+
+        emailSent = await emailService.sendQuoteEmail(emailData, validatedData.recipientEmail);
+
+        // Update email status
+        await prisma.quote.update({
+          where: { id: quote.id },
+          data: {
+            emailStatus: emailSent ? 'sent' : 'failed',
+            emailSentAt: emailSent ? new Date() : null
+          }
+        });
+
+        logger.info('Quote email sent', { quoteId: quote.id, emailSent });
+
+      } catch (emailError) {
+        logger.error('Failed to send quote email', { error: emailError, quoteId: quote.id });
+        // Don't fail the quote creation, just log the email failure
+      }
+    }
+
     // Log activity
     await prisma.activityLog.create({
       data: {
@@ -138,36 +203,20 @@ export async function POST(request: NextRequest) {
         entityId: quote.id,
         details: JSON.stringify({
           quoteId: quote.id,
-          itemsCount: quote.items.length,
+          itemsCount: validatedData.items.length,
           company: quote.company,
-          customerEmail: quote.customerEmail
+          customerEmail: quote.customerEmail,
+          emailSent
         })
       }
     });
 
-    return NextResponse.json({
-      error: false,
-      data: quote,
-      message: 'Cotización creada exitosamente',
-      timestamp: new Date().toISOString()
-    }, { status: 201 });
+    return createApiResponse({
+      ...quote,
+      emailSent
+    }, 'Cotización creada exitosamente', 201);
 
   } catch (error) {
-    console.error('Error creating quote:', error);
-    
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({
-        error: true,
-        message: 'Datos de cotización inválidos',
-        details: error.issues,
-        timestamp: new Date().toISOString()
-      }, { status: 400 });
-    }
-
-    return NextResponse.json({
-      error: true,
-      message: 'Error interno del servidor al crear cotización',
-      timestamp: new Date().toISOString()
-    }, { status: 500 });
+    return handleApiError(error);
   }
 }

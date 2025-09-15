@@ -1,10 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { contactSubmissionSchema } from '@/lib/validations';
-import { z } from 'zod';
+import { handleApiError, createApiResponse } from '@/lib/errors';
+import { checkRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 3 contact submissions per hour per IP
+    const ip = request.headers.get('x-forwarded-for') ||
+               request.headers.get('x-real-ip') ||
+               'unknown';
+    const rateLimit = await checkRateLimit(
+      `contact:${ip}`,
+      RATE_LIMITS.CONTACT_SUBMIT.limit,
+      RATE_LIMITS.CONTACT_SUBMIT.windowMs
+    );
+
+    if (!rateLimit.success) {
+      return createApiResponse(null, 'Demasiadas solicitudes. Intente nuevamente más tarde.', 429);
+    }
+
     const body = await request.json();
     const validatedData = contactSubmissionSchema.parse(body);
     
@@ -27,30 +42,14 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    return NextResponse.json({
-      error: false,
-      data: { id: contactSubmission.id },
-      message: 'Mensaje enviado exitosamente. Nos pondremos en contacto contigo pronto.',
-      timestamp: new Date().toISOString()
-    }, { status: 201 });
+    return createApiResponse(
+      { id: contactSubmission.id },
+      'Mensaje enviado exitosamente. Nos pondremos en contacto contigo pronto.',
+      201
+    );
 
   } catch (error) {
-    console.error('Error creating contact submission:', error);
-    
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({
-        error: true,
-        message: 'Datos del formulario inválidos',
-        details: error.issues,
-        timestamp: new Date().toISOString()
-      }, { status: 400 });
-    }
-
-    return NextResponse.json({
-      error: true,
-      message: 'Error interno del servidor al enviar mensaje',
-      timestamp: new Date().toISOString()
-    }, { status: 500 });
+    return handleApiError(error);
   }
 }
 
@@ -79,8 +78,7 @@ export async function GET(request: NextRequest) {
       prisma.contactSubmission.count({ where })
     ]);
 
-    return NextResponse.json({
-      error: false,
+    return createApiResponse({
       data: submissions,
       pagination: {
         page,
@@ -89,17 +87,10 @@ export async function GET(request: NextRequest) {
         totalPages: Math.ceil(total / pageSize),
         hasNext: page * pageSize < total,
         hasPrev: page > 1
-      },
-      timestamp: new Date().toISOString()
+      }
     });
 
   } catch (error) {
-    console.error('Error fetching contact submissions:', error);
-    
-    return NextResponse.json({
-      error: true,
-      message: 'Error interno del servidor al obtener mensajes',
-      timestamp: new Date().toISOString()
-    }, { status: 500 });
+    return handleApiError(error);
   }
 }

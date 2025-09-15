@@ -6,6 +6,573 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Starting comprehensive database seed...');
 
+  // Create countries for international operations
+  console.log('🌍 Creating countries...');
+  const ecuador = await prisma.country.upsert({
+    where: { code: 'EC' },
+    update: {},
+    create: {
+      name: 'Ecuador',
+      code: 'EC',
+      icon: '🇪🇨',
+      continent: 'South America',
+      currency: 'USD',
+      callingCode: '+593',
+      phoneFormat: '+593 XX XXX XXXX',
+      isActive: true
+    }
+  });
+
+  const usa = await prisma.country.upsert({
+    where: { code: 'US' },
+    update: {},
+    create: {
+      name: 'United States',
+      code: 'US',
+      icon: '🇺🇸',
+      continent: 'North America',
+      currency: 'USD',
+      callingCode: '+1',
+      phoneFormat: '+1 (XXX) XXX-XXXX',
+      isActive: true
+    }
+  });
+
+  const colombia = await prisma.country.upsert({
+    where: { code: 'CO' },
+    update: {},
+    create: {
+      name: 'Colombia',
+      code: 'CO',
+      icon: '🇨🇴',
+      continent: 'South America',
+      currency: 'COP',
+      callingCode: '+57',
+      phoneFormat: '+57 XXX XXX XXXX',
+      isActive: true
+    }
+  });
+
+  const peru = await prisma.country.upsert({
+    where: { code: 'PE' },
+    update: {},
+    create: {
+      name: 'Peru',
+      code: 'PE',
+      icon: '🇵🇪',
+      continent: 'South America',
+      currency: 'PEN',
+      callingCode: '+51',
+      phoneFormat: '+51 XXX XXX XXX',
+      isActive: true
+    }
+  });
+
+  const chile = await prisma.country.upsert({
+    where: { code: 'CL' },
+    update: {},
+    create: {
+      name: 'Chile',
+      code: 'CL',
+      icon: '🇨🇱',
+      continent: 'South America',
+      currency: 'CLP',
+      callingCode: '+56',
+      phoneFormat: '+56 X XXXX XXXX',
+      isActive: true
+    }
+  });
+
+  const mexico = await prisma.country.upsert({
+    where: { code: 'MX' },
+    update: {},
+    create: {
+      name: 'Mexico',
+      code: 'MX',
+      icon: '🇲🇽',
+      continent: 'North America',
+      currency: 'MXN',
+      callingCode: '+52',
+      phoneFormat: '+52 XX XXXX XXXX',
+      isActive: true
+    }
+  });
+
+  const spain = await prisma.country.upsert({
+    where: { code: 'ES' },
+    update: {},
+    create: {
+      name: 'Spain',
+      code: 'ES',
+      icon: '🇪🇸',
+      continent: 'Europe',
+      currency: 'EUR',
+      callingCode: '+34',
+      phoneFormat: '+34 XXX XXX XXX',
+      isActive: true
+    }
+  });
+
+  const china = await prisma.country.upsert({
+    where: { code: 'CN' },
+    update: {},
+    create: {
+      name: 'China',
+      code: 'CN',
+      icon: '🇨🇳',
+      continent: 'Asia',
+      currency: 'CNY',
+      callingCode: '+86',
+      phoneFormat: '+86 XXX XXXX XXXX',
+      isActive: true
+    }
+  });
+
+  const japan = await prisma.country.upsert({
+    where: { code: 'JP' },
+    update: {},
+    create: {
+      name: 'Japan',
+      code: 'JP',
+      icon: '🇯🇵',
+      continent: 'Asia',
+      currency: 'JPY',
+      callingCode: '+81',
+      phoneFormat: '+81 XX XXXX XXXX',
+      isActive: true
+    }
+  });
+
+  const germany = await prisma.country.upsert({
+    where: { code: 'DE' },
+    update: {},
+    create: {
+      name: 'Germany',
+      code: 'DE',
+      icon: '🇩🇪',
+      continent: 'Europe',
+      currency: 'EUR',
+      callingCode: '+49',
+      phoneFormat: '+49 XXX XXXXXXX',
+      isActive: true
+    }
+  });
+
+  // Additional countries that commonly import from Ecuador
+  const italy = await prisma.country.upsert({
+    where: { code: 'IT' },
+    update: {},
+    create: {
+      name: 'Italy',
+      code: 'IT',
+      icon: '🇮🇹',
+      continent: 'Europe',
+      currency: 'EUR',
+      callingCode: '+39',
+      phoneFormat: '+39 XXX XXX XXXX',
+      isActive: true
+    }
+  });
+
+  const france = await prisma.country.upsert({
+    where: { code: 'FR' },
+    update: {},
+    create: {
+      name: 'France',
+      code: 'FR',
+      icon: '🇫🇷',
+      continent: 'Europe',
+      currency: 'EUR',
+      callingCode: '+33',
+      phoneFormat: '+33 X XX XX XX XX',
+      isActive: true
+    }
+  });
+
+  const uk = await prisma.country.upsert({
+    where: { code: 'GB' },
+    update: {},
+    create: {
+      name: 'United Kingdom',
+      code: 'GB',
+      icon: '🇬🇧',
+      continent: 'Europe',
+      currency: 'GBP',
+      callingCode: '+44',
+      phoneFormat: '+44 XXXX XXX XXX',
+      isActive: true
+    }
+  });
+
+  const canada = await prisma.country.upsert({
+    where: { code: 'CA' },
+    update: {},
+    create: {
+      name: 'Canada',
+      code: 'CA',
+      icon: '🇨🇦',
+      continent: 'North America',
+      currency: 'CAD',
+      callingCode: '+1',
+      phoneFormat: '+1 (XXX) XXX-XXXX',
+      isActive: true
+    }
+  });
+
+  const brazil = await prisma.country.upsert({
+    where: { code: 'BR' },
+    update: {},
+    create: {
+      name: 'Brazil',
+      code: 'BR',
+      icon: '🇧🇷',
+      continent: 'South America',
+      currency: 'BRL',
+      callingCode: '+55',
+      phoneFormat: '+55 XX XXXXX-XXXX',
+      isActive: true
+    }
+  });
+
+  const argentina = await prisma.country.upsert({
+    where: { code: 'AR' },
+    update: {},
+    create: {
+      name: 'Argentina',
+      code: 'AR',
+      icon: '🇦🇷',
+      continent: 'South America',
+      currency: 'ARS',
+      callingCode: '+54',
+      phoneFormat: '+54 XX XXXX-XXXX',
+      isActive: true
+    }
+  });
+
+  const southKorea = await prisma.country.upsert({
+    where: { code: 'KR' },
+    update: {},
+    create: {
+      name: 'South Korea',
+      code: 'KR',
+      icon: '🇰🇷',
+      continent: 'Asia',
+      currency: 'KRW',
+      callingCode: '+82',
+      phoneFormat: '+82 XX XXXX XXXX',
+      isActive: true
+    }
+  });
+
+  const australia = await prisma.country.upsert({
+    where: { code: 'AU' },
+    update: {},
+    create: {
+      name: 'Australia',
+      code: 'AU',
+      icon: '🇦🇺',
+      continent: 'Oceania',
+      currency: 'AUD',
+      callingCode: '+61',
+      phoneFormat: '+61 XXX XXX XXX',
+      isActive: true
+    }
+  });
+
+  const netherlands = await prisma.country.upsert({
+    where: { code: 'NL' },
+    update: {},
+    create: {
+      name: 'Netherlands',
+      code: 'NL',
+      icon: '🇳🇱',
+      continent: 'Europe',
+      currency: 'EUR',
+      callingCode: '+31',
+      phoneFormat: '+31 XX XXX XXXX',
+      isActive: true
+    }
+  });
+
+  const belgium = await prisma.country.upsert({
+    where: { code: 'BE' },
+    update: {},
+    create: {
+      name: 'Belgium',
+      code: 'BE',
+      icon: '🇧🇪',
+      continent: 'Europe',
+      currency: 'EUR',
+      callingCode: '+32',
+      phoneFormat: '+32 XXX XX XX XX',
+      isActive: true
+    }
+  });
+
+  const switzerland = await prisma.country.upsert({
+    where: { code: 'CH' },
+    update: {},
+    create: {
+      name: 'Switzerland',
+      code: 'CH',
+      icon: '🇨🇭',
+      continent: 'Europe',
+      currency: 'CHF',
+      callingCode: '+41',
+      phoneFormat: '+41 XX XXX XX XX',
+      isActive: true
+    }
+  });
+
+  // Create measurement units for export products
+  console.log('📏 Creating measurement units...');
+  
+  // Weight measures
+  const kilogram = await prisma.measure.upsert({
+    where: { name: 'Kilogram' },
+    update: {},
+    create: {
+      name: 'Kilogram',
+      shortName: 'kg',
+      symbol: 'kg',
+      type: 'WEIGHT',
+      baseUnit: 'kg',
+      conversionFactor: 1.0,
+      isActive: true,
+      sortOrder: 1,
+      description: 'Standard metric unit for weight'
+    }
+  });
+
+  const metricTon = await prisma.measure.upsert({
+    where: { name: 'Metric Ton' },
+    update: {},
+    create: {
+      name: 'Metric Ton',
+      shortName: 'MT',
+      symbol: 't',
+      type: 'WEIGHT',
+      baseUnit: 'kg',
+      conversionFactor: 1000.0,
+      isActive: true,
+      sortOrder: 2,
+      description: 'Metric ton - 1000 kilograms'
+    }
+  });
+
+  const pound = await prisma.measure.upsert({
+    where: { name: 'Pound' },
+    update: {},
+    create: {
+      name: 'Pound',
+      shortName: 'lb',
+      symbol: 'lb',
+      type: 'WEIGHT',
+      baseUnit: 'kg',
+      conversionFactor: 0.453592,
+      isActive: true,
+      sortOrder: 3,
+      description: 'Imperial pound unit'
+    }
+  });
+
+  // Volume measures
+  const liter = await prisma.measure.upsert({
+    where: { name: 'Liter' },
+    update: {},
+    create: {
+      name: 'Liter',
+      shortName: 'L',
+      symbol: 'L',
+      type: 'VOLUME',
+      baseUnit: 'L',
+      conversionFactor: 1.0,
+      isActive: true,
+      sortOrder: 10,
+      description: 'Standard metric unit for volume'
+    }
+  });
+
+  const cubicMeter = await prisma.measure.upsert({
+    where: { name: 'Cubic Meter' },
+    update: {},
+    create: {
+      name: 'Cubic Meter',
+      shortName: 'm³',
+      symbol: 'm³',
+      type: 'VOLUME',
+      baseUnit: 'L',
+      conversionFactor: 1000.0,
+      isActive: true,
+      sortOrder: 11,
+      description: 'Cubic meter - 1000 liters'
+    }
+  });
+
+  const gallon = await prisma.measure.upsert({
+    where: { name: 'Gallon' },
+    update: {},
+    create: {
+      name: 'Gallon',
+      shortName: 'gal',
+      symbol: 'gal',
+      type: 'VOLUME',
+      baseUnit: 'L',
+      conversionFactor: 3.78541,
+      isActive: true,
+      sortOrder: 12,
+      description: 'US gallon'
+    }
+  });
+
+  // Container measures (common in export)
+  const container20ft = await prisma.measure.upsert({
+    where: { name: '20ft Container' },
+    update: {},
+    create: {
+      name: '20ft Container',
+      shortName: '20ft',
+      symbol: '20"',
+      type: 'CONTAINER',
+      baseUnit: 'container',
+      conversionFactor: 1.0,
+      isActive: true,
+      sortOrder: 20,
+      description: 'Standard 20-foot shipping container'
+    }
+  });
+
+  const container40ft = await prisma.measure.upsert({
+    where: { name: '40ft Container' },
+    update: {},
+    create: {
+      name: '40ft Container',
+      shortName: '40ft',
+      symbol: '40"',
+      type: 'CONTAINER',
+      baseUnit: 'container',
+      conversionFactor: 1.0,
+      isActive: true,
+      sortOrder: 21,
+      description: 'Standard 40-foot shipping container'
+    }
+  });
+
+  const container40ftHC = await prisma.measure.upsert({
+    where: { name: '40ft High Cube Container' },
+    update: {},
+    create: {
+      name: '40ft High Cube Container',
+      shortName: '40HC',
+      symbol: '40HC',
+      type: 'CONTAINER',
+      baseUnit: 'container',
+      conversionFactor: 1.0,
+      isActive: true,
+      sortOrder: 22,
+      description: 'High cube 40-foot shipping container'
+    }
+  });
+
+  // Quantity measures
+  const pieces = await prisma.measure.upsert({
+    where: { name: 'Pieces' },
+    update: {},
+    create: {
+      name: 'Pieces',
+      shortName: 'pcs',
+      symbol: 'pcs',
+      type: 'QUANTITY',
+      baseUnit: 'pieces',
+      conversionFactor: 1.0,
+      isActive: true,
+      sortOrder: 30,
+      description: 'Individual pieces or units'
+    }
+  });
+
+  const dozen = await prisma.measure.upsert({
+    where: { name: 'Dozen' },
+    update: {},
+    create: {
+      name: 'Dozen',
+      shortName: 'dz',
+      symbol: 'dz',
+      type: 'QUANTITY',
+      baseUnit: 'pieces',
+      conversionFactor: 12.0,
+      isActive: true,
+      sortOrder: 31,
+      description: 'Dozen - 12 pieces'
+    }
+  });
+
+  const carton = await prisma.measure.upsert({
+    where: { name: 'Carton' },
+    update: {},
+    create: {
+      name: 'Carton',
+      shortName: 'ctn',
+      symbol: 'ctn',
+      type: 'QUANTITY',
+      baseUnit: 'carton',
+      conversionFactor: 1.0,
+      isActive: true,
+      sortOrder: 32,
+      description: 'Export carton packaging'
+    }
+  });
+
+  const pallet = await prisma.measure.upsert({
+    where: { name: 'Pallet' },
+    update: {},
+    create: {
+      name: 'Pallet',
+      shortName: 'plt',
+      symbol: 'plt',
+      type: 'QUANTITY',
+      baseUnit: 'pallet',
+      conversionFactor: 1.0,
+      isActive: true,
+      sortOrder: 33,
+      description: 'Export pallet'
+    }
+  });
+
+  // Length measures (for some products)
+  const meter = await prisma.measure.upsert({
+    where: { name: 'Meter' },
+    update: {},
+    create: {
+      name: 'Meter',
+      shortName: 'm',
+      symbol: 'm',
+      type: 'LENGTH',
+      baseUnit: 'm',
+      conversionFactor: 1.0,
+      isActive: true,
+      sortOrder: 40,
+      description: 'Standard metric unit for length'
+    }
+  });
+
+  const feet = await prisma.measure.upsert({
+    where: { name: 'Feet' },
+    update: {},
+    create: {
+      name: 'Feet',
+      shortName: 'ft',
+      symbol: 'ft',
+      type: 'LENGTH',
+      baseUnit: 'm',
+      conversionFactor: 0.3048,
+      isActive: true,
+      sortOrder: 41,
+      description: 'Imperial feet unit'
+    }
+  });
+
+  console.log('👤 Creating admin users...');
   // Create admin users with full details
   console.log('👤 Creating admin users...');
   const adminPassword = await bcrypt.hash('admin123!', 12);
@@ -97,6 +664,7 @@ async function main() {
       name: 'Banano Cavendish Premium',
       slug: 'banano-cavendish-premium',
       categoryId: agricolasCategory.id,
+      measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Banano Cavendish de exportación premium cultivado en la costa ecuatoriana. Ecuador es uno de los mayores exportadores mundiales de banano con excelente calidad y vida útil.',
       shortDescription: 'Banano premium de exportación con certificación internacional',
       sku: 'BAN-CAV-001',
@@ -106,18 +674,20 @@ async function main() {
         calibre: '38-48mm',
         harvest: 'Todo el año',
         packaging: 'Cajas de 18.14kg (11-16 manos)',
+        containerCapacity: '19-20 toneladas por contenedor 40ft',
         features: [
           'Calibre: 38-48mm',
           'Peso promedio: 90-150g por unidad',
           'Longitud: 16-22cm',
           'Vida útil: 14-21 días',
-          'Certificación GlobalGAP y Rainforest Alliance'
+          'Certificación GlobalGAP y Rainforest Alliance',
+          'Capacidad: ~20,000kg por contenedor 40ft'
         ]
       },
-      basePrice: 0.85,
-      priceUnit: 'kg',
-      stockQuantity: 15000,
-      minOrderQty: 2000,
+      basePrice: 17000.00, // $17,000 per 40ft container (~20 tons at $0.85/kg)
+      priceUnit: 'container',
+      stockQuantity: 150, // containers available
+      minOrderQty: 1, // minimum 1 container
       imageUrl: '/assets/images/products/banano-cavendish.jpg',
       imageGallery: [
         '/assets/images/products/banano-1.jpg',
@@ -149,6 +719,7 @@ async function main() {
       name: 'Cacao Fino de Aroma Nacional',
       slug: 'cacao-fino-aroma',
       categoryId: agricolasCategory.id,
+      measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Cacao Nacional ecuatoriano de fino aroma, reconocido mundialmente por su calidad superior para chocolate premium. Ecuador es líder en la exportación de cacao fino.',
       shortDescription: 'Cacao Nacional de aroma fino para chocolate premium',
       sku: 'CAC-NAL-001',
@@ -158,18 +729,20 @@ async function main() {
         humidity: 'Máximo 7%',
         grading: 'Superior 85%',
         packaging: 'Sacos de jute 60kg',
+        containerCapacity: '15-16 toneladas por contenedor 40ft',
         features: [
           'Variedad: Nacional Trinitario',
           'Fermentación: 5-7 días',
           'Humedad: Máximo 7%',
           'Grano superior: 85% mínimo',
-          'Aroma floral y frutal característico'
+          'Aroma floral y frutal característico',
+          'Capacidad: ~15,000kg por contenedor 40ft'
         ]
       },
-      basePrice: 4.20,
-      priceUnit: 'kg',
-      stockQuantity: 3000,
-      minOrderQty: 500,
+      basePrice: 63000.00, // $63,000 per 40ft container (~15 tons at $4.20/kg)
+      priceUnit: 'container',
+      stockQuantity: 50, // containers available
+      minOrderQty: 1, // minimum 1 container
       imageUrl: '/assets/images/products/cacao-nacional.jpg',
       origin: 'Ecuador',
       harvestSeason: 'Enero - Mayo, Octubre - Diciembre',
@@ -194,6 +767,7 @@ async function main() {
       name: 'Camarón Blanco Premium',
       slug: 'camaron-blanco-premium',
       categoryId: marinosCategory.id,
+      measureId: pieces.id,
       description: 'Camarón blanco Litopenaeus vannamei de granjas acuícolas ecuatorianas. Ecuador es líder mundial en exportación de camarón con la más alta calidad y certificaciones internacionales.',
       shortDescription: 'Camarón blanco fresco certificado HACCP y BRC',
       sku: 'CMR-BLC-001',
@@ -239,6 +813,7 @@ async function main() {
       name: 'Rosas Rojas Premium',
       slug: 'rosas-rojas-premium',
       categoryId: agricolasCategory.id,
+      measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Rosas rojas ecuatorianas de exportación cultivadas en la sierra ecuatoriana. Ecuador es uno de los principales exportadores mundiales de flores, especialmente rosas de alta calidad.',
       shortDescription: 'Rosas premium cultivadas en altura con certificación MPS',
       sku: 'ROS-ROJ-001',
@@ -256,8 +831,8 @@ async function main() {
           'Vida en florero: 12-15 días'
         ]
       },
-      basePrice: 0.65,
-      priceUnit: 'stem',
+      basePrice: 16250, // $0.65/stem * 25,000 stems per container
+      priceUnit: 'container',
       stockQuantity: 50000,
       minOrderQty: 500,
       imageUrl: '/assets/images/products/rosas-rojas.jpg',
@@ -277,6 +852,7 @@ async function main() {
       name: 'Larvas de Camarón Post-Larva',
       slug: 'larvas-camaron-postlarva',
       categoryId: marinosCategory.id, // Now correctly categorized under marine products
+      measureId: pieces.id,
       description: 'Larvas de camarón libres de patógenos producidas en laboratorio certificado con tecnología de punta para acuicultura sustentable y desarrollo del sector camaronero ecuatoriano.',
       shortDescription: 'Larvas de camarón certificadas para acuicultura',
       sku: 'LAR-CAM-001',
@@ -315,6 +891,7 @@ async function main() {
       name: 'Aguacate Hass Premium',
       slug: 'aguacate-hass-premium',
       categoryId: agricolasCategory.id,
+      measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Aguacate Hass de calidad exportación cultivado en Ecuador. Textura cremosa, sabor intenso y certificación orgánica disponible.',
       shortDescription: 'Aguacate Hass premium export quality',
       sku: 'AGU-HAS-001',
@@ -332,8 +909,8 @@ async function main() {
           'Certificación orgánica disponible'
         ]
       },
-      basePrice: 3.50,
-      priceUnit: 'kg',
+      basePrice: 70000, // $3.50/kg * 20,000 kg per container
+      priceUnit: 'container',
       stockQuantity: 4000,
       minOrderQty: 500,
       imageUrl: '/assets/images/products/aguacate-hass.jpg',
@@ -361,6 +938,7 @@ async function main() {
       name: 'Mango Tommy Atkins Premium',
       slug: 'mango-tommy-atkins',
       categoryId: agricolasCategory.id,
+      measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Mango Tommy Atkins de exportación premium cultivado en la costa ecuatoriana. Frutos grandes, dulces y con excelente vida útil postcosecha.',
       shortDescription: 'Mango premium Tommy Atkins export quality',
       sku: 'MAN-TOM-001',
@@ -378,8 +956,8 @@ async function main() {
           'Resistente al transporte'
         ]
       },
-      basePrice: 2.80,
-      priceUnit: 'kg',
+      basePrice: 54000, // $2.80/kg * 19,000 kg per container (avg for mangos)
+      priceUnit: 'container',
       stockQuantity: 6000,
       minOrderQty: 1000,
       imageUrl: '/assets/images/products/mango-tommy.jpg',
@@ -407,6 +985,7 @@ async function main() {
       name: 'Café Arábica de Altura Premium',
       slug: 'cafe-arabica-altura',
       categoryId: agricolasCategory.id,
+      measureId: container40ft.id, // Agricultural products default to 40ft containers
       description: 'Granos de café cultivados en las montañas andinas ecuatorianas entre 1200-1800 msnm, reconocidos mundialmente por su calidad excepcional y perfil único.',
       shortDescription: 'Café arábica de altura 100% premium',
       sku: 'CAF-ARA-001',
@@ -424,8 +1003,8 @@ async function main() {
           'Comercio justo certificado'
         ]
       },
-      basePrice: 6.20,
-      priceUnit: 'kg',
+      basePrice: 108360, // $6.20/kg * 17,480 kg per container (coffee standard)
+      priceUnit: 'container',
       stockQuantity: 2000,
       minOrderQty: 100,
       imageUrl: '/assets/images/products/cafe-arabica.jpg',
@@ -445,6 +1024,7 @@ async function main() {
       name: 'Atún Fresco del Pacífico',
       slug: 'atun-fresco-pacifico',
       categoryId: marinosCategory.id,
+      measureId: pieces.id, // Marine products default to pieces
       description: 'Atún fresco capturado en las ricas aguas del Pacífico ecuatoriano con técnicas sustentables. Procesamiento inmediato post-captura.',
       shortDescription: 'Atún fresco captura sustentable',
       sku: 'ATU-FRE-001',

@@ -83,12 +83,41 @@ export const quoteItemSchema = z.object({
 export const createQuoteSchema = z.object({
   customerName: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(255, 'El nombre no puede exceder 255 caracteres'),
   customerEmail: z.string().email('Debe ser un email válido'),
-  customerPhone: z.string().regex(/^\+?[\d\s\-\(\)]+$/, 'Debe ser un número de teléfono válido').optional(),
+  customerPhone: z.string()
+    .regex(/^\+?[\d\s\-\(\)]+$/, 'Debe ser un número de teléfono válido')
+    .min(10, 'El teléfono debe tener al menos 10 dígitos')
+    .max(20, 'El teléfono no puede exceder 20 caracteres')
+    .optional(),
   company: z.string().max(255).optional(),
-  country: z.string().max(100).optional(),
+  countryId: z.number().int().positive('Debe seleccionar un país válido').optional(),
+  recipientEmail: z.string().email('Debe ser un email válido para envío').optional(),
   shippingAddress: addressSchema.optional(),
   message: z.string().optional(),
   items: z.array(quoteItemSchema).min(1, 'Debe incluir al menos un producto')
+}).refine((data) => {
+  // Enhanced phone validation based on country
+  if (data.customerPhone && data.countryId) {
+    const phone = data.customerPhone.replace(/\s|-|\(|\)/g, '');
+    
+    // Basic validation for different calling codes
+    if (data.countryId === 1 && !phone.match(/^\+?1\d{10}$/)) { // US/Canada
+      return false;
+    }
+    if (data.countryId === 2 && !phone.match(/^\+?57\d{10}$/)) { // Colombia
+      return false;
+    }
+    if (data.countryId === 3 && !phone.match(/^\+?51\d{9}$/)) { // Peru
+      return false;
+    }
+    if (data.countryId === 4 && !phone.match(/^\+?56\d{9}$/)) { // Chile
+      return false;
+    }
+    // Add more country-specific validations as needed
+  }
+  return true;
+}, {
+  message: "Formato de teléfono inválido para el país seleccionado",
+  path: ["customerPhone"]
 });
 
 export const updateQuoteSchema = z.object({
@@ -107,7 +136,7 @@ export const quoteFiltersSchema = z.object({
   assignedToId: z.number().int().positive().optional(),
   dateFrom: z.date().optional(),
   dateTo: z.date().optional(),
-  country: z.string().optional(),
+  countryId: z.number().int().positive().optional(),
   page: z.number().int().positive().default(1),
   pageSize: z.number().int().min(1).max(100).default(10)
 });

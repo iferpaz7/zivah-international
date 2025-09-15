@@ -28,9 +28,9 @@ export class ProductService {
     if (origin) where.origin = { contains: origin, mode: 'insensitive' };
     if (inStock) where.stockQuantity = { gt: 0 };
     if (minPrice || maxPrice) {
-      where.price = {};
-      if (minPrice) where.price.gte = minPrice;
-      if (maxPrice) where.price.lte = maxPrice;
+      where.basePrice = {};
+      if (minPrice) where.basePrice.gte = minPrice;
+      if (maxPrice) where.basePrice.lte = maxPrice;
     }
 
     // Search functionality
@@ -45,7 +45,7 @@ export class ProductService {
     // Certifications filter (JSON array contains)
     if (certifications && certifications.length > 0) {
       where.certifications = {
-        path: '$',
+        path: ['$'],
         array_contains: certifications
       };
     }
@@ -92,9 +92,9 @@ export class ProductService {
       where: { id },
       include: {
         category: true,
-        productVariants: {
+        variants: {
           where: { isActive: true },
-          orderBy: { sortOrder: 'asc' }
+          orderBy: { id: 'asc' }
         },
         quoteItems: {
           include: {
@@ -115,9 +115,9 @@ export class ProductService {
       where: { slug },
       include: {
         category: true,
-        productVariants: {
+        variants: {
           where: { isActive: true },
-          orderBy: { sortOrder: 'asc' }
+          orderBy: { id: 'asc' }
         }
       }
     });
@@ -305,9 +305,9 @@ export class ProductService {
     ]);
 
     const totalValue = await prisma.product.aggregate({
-      where: { isActive: true, price: { not: null } },
+      where: { isActive: true, basePrice: { not: null } },
       _sum: {
-        price: true
+        basePrice: true
       }
     });
 
@@ -316,7 +316,7 @@ export class ProductService {
       activeProducts,
       featuredProducts,
       categoriesCount,
-      totalValue: totalValue._sum.price || 0,
+      totalValue: totalValue._sum.basePrice || 0,
       lowStockProducts: lowStockCount,
       topSellingProducts: topSellingProducts.map((product: any) => ({
         productId: product.id,

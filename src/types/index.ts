@@ -99,6 +99,7 @@ export interface QuoteItem {
   id: number;
   quoteId: number;
   productId: number;
+  measureId?: number;
   quantity: number;
   unitPrice: number;
   totalPrice: number;
@@ -107,6 +108,7 @@ export interface QuoteItem {
   createdAt: Date;
   quote: Quote;
   product: Product;
+  measure?: Measure;
 }
 
 export enum CommunicationType {
@@ -487,4 +489,27 @@ export interface StructuredData {
   };
   foundingDate?: string;
   [key: string]: any;
+}
+
+// Measurement unit types
+export enum MeasureType {
+  WEIGHT = 'WEIGHT',
+  VOLUME = 'VOLUME',
+  LENGTH = 'LENGTH',
+  AREA = 'AREA',
+  QUANTITY = 'QUANTITY',
+  CONTAINER = 'CONTAINER'
+}
+
+export interface Measure extends BaseEntity {
+  name: string;
+  shortName: string;
+  symbol?: string;
+  type: MeasureType;
+  baseUnit?: string;
+  conversionFactor?: number;
+  isActive: boolean;
+  sortOrder: number;
+  description?: string;
+  quoteItems?: QuoteItem[];
 }

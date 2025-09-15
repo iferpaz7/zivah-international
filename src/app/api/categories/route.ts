@@ -71,6 +71,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedData = createCategorySchema.parse(body);
     
+    // Auto-generate slug if not provided
+    if (!validatedData.slug) {
+      validatedData.slug = validatedData.name
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .trim();
+    }
+    
     // Check if slug is unique
     const existingCategory = await prisma.category.findUnique({
       where: { slug: validatedData.slug }
@@ -85,7 +94,7 @@ export async function POST(request: NextRequest) {
     }
 
     const category = await prisma.category.create({
-      data: validatedData,
+      data: validatedData as any, // Type assertion to handle the slug field
       include: {
         _count: {
           select: {
