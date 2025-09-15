@@ -1,9 +1,11 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import ThemeToggle from '@/components/ThemeToggle'
 import QuoteForm from '@/components/QuoteForm'
+import Navigation from '@/components/Navigation'
 
 // Types for our data
 interface Category {
@@ -128,40 +130,11 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
-      {/* Navigation */}
-      <header className="fixed top-0 w-full glass-nav z-50">
-        <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={handleLogoClick}>
-            <Image
-              src="/assets/images/zivah-logo.svg"
-              alt="ZIVAH International S.A."
-              width={120}
-              height={40}
-              priority
-            />
-          </div>
-          
-          <ul className="hidden md:flex items-center space-x-8">
-            <li><button onClick={() => scrollToSection('home')} className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Inicio</button></li>
-            <li><button onClick={() => scrollToSection('productos')} className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Productos</button></li>
-            <li><button onClick={() => scrollToSection('todos-productos')} className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Catálogo</button></li>
-            <li><button onClick={() => scrollToSection('calidad')} className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Calidad</button></li>
-            <li><button onClick={() => scrollToSection('cotizar')} className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Cotizar</button></li>
-            <li><button onClick={() => scrollToSection('contacto')} className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors">Contacto</button></li>
-          </ul>
-
-          <div className="flex items-center space-x-4">
-            <ThemeToggle />
-            <button className="md:hidden text-gray-700 dark:text-gray-300">☰</button>
-            <button onClick={() => scrollToSection('cotizar')} className="bg-green-600 dark:bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors">
-              Solicitar Cotización
-            </button>
-          </div>
-        </nav>
-      </header>
+      {/* Enhanced Navigation */}
+      <Navigation onScrollToSection={scrollToSection} />
 
       {/* Hero Section */}
-      <section className="pt-20 bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800 py-20" id="home">
+      <section className="pt-24 bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800 py-20" id="home">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -679,30 +652,13 @@ export default function HomePage() {
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Síguenos</h4>
-              <div className="space-y-2 mb-6">
-                <a href="https://www.linkedin.com/company/zivah-international" target="_blank" rel="noopener" className="flex items-center text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                  <span className="mr-2">💼</span> LinkedIn
-                </a>
-                <a href="https://www.facebook.com/zivahinternational" target="_blank" rel="noopener" className="flex items-center text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                  <span className="mr-2">📘</span> Facebook
-                </a>
-                <a href="https://twitter.com/ZivahIntl" target="_blank" rel="noopener" className="flex items-center text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                  <span className="mr-2">🐦</span> Twitter
-                </a>
-                <a href="https://www.instagram.com/zivahinternational" target="_blank" rel="noopener" className="flex items-center text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                  <span className="mr-2">📷</span> Instagram
-                </a>
-              </div>
-              
-              <div className="space-y-2">
-                <button className="flex items-center text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                  <span className="mr-2">📤</span> Compartir Sitio Web
-                </button>
-                <button className="flex items-center text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                  <span className="mr-2">🔗</span> Copiar Enlace
-                </button>
-              </div>
+              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Legal</h4>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+                <li><Link href="/legal/privacy-policy" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">Política de Privacidad</Link></li>
+                <li><Link href="/legal/terms-of-service" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">Términos y Condiciones</Link></li>
+                <li><Link href="/legal/cookie-policy" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">Política de Cookies</Link></li>
+                <li><Link href="/legal/data-protection" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">Protección de Datos</Link></li>
+              </ul>
             </div>
           </div>
 

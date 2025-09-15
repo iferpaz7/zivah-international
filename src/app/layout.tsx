@@ -1,7 +1,15 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter, Montserrat } from 'next/font/google'
+import { Suspense } from 'react'
 import ClientThemeProvider from '@/components/ClientThemeProvider'
+import CookieConsent from '@/components/CookieConsent'
+import Analytics from '@/components/Analytics'
+import BusinessIntelligence from '@/components/BusinessIntelligence'
+import ServiceWorkerRegistration from '@/components/ServiceWorker'
+import WebVitals from '@/components/WebVitals'
+import SEOOptimization from '@/components/SEOOptimization'
+import { ErrorBoundary, NetworkStatus } from '@/components/ErrorHandling'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -158,9 +166,19 @@ export default function RootLayout({
         }} />
       </head>
       <body className="min-h-screen antialiased font-sans bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-        <ClientThemeProvider>
-          {children}
-        </ClientThemeProvider>
+        <ErrorBoundary>
+          <ClientThemeProvider>
+            <Suspense fallback={null}>
+              <Analytics />
+            </Suspense>
+            <BusinessIntelligence />
+            <ServiceWorkerRegistration />
+            <WebVitals />
+            {children}
+          </ClientThemeProvider>
+        </ErrorBoundary>
+        <CookieConsent />
+        <NetworkStatus />
       </body>
     </html>
   )

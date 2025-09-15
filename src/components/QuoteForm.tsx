@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { createQuoteSchema } from '@/lib/validations';
 import { Button } from '@/components/Button';
 import { Card, CardHeader, CardContent } from '@/components/Card';
+import { useBusinessTracking } from '@/components/BusinessIntelligence';
 
 interface Product {
   id: number;
@@ -85,6 +86,9 @@ export default function QuoteForm() {
       items: []
     }
   });
+
+  // Business tracking hook
+  const { trackQuoteFormComplete, trackBusinessConversion } = useBusinessTracking();
 
   // Load countries from API
   useEffect(() => {
@@ -285,6 +289,29 @@ export default function QuoteForm() {
           type: 'success',
           text: `Cotización creada exitosamente. Email enviado a ${data.customerEmail}.`
         });
+
+        // Track successful quote submission
+        const selectedCountry = countries.find(c => c.id === data.countryId)
+        trackQuoteFormComplete({
+          products: selectedProducts.map(p => ({
+            id: p.id.toString(),
+            name: p.name,
+            quantity: data.items.find(item => item.productId === p.id)?.quantity || 0
+          })),
+          contactInfo: {
+            name: data.customerName,
+            email: data.customerEmail,
+            company: data.company
+          },
+          deliveryInfo: selectedCountry ? {
+            country: selectedCountry.name,
+            port: undefined // Could be added to form later
+          } : undefined
+        })
+
+        // Track business conversion
+        trackBusinessConversion('quote_request')
+
         // Reset form
         setSelectedProducts([]);
         setValue('items', []);

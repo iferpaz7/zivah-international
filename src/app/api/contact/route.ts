@@ -1,31 +1,66 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { contactSubmissionSchema } from '@/lib/validations';
+import { contactFormSchema, formRateLimiter, sanitizeString, sanitizeEmail, isXSS, isSQLInjection } from '@/lib/validation';
 import { handleApiError, createApiResponse } from '@/lib/errors';
-import { checkRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
+import { useBusinessTracking } from '@/components/BusinessIntelligence';
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting: 3 contact submissions per hour per IP
-    const ip = request.headers.get('x-forwarded-for') ||
+    // Get client IP for rate limiting
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
                request.headers.get('x-real-ip') ||
+               request.headers.get('cf-connecting-ip') ||
                'unknown';
-    const rateLimit = await checkRateLimit(
-      `contact:${ip}`,
-      RATE_LIMITS.CONTACT_SUBMIT.limit,
-      RATE_LIMITS.CONTACT_SUBMIT.windowMs
-    );
 
-    if (!rateLimit.success) {
-      return createApiResponse(null, 'Demasiadas solicitudes. Intente nuevamente más tarde.', 429);
+    // Check form submission rate limit
+    const rateLimitCheck = formRateLimiter.canSubmit(`contact:${ip}`);
+    if (!rateLimitCheck.allowed) {
+      return NextResponse.json({
+        error: true,
+        message: rateLimitCheck.reason || 'Demasiadas solicitudes. Intente nuevamente más tarde.',
+        timestamp: new Date().toISOString()
+      }, {
+        status: 429,
+        headers: {
+          'Retry-After': Math.ceil((rateLimitCheck.waitTime || 30000) / 1000).toString()
+        }
+      });
     }
 
     const body = await request.json();
-    const validatedData = contactSubmissionSchema.parse(body);
-    
+
+    // Sanitize input data
+    const sanitizedBody = {
+      name: sanitizeString(body.name || ''),
+      email: sanitizeEmail(body.email || ''),
+      phone: body.phone ? sanitizeString(body.phone) : undefined,
+      company: body.company ? sanitizeString(body.company) : undefined,
+      message: sanitizeString(body.message || ''),
+      subject: body.subject ? sanitizeString(body.subject) : undefined,
+    };
+
+    // Check for malicious content
+    const textFields = [sanitizedBody.name, sanitizedBody.email, sanitizedBody.message];
+    if (sanitizedBody.company) textFields.push(sanitizedBody.company);
+    if (sanitizedBody.subject) textFields.push(sanitizedBody.subject);
+
+    for (const field of textFields) {
+      if (isXSS(field) || isSQLInjection(field)) {
+        console.warn(`Malicious content detected in contact form from IP: ${ip}`);
+        return createApiResponse(null, 'Contenido no válido detectado.', 400);
+      }
+    }
+
+    // Validate with enhanced schema
+    const validatedData = contactFormSchema.parse(sanitizedBody);
+
     const contactSubmission = await prisma.contactSubmission.create({
       data: validatedData
     });
+
+    // Track successful contact submission
+    // Note: Business tracking is handled on the client side
+    // This is just for server-side logging
 
     // Log activity
     await prisma.activityLog.create({
@@ -35,9 +70,8 @@ export async function POST(request: NextRequest) {
         entityId: contactSubmission.id,
         details: JSON.stringify({
           contactId: contactSubmission.id,
-          email: contactSubmission.email,
-          type: contactSubmission.type,
-          company: contactSubmission.company
+          email: validatedData.email,
+          company: validatedData.company
         })
       }
     });

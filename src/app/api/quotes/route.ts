@@ -1,8 +1,7 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createQuoteSchema, productFiltersSchema } from '@/lib/validations';
+import { quoteFormSchema, formRateLimiter, sanitizeString, sanitizeEmail, isXSS, isSQLInjection } from '@/lib/validation';
 import { handleApiError, createApiResponse } from '@/lib/errors';
-import { checkRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 import { emailService } from '@/lib/email';
 import { logger } from '@/lib/logger';
 
@@ -79,22 +78,70 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting: 5 quotes per hour per IP
-    const ip = request.headers.get('x-forwarded-for') ||
+    // Get client IP for rate limiting
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
                request.headers.get('x-real-ip') ||
+               request.headers.get('cf-connecting-ip') ||
                'unknown';
-    const rateLimit = await checkRateLimit(
-      `quote:${ip}`,
-      RATE_LIMITS.QUOTE_CREATE.limit,
-      RATE_LIMITS.QUOTE_CREATE.windowMs
-    );
 
-    if (!rateLimit.success) {
-      return createApiResponse(null, 'Demasiadas solicitudes. Intente nuevamente más tarde.', 429);
+    // Check form submission rate limit
+    const rateLimitCheck = formRateLimiter.canSubmit(`quote:${ip}`);
+    if (!rateLimitCheck.allowed) {
+      return NextResponse.json({
+        error: true,
+        message: rateLimitCheck.reason || 'Demasiadas solicitudes. Intente nuevamente más tarde.',
+        timestamp: new Date().toISOString()
+      }, {
+        status: 429,
+        headers: {
+          'Retry-After': Math.ceil((rateLimitCheck.waitTime || 30000) / 1000).toString()
+        }
+      });
     }
 
     const body = await request.json();
-    const validatedData = createQuoteSchema.parse(body);
+
+    // Sanitize input data
+    const sanitizedBody = {
+      customerName: sanitizeString(body.customerName || ''),
+      customerEmail: sanitizeEmail(body.customerEmail || ''),
+      customerPhone: body.customerPhone ? sanitizeString(body.customerPhone) : undefined,
+      company: body.company ? sanitizeString(body.company) : undefined,
+      countryId: body.countryId,
+      recipientEmail: body.recipientEmail ? sanitizeEmail(body.recipientEmail) : undefined,
+      shippingAddress: body.shippingAddress,
+      message: body.message ? sanitizeString(body.message) : undefined,
+      items: body.items?.map((item: any) => ({
+        productId: item.productId,
+        measureId: item.measureId,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        notes: item.notes ? sanitizeString(item.notes) : undefined,
+        specifications: item.specifications
+      })) || []
+    };
+
+    // Check for malicious content in text fields
+    const textFields = [
+      sanitizedBody.customerName,
+      sanitizedBody.customerEmail,
+      sanitizedBody.message
+    ];
+    if (sanitizedBody.company) textFields.push(sanitizedBody.company);
+    if (sanitizedBody.recipientEmail) textFields.push(sanitizedBody.recipientEmail);
+    sanitizedBody.items.forEach((item: any) => {
+      if (item.notes) textFields.push(item.notes);
+    });
+
+    for (const field of textFields) {
+      if (field && (isXSS(field) || isSQLInjection(field))) {
+        console.warn(`Malicious content detected in quote form from IP: ${ip}`);
+        return createApiResponse(null, 'Contenido no válido detectado.', 400);
+      }
+    }
+
+    // Validate with enhanced schema
+    const validatedData = quoteFormSchema.parse(sanitizedBody);
 
     // Generate quote number
     const lastQuote = await prisma.quote.findFirst({
@@ -115,8 +162,9 @@ export async function POST(request: NextRequest) {
         message: validatedData.message,
         status: 'PENDING',
         items: {
-          create: validatedData.items.map(item => ({
+          create: validatedData.items.map((item: any) => ({
             productId: item.productId,
+            measureId: item.measureId,
             quantity: item.quantity,
             unitPrice: item.unitPrice || 0,
             totalPrice: (item.unitPrice || 0) * item.quantity,
@@ -163,10 +211,10 @@ export async function POST(request: NextRequest) {
           customerName: quote.customerName,
           customerEmail: quote.customerEmail,
           company: quote.company || undefined,
-          country: quote.countryRef?.name,
+          country: (quote as any).countryRef?.name,
           currency: quote.currency,
           totalAmount: quote.totalAmount ? Number(quote.totalAmount) : undefined,
-          items: quote.items.map(item => ({
+          items: (quote as any).items.map((item: any) => ({
             productName: item.product?.name || 'Producto',
             quantity: item.quantity,
             unitPrice: Number(item.unitPrice),
