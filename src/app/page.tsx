@@ -1,11 +1,9 @@
 'use client';
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import ThemeToggle from '@/components/ThemeToggle';
-import QuoteForm from '@/components/QuoteForm';
 import Navigation from '@/components/Navigation';
+import QuoteForm from '@/components/QuoteForm';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 // Types for our data
 interface Category {
@@ -60,7 +58,11 @@ export default function HomePage() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const offsetTop = element.offsetTop - 80; // Account for fixed navigation height
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth',
+      });
     }
   };
 
@@ -146,7 +148,7 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section
-        className='pt-24 bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800 py-20'
+        className='pt-28 bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800 py-20'
         id='home'
       >
         <div className='container mx-auto px-4'>
@@ -239,7 +241,7 @@ export default function HomePage() {
       </section>
 
       {/* Products Section */}
-      <section className='py-20 bg-white dark:bg-gray-900' id='productos'>
+      <section className='pt-20 pb-20 bg-white dark:bg-gray-900' id='productos'>
         <div className='container mx-auto px-4'>
           <div className='text-center mb-16'>
             <div className='inline-block bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium mb-4'>
@@ -360,7 +362,7 @@ export default function HomePage() {
 
       {/* All Products Section - Dynamic */}
       <section
-        className='py-20 bg-gray-50 dark:bg-gray-800'
+        className='pt-20 pb-20 bg-gray-50 dark:bg-gray-800'
         id='todos-productos'
       >
         <div className='container mx-auto px-4'>
@@ -501,7 +503,7 @@ export default function HomePage() {
 
       {/* Quote Section */}
       <section
-        className='py-20 bg-gradient-to-br from-green-600 to-blue-600 text-white'
+        className='pt-20 pb-20 bg-gradient-to-br from-green-600 to-blue-600 text-white'
         id='cotizar'
       >
         <div className='container mx-auto px-4'>
@@ -561,7 +563,7 @@ export default function HomePage() {
       </section>
 
       {/* Quality Section */}
-      <section className='py-20 bg-white dark:bg-gray-900' id='calidad'>
+      <section className='pt-20 pb-20 bg-white dark:bg-gray-900' id='calidad'>
         <div className='container mx-auto px-4'>
           <div className='grid lg:grid-cols-2 gap-12 items-center'>
             <div>
@@ -628,7 +630,10 @@ export default function HomePage() {
       </section>
 
       {/* Global Reach */}
-      <section className='py-20 bg-gray-50 dark:bg-gray-800' id='mercados'>
+      <section
+        className='pt-20 pb-20 bg-gray-50 dark:bg-gray-800'
+        id='mercados'
+      >
         <div className='container mx-auto px-4'>
           <div className='text-center mb-16'>
             <div className='inline-block bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium mb-4'>
@@ -699,7 +704,7 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section className='py-20 bg-white dark:bg-gray-900' id='contacto'>
+      <section className='pt-20 pb-20 bg-white dark:bg-gray-900' id='contacto'>
         <div className='container mx-auto px-4'>
           <div className='text-center mb-16'>
             <div className='inline-block bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 px-4 py-2 rounded-full text-sm font-medium mb-4'>

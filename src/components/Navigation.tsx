@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import ThemeToggle from './ThemeToggle';
 
 interface NavigationProps {
@@ -59,7 +59,11 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const offsetTop = element.offsetTop - 80; // Account for fixed navigation height
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth',
+      });
     }
     setIsMobileMenuOpen(false);
   };
