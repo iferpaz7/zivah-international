@@ -70,7 +70,6 @@ export const getSecurityHeaders = (environment: string = 'production') => {
       'magnetometer=()',
       'accelerometer=()',
       'gyroscope=()',
-      'ambient-light-sensor=()',
       'autoplay=()',
       'encrypted-media=()',
       'fullscreen=(self)',

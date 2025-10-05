@@ -1,4 +1,5 @@
-import NextAuth from 'next-auth';
+// Import from next-auth/next for Next.js route handlers (v4)
+import NextAuth from 'next-auth/next';
 
 import { authOptions } from '@/lib/auth';
 

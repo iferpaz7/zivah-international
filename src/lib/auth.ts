@@ -1,12 +1,14 @@
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import bcrypt from 'bcryptjs';
-import { NextAuthOptions } from 'next-auth';
+import type { Session } from 'next-auth';
+import type { Adapter } from 'next-auth/adapters';
+import type { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import { prisma } from './prisma';
 
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as any,
+export const authOptions = {
+  adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -52,19 +54,21 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as const,
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
+    async jwt({ token, user }: { token: JWT; user?: { role?: string } | null }) {
+      if (user && user.role) {
         token.role = user.role;
       }
       return token;
     },
-    async session({ session, token }) {
-      if (token) {
-        session.user.id = token.sub!;
-        session.user.role = token.role as string;
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (token && session.user) {
+        // sub is present on default JWT in NextAuth v4
+        const sub = (token as any).sub as string | undefined;
+        if (sub) session.user.id = sub;
+        if (token.role) session.user.role = token.role;
       }
       return session;
     },

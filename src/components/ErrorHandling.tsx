@@ -53,24 +53,24 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 // Default error fallback component
 function ErrorFallback({ error, reset }: { error: Error; reset: () => void }) {
   return (
-    <div className='min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4'>
-      <div className='max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center'>
-        <div className='text-6xl mb-4'>⚠️</div>
-        <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Algo salió mal</h2>
-        <p className='text-gray-600 dark:text-gray-400 mb-6'>
+    <div className='flex min-h-screen items-center justify-center bg-gray-50 p-4 dark:bg-gray-900'>
+      <div className='w-full max-w-md rounded-lg bg-white p-8 text-center shadow-lg dark:bg-gray-800'>
+        <div className='mb-4 text-6xl'>⚠️</div>
+        <h2 className='mb-4 text-2xl font-bold text-gray-900 dark:text-white'>Algo salió mal</h2>
+        <p className='mb-6 text-gray-600 dark:text-gray-400'>
           Ha ocurrido un error inesperado. Por favor, intenta recargar la página.
         </p>
 
         <div className='space-y-3'>
           <button
             onClick={reset}
-            className='w-full bg-accent hover:bg-dark-accent text-white px-4 py-2 rounded-lg font-medium transition-colors'
+            className='bg-accent hover:bg-dark-accent w-full rounded-lg px-4 py-2 font-medium text-white transition-colors'
           >
             Intentar de nuevo
           </button>
           <button
             onClick={() => window.location.reload()}
-            className='w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors'
+            className='w-full rounded-lg bg-gray-100 px-4 py-2 font-medium text-gray-900 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600'
           >
             Recargar página
           </button>
@@ -78,10 +78,10 @@ function ErrorFallback({ error, reset }: { error: Error; reset: () => void }) {
 
         {process.env.NODE_ENV === 'development' && (
           <details className='mt-6 text-left'>
-            <summary className='cursor-pointer text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'>
+            <summary className='cursor-pointer text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'>
               Detalles técnicos
             </summary>
-            <pre className='mt-2 text-xs bg-gray-100 dark:bg-gray-700 p-3 rounded overflow-auto'>
+            <pre className='mt-2 overflow-auto rounded bg-gray-100 p-3 text-xs dark:bg-gray-700'>
               {error.message}
               {error.stack}
             </pre>
@@ -109,9 +109,9 @@ export function LoadingSpinner({
   return (
     <div className='flex flex-col items-center justify-center p-8'>
       <div
-        className={`${sizeClasses[size]} border-4 border-accent/20 border-t-accent rounded-full animate-spin mb-4`}
-      ></div>
-      {message && <p className='text-gray-600 dark:text-gray-400 text-sm'>{message}</p>}
+        className={`${sizeClasses[size]} border-accent/20 border-t-accent mb-4 animate-spin rounded-full border-4`}
+      />
+      {message && <p className='text-sm text-gray-600 dark:text-gray-400'>{message}</p>}
     </div>
   );
 }
@@ -119,13 +119,13 @@ export function LoadingSpinner({
 // Loading skeleton for products
 export function ProductSkeleton() {
   return (
-    <div className='bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 animate-pulse'>
-      <div className='w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4'></div>
-      <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2'></div>
-      <div className='h-3 bg-gray-200 dark:bg-gray-700 rounded mb-4'></div>
-      <div className='flex justify-between items-center'>
-        <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-16'></div>
-        <div className='h-6 bg-gray-200 dark:bg-gray-700 rounded w-20'></div>
+    <div className='animate-pulse rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
+      <div className='mb-4 h-48 w-full rounded-lg bg-gray-200 dark:bg-gray-700' />
+      <div className='mb-2 h-4 rounded bg-gray-200 dark:bg-gray-700' />
+      <div className='mb-4 h-3 rounded bg-gray-200 dark:bg-gray-700' />
+      <div className='flex items-center justify-between'>
+        <div className='h-4 w-16 rounded bg-gray-200 dark:bg-gray-700' />
+        <div className='h-6 w-20 rounded bg-gray-200 dark:bg-gray-700' />
       </div>
     </div>
   );
@@ -134,11 +134,11 @@ export function ProductSkeleton() {
 // Loading skeleton for content
 export function ContentSkeleton() {
   return (
-    <div className='space-y-4 animate-pulse'>
-      <div className='h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4'></div>
-      <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-full'></div>
-      <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6'></div>
-      <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/6'></div>
+    <div className='animate-pulse space-y-4'>
+      <div className='h-8 w-3/4 rounded bg-gray-200 dark:bg-gray-700' />
+      <div className='h-4 w-full rounded bg-gray-200 dark:bg-gray-700' />
+      <div className='h-4 w-5/6 rounded bg-gray-200 dark:bg-gray-700' />
+      <div className='h-4 w-4/6 rounded bg-gray-200 dark:bg-gray-700' />
     </div>
   );
 }
@@ -163,9 +163,9 @@ export function NetworkStatus() {
   if (isOnline) return null;
 
   return (
-    <div className='fixed bottom-4 right-4 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg z-50'>
+    <div className='fixed right-4 bottom-4 z-50 rounded-lg bg-red-600 px-4 py-2 text-white shadow-lg'>
       <div className='flex items-center space-x-2'>
-        <div className='w-2 h-2 bg-white rounded-full animate-pulse'></div>
+        <div className='h-2 w-2 animate-pulse rounded-full bg-white' />
         <span className='text-sm font-medium'>Sin conexión</span>
       </div>
     </div>
@@ -194,13 +194,13 @@ export function Toast({ message, type, onClose }: ToastProps) {
 
   return (
     <div
-      className={`fixed top-4 right-4 ${typeStyles[type]} px-4 py-3 rounded-lg shadow-lg z-50 max-w-sm`}
+      className={`fixed top-4 right-4 ${typeStyles[type]} z-50 max-w-sm rounded-lg px-4 py-3 shadow-lg`}
     >
       <div className='flex items-center justify-between'>
         <span className='text-sm font-medium'>{message}</span>
         <button
           onClick={onClose}
-          className='ml-4 text-white hover:text-gray-200 transition-colors'
+          className='ml-4 text-white transition-colors hover:text-gray-200'
         >
           ✕
         </button>
@@ -236,7 +236,7 @@ export function ToastContainer({
   onRemove: (id: string) => void;
 }) {
   return (
-    <div className='fixed top-4 right-4 space-y-2 z-50'>
+    <div className='fixed top-4 right-4 z-50 space-y-2'>
       {toasts.map(toast => (
         <Toast
           key={toast.id}

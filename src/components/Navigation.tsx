@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+import { useMounted } from '@/lib/hooks/use-mounted';
 
 import ThemeToggle from './ThemeToggle';
 import { Button } from './ui/button';
@@ -16,21 +17,29 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const mounted = useMounted();
 
   // Handle scroll effect
   useEffect(() => {
+    if (!mounted) return;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
+    // Set initial scroll state
+    setIsScrolled(window.scrollY > 50);
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mounted]);
 
   // Handle section detection
   useEffect(() => {
+    if (!mounted) return;
+
     const handleScroll = () => {
-      const sections = ['home', 'productos', 'todos-productos', 'calidad', 'cotizar', 'contacto'];
+      const sections = ['home', 'products', 'quote', 'quality', 'markets', 'contact'];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
@@ -45,9 +54,12 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
       }
     };
 
+    // Set initial active section
+    handleScroll();
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mounted]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -67,27 +79,43 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
 
   const navigationItems = [
     { id: 'home', label: 'Inicio', icon: '🏠' },
-    { id: 'productos', label: 'Productos', icon: '📦' },
-    { id: 'todos-productos', label: 'Catálogo', icon: '📋' },
-    { id: 'calidad', label: 'Calidad', icon: '⭐' },
-    { id: 'cotizar', label: 'Cotizar', icon: '💰' },
-    { id: 'contacto', label: 'Contacto', icon: '📞' },
+    { id: 'products', label: 'Productos', icon: '📦' },
+    { id: 'quote', label: 'Cotizar', icon: '💰' },
+    { id: 'quality', label: 'Calidad', icon: '⭐' },
+    { id: 'markets', label: 'Mercados', icon: '🌍' },
+    { id: 'contact', label: 'Contacto', icon: '📞' },
   ];
+
+  // Use consistent className order to prevent hydration mismatch
+  const headerClassName = `fixed top-0 w-full z-50 transition-all duration-300 ${
+    mounted && isScrolled
+      ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg'
+      : 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm'
+  }`;
 
   return (
     <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg'
-          : 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm'
-      }`}
+      className={headerClassName}
+      suppressHydrationWarning
     >
-      <nav className='container mx-auto px-4 py-3'>
+      <nav
+        className='container mx-auto px-4 py-3'
+        suppressHydrationWarning
+      >
         <div className='flex items-center justify-between'>
-          {/* Logo */}
+          {/* Logo - Using div to ensure consistent SSR/hydration */}
           <div
-            className='flex items-center space-x-2 cursor-pointer transition-transform hover:scale-105'
+            className='flex cursor-pointer items-center space-x-2 transition-transform hover:scale-105'
             onClick={handleLogoClick}
+            role='button'
+            tabIndex={0}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleLogoClick();
+              }
+            }}
+            aria-label='Ir al inicio'
           >
             <Image
               src='/assets/images/zivah-logo.svg'
@@ -99,20 +127,22 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
           </div>
 
           {/* Desktop Navigation */}
-          <div className='hidden lg:flex items-center space-x-1'>
+          <div className='hidden items-center space-x-1 lg:flex'>
             {navigationItems.map(item => (
               <Button
                 key={item.id}
-                variant={activeSection === item.id ? 'nav-active' : 'nav'}
+                variant={mounted && activeSection === item.id ? 'nav-active' : 'nav'}
                 size='nav'
                 onClick={() => scrollToSection(item.id)}
                 className='relative font-medium'
               >
                 <span className='mr-2'>{item.icon}</span>
                 {item.label}
-                {activeSection === item.id && (
-                  <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-accent rounded-full' />
-                )}
+                <div
+                  className={`absolute bottom-0 left-1/2 h-1 w-1 -translate-x-1/2 transform rounded-full ${
+                    mounted && activeSection === item.id ? 'bg-accent' : 'bg-transparent'
+                  }`}
+                />
               </Button>
             ))}
           </div>
@@ -121,7 +151,7 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
           <div className='flex items-center space-x-3'>
             {/* Language Selector */}
             <div className='hidden md:block'>
-              <select className='px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white'>
+              <select className='rounded-lg border border-gray-300 bg-white px-3 py-1 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'>
                 <option value='es'>🇪🇨 ES</option>
                 <option value='en'>🇺🇸 EN</option>
               </select>
@@ -131,13 +161,15 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
             <ThemeToggle />
 
             {/* CTA Button */}
-            <button
-              onClick={() => scrollToSection('cotizar')}
-              className='hidden md:inline-flex items-center bg-accent hover:bg-dark-accent text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg'
+            <Button
+              onClick={() => scrollToSection('quote')}
+              variant='accent'
+              size='default'
+              className='hidden items-center shadow-md hover:shadow-lg md:inline-flex'
             >
               <span className='mr-2'>💬</span>
               Cotizar
-            </button>
+            </Button>
 
             {/* Mobile Menu Button */}
             <Button
@@ -146,21 +178,22 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className='lg:hidden'
               aria-label='Toggle mobile menu'
+              suppressHydrationWarning
             >
-              <div className='w-6 h-6 flex flex-col justify-center items-center'>
+              <div className='flex h-6 w-6 flex-col items-center justify-center'>
                 <span
-                  className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
-                    isMobileMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-1'
+                  className={`block h-0.5 w-5 bg-current transition-all duration-300 ${
+                    mounted && isMobileMenuOpen ? 'translate-y-1 rotate-45' : '-translate-y-1'
                   }`}
                 />
                 <span
-                  className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
-                    isMobileMenuOpen ? 'opacity-0' : 'opacity-100'
+                  className={`block h-0.5 w-5 bg-current transition-all duration-300 ${
+                    mounted && isMobileMenuOpen ? 'opacity-0' : 'opacity-100'
                   }`}
                 />
                 <span
-                  className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
-                    isMobileMenuOpen ? '-rotate-45 -translate-y-1' : 'translate-y-1'
+                  className={`block h-0.5 w-5 bg-current transition-all duration-300 ${
+                    mounted && isMobileMenuOpen ? '-translate-y-1 -rotate-45' : 'translate-y-1'
                   }`}
                 />
               </div>
@@ -170,17 +203,18 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
 
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden transition-all duration-300 overflow-hidden ${
-            isMobileMenuOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
+          className={`overflow-hidden transition-all duration-300 lg:hidden ${
+            mounted && isMobileMenuOpen ? 'mt-4 max-h-96 opacity-100' : 'max-h-0 opacity-0'
           }`}
+          suppressHydrationWarning
         >
-          <div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4'>
+          <div className='rounded-lg border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-700 dark:bg-gray-800'>
             {/* Mobile Navigation Items */}
             <div className='space-y-2'>
               {navigationItems.map(item => (
                 <Button
                   key={item.id}
-                  variant={activeSection === item.id ? 'nav-active' : 'nav-mobile'}
+                  variant={mounted && activeSection === item.id ? 'nav-active' : 'nav-mobile'}
                   size='nav-mobile'
                   onClick={() => scrollToSection(item.id)}
                   className='font-medium'
@@ -192,50 +226,52 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
             </div>
 
             {/* Mobile Actions */}
-            <div className='mt-6 pt-4 border-t border-gray-200 dark:border-gray-700'>
-              <div className='flex items-center justify-between mb-4'>
+            <div className='mt-6 border-t border-gray-200 pt-4 dark:border-gray-700'>
+              <div className='mb-4 flex items-center justify-between'>
                 <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>
                   Idioma:
                 </span>
-                <select className='px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white'>
+                <select className='rounded-lg border border-gray-300 bg-white px-3 py-1 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100'>
                   <option value='es'>🇪🇨 Español</option>
                   <option value='en'>🇺🇸 English</option>
                 </select>
               </div>
 
-              <button
+              <Button
                 onClick={() => scrollToSection('cotizar')}
-                className='w-full bg-accent hover:bg-dark-accent text-white px-4 py-3 rounded-lg font-medium transition-colors shadow-md'
+                variant='accent'
+                size='lg'
+                className='w-full shadow-md'
               >
                 <span className='mr-2'>💬</span>
                 Solicitar Cotización
-              </button>
+              </Button>
             </div>
 
             {/* Quick Links */}
-            <div className='mt-6 pt-4 border-t border-gray-200 dark:border-gray-700'>
+            <div className='mt-6 border-t border-gray-200 pt-4 dark:border-gray-700'>
               <div className='grid grid-cols-2 gap-3'>
                 <Link
                   href='/legal/privacy-policy'
-                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-accent transition-colors'
+                  className='text-sm text-gray-600 transition-colors hover:text-green-600 dark:text-gray-400'
                 >
                   Privacidad
                 </Link>
                 <Link
                   href='/legal/terms-of-service'
-                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-accent transition-colors'
+                  className='text-sm text-gray-600 transition-colors hover:text-green-600 dark:text-gray-400'
                 >
                   Términos
                 </Link>
                 <Link
                   href='/legal/cookie-policy'
-                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-accent transition-colors'
+                  className='text-sm text-gray-600 transition-colors hover:text-green-600 dark:text-gray-400'
                 >
                   Cookies
                 </Link>
                 <Link
                   href='/legal/data-protection'
-                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-accent transition-colors'
+                  className='text-sm text-gray-600 transition-colors hover:text-green-600 dark:text-gray-400'
                 >
                   Protección Datos
                 </Link>

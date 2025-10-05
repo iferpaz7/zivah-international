@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 
 interface OptimizedImageProps {
   src: string;
@@ -96,7 +95,7 @@ export default function OptimizedImage({
     return (
       <div
         ref={imgRef}
-        className={`bg-gray-200 flex items-center justify-center text-gray-500 text-sm ${className}`}
+        className={`flex items-center justify-center bg-gray-200 text-sm text-gray-500 ${className}`}
         style={{ width, height, ...style }}
       >
         Failed to load image
@@ -134,7 +133,7 @@ export default function OptimizedImage({
       {/* Loading skeleton */}
       {!isLoaded && isInView && (
         <div
-          className='absolute inset-0 bg-gray-200 animate-pulse'
+          className='absolute inset-0 animate-pulse bg-gray-200'
           style={{ width, height }}
         />
       )}

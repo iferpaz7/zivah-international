@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 import Navigation from '@/components/Navigation';
 import QuoteForm from '@/components/QuoteForm';
+import { Button } from '@/components/ui/button';
 
 // Types for our data
 interface Category {
@@ -144,71 +144,107 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section
-        className='pt-28 bg-gradient-to-br from-secondary/10 to-accent/10 dark:from-gray-900 dark:to-gray-800 py-20'
+        className='from-background via-background to-accent/5 dark:from-background dark:via-background dark:to-primary/5 relative overflow-hidden bg-gradient-to-br py-20 pt-28'
         id='home'
       >
-        <div className='container mx-auto px-4'>
-          <div className='grid lg:grid-cols-2 gap-12 items-center'>
-            <div>
-              <div className='inline-block bg-accent/10 dark:bg-accent/20 text-gray-800 dark:text-accent px-4 py-2 rounded-full text-sm font-medium mb-6'>
+        {/* Background Pattern */}
+        <div className='absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,123,49,0.1),transparent_50%)] dark:bg-[radial-gradient(circle_at_30%_20%,rgba(255,123,49,0.05),transparent_50%)]' />
+        <div className='absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(13,140,73,0.1),transparent_50%)] dark:bg-[radial-gradient(circle_at_70%_80%,rgba(13,140,73,0.05),transparent_50%)]' />
+
+        <div className='relative container mx-auto px-4'>
+          <div className='grid items-center gap-12 lg:grid-cols-2'>
+            <div className='space-y-8'>
+              <div className='bg-accent/15 text-accent border-accent/20 mb-6 inline-block rounded-full border px-6 py-3 text-sm font-semibold shadow-sm backdrop-blur-sm'>
                 🇪🇨 Desde Ecuador Hacia el Mundo - Samborondón, Guayas
               </div>
 
-              <h1 className='text-4xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight'>
+              <h1 className='text-foreground mb-6 text-4xl leading-tight font-bold lg:text-6xl'>
                 Los Mejores Productos{' '}
-                <span className='text-gray-900 dark:text-accent'>Ecuatorianos</span> para Mercados
-                Internacionales
+                <span className='from-accent to-primary bg-gradient-to-r bg-clip-text text-transparent'>
+                  Ecuatorianos
+                </span>{' '}
+                para Mercados Internacionales
               </h1>
 
-              <p className='text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed'>
+              <p className='text-muted-foreground mb-8 max-w-2xl text-xl leading-relaxed'>
                 Desde Ecuador hacia el mundo, conectamos la excelencia ecuatoriana con compradores
                 globales. Con sede principal en Samborondón, Guayas y oficina de distribución en
                 Miami, somos especialistas en acuicultura, larvas de camarón, cultivo de árboles
                 frutales y productos premium ecuatorianos.
               </p>
 
-              <div className='flex flex-col sm:flex-row gap-4 mb-12'>
-                <button
-                  onClick={() => scrollToSection('productos')}
-                  className='bg-accent hover:bg-dark-accent text-white px-8 py-4 rounded-lg transition-colors text-center font-medium'
+              <div className='mb-12 flex flex-col gap-4 sm:flex-row'>
+                <Button
+                  onClick={() => scrollToSection('products')}
+                  variant='accent'
+                  size='xl'
+                  className='shadow-lg transition-all duration-300 hover:shadow-xl'
                 >
+                  <span className='mr-2'>🌟</span>
                   Explorar Productos
-                </button>
-                <button
-                  onClick={() => scrollToSection('cotizar')}
-                  className='border-2 border-accent text-accent px-8 py-4 rounded-lg hover:bg-accent hover:text-white transition-colors text-center font-medium'
+                </Button>
+                <Button
+                  onClick={() => scrollToSection('quote')}
+                  variant='outline'
+                  size='xl'
+                  className='hover:bg-accent/5 border-2 transition-all duration-300'
                 >
+                  <span className='mr-2'>💬</span>
                   Solicitar Cotización
-                </button>
+                </Button>
               </div>
 
-              <div className='grid grid-cols-2 lg:grid-cols-4 gap-6'>
-                <div className='text-center'>
-                  <div className='text-3xl font-bold text-primary'>8+</div>
-                  <div className='text-gray-600 dark:text-gray-400'>Países Atendidos</div>
+              <div className='grid grid-cols-2 gap-6 lg:grid-cols-4'>
+                <div className='group bg-card/50 border-border/50 hover:border-accent/30 rounded-xl border p-4 text-center backdrop-blur-sm transition-all duration-300'>
+                  <div className='text-primary text-3xl font-bold transition-transform duration-300 group-hover:scale-110'>
+                    1+
+                  </div>
+                  <div className='text-muted-foreground font-medium'>Países Atendidos</div>
                 </div>
-                <div className='text-center'>
-                  <div className='text-3xl font-bold text-secondary'>50+</div>
-                  <div className='text-gray-600 dark:text-gray-400'>Contenedores/Año</div>
+                <div className='group bg-card/50 border-border/50 hover:border-secondary/30 rounded-xl border p-4 text-center backdrop-blur-sm transition-all duration-300'>
+                  <div className='text-secondary text-3xl font-bold transition-transform duration-300 group-hover:scale-110'>
+                    1+
+                  </div>
+                  <div className='text-muted-foreground font-medium'>Contenedores/Año</div>
                 </div>
-                <div className='text-center'>
-                  <div className='text-3xl font-bold text-gray-900 dark:text-accent'>4+</div>
-                  <div className='text-gray-600 dark:text-gray-400'>Años de Experiencia</div>
+                <div className='group bg-card/50 border-border/50 hover:border-accent/30 rounded-xl border p-4 text-center backdrop-blur-sm transition-all duration-300'>
+                  <div className='text-accent text-3xl font-bold transition-transform duration-300 group-hover:scale-110'>
+                    1+
+                  </div>
+                  <div className='text-muted-foreground font-medium'>Años de Experiencia</div>
                 </div>
-                <div className='text-center'>
-                  <div className='text-3xl font-bold text-dark-accent'>99.8%</div>
-                  <div className='text-gray-600 dark:text-gray-400'>Calidad Garantizada</div>
+                <div className='group bg-card/50 border-border/50 hover:border-primary/30 rounded-xl border p-4 text-center backdrop-blur-sm transition-all duration-300'>
+                  <div className='text-primary text-3xl font-bold transition-transform duration-300 group-hover:scale-110'>
+                    99.8%
+                  </div>
+                  <div className='text-muted-foreground font-medium'>Calidad Garantizada</div>
                 </div>
               </div>
             </div>
 
             <div className='lg:text-right'>
-              <div className='glass-card p-8 rounded-2xl'>
-                <div className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
+              <div className='bg-card/80 border-border/50 rounded-2xl border p-8 shadow-xl backdrop-blur-md transition-all duration-300 hover:shadow-2xl'>
+                <div className='text-foreground mb-4 flex items-center justify-center text-xl font-bold lg:justify-end'>
+                  <span className='mr-2'>🌟</span>
                   Productos Ecuatorianos Premium
                 </div>
-                <div className='text-gray-700 dark:text-gray-300'>
-                  Frutas • Mariscos • Café • Acuicultura • Árboles Frutales • Nueces
+                <div className='text-muted-foreground space-y-2 text-center lg:text-right'>
+                  <div className='flex items-center justify-center lg:justify-end'>
+                    <span className='text-accent mr-2'>🍍</span>
+                    Frutas Tropicales
+                  </div>
+                  <div className='flex items-center justify-center lg:justify-end'>
+                    <span className='text-primary mr-2'>🦐</span>
+                    Mariscos Premium
+                  </div>
+                  <div className='flex items-center justify-center lg:justify-end'>
+                    <span className='text-secondary mr-2'>☕</span>
+                    Café de Altura
+                  </div>
+                  <div className='flex items-center justify-center lg:justify-end'>
+                    <span className='text-accent mr-2'>🌱</span>
+                    Acuicultura
+                  </div>
                 </div>
               </div>
             </div>
@@ -218,297 +254,297 @@ export default function HomePage() {
 
       {/* Products Section */}
       <section
-        className='pt-20 pb-20 bg-white dark:bg-gray-900'
-        id='productos'
+        className='bg-background pt-20 pb-20'
+        id='products'
       >
         <div className='container mx-auto px-4'>
-          <div className='text-center mb-16'>
-            <div className='inline-block bg-secondary/10 dark:bg-secondary/20 text-secondary dark:text-secondary px-4 py-2 rounded-full text-sm font-medium mb-4'>
-              Nuestros Productos Principales
+          {/* Featured Categories */}
+          <div className='mb-20'>
+            <div className='mb-16 text-center'>
+              <div className='bg-secondary/10 text-secondary mb-4 inline-block rounded-full px-4 py-2 text-sm font-medium'>
+                Nuestros Productos Principales
+              </div>
+              <h2 className='text-foreground mb-6 text-4xl font-bold'>
+                Excelencia Ecuatoriana en Cada Envío
+              </h2>
+              <p className='text-muted-foreground mx-auto max-w-4xl text-xl'>
+                {loading
+                  ? 'Cargando productos...'
+                  : 'Desde frutas tropicales hasta productos marinos premium y larvas de acuicultura, llevamos lo mejor de Ecuador a mesas de todo el mundo con la más alta calidad y trazabilidad.'}
+              </p>
             </div>
-            <h2 className='text-4xl font-bold text-gray-900 dark:text-white mb-6'>
-              Excelencia Ecuatoriana en Cada Envío
-            </h2>
-            <p className='text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto'>
-              {loading
-                ? 'Cargando productos...'
-                : 'Desde frutas tropicales hasta productos marinos premium y larvas de acuicultura, llevamos lo mejor de Ecuador a mesas de todo el mundo con la más alta calidad y trazabilidad.'}
-            </p>
-          </div>
 
-          {loading ? (
-            <div className='grid lg:grid-cols-2 gap-8'>
-              {[...Array(4)].map((_, index) => (
-                <div
-                  key={index}
-                  className='bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 animate-pulse'
-                >
-                  <div className='w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded mb-6'></div>
-                  <div className='h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4'></div>
-                  <div className='h-4 bg-gray-100 dark:bg-gray-600 rounded mb-6'></div>
-                  <div className='space-y-2 mb-6'>
-                    {[...Array(4)].map((_, idx) => (
-                      <div
-                        key={idx}
-                        className='h-4 bg-gray-100 dark:bg-gray-600 rounded'
-                      ></div>
-                    ))}
-                  </div>
-                  <div className='h-10 bg-gray-200 dark:bg-gray-700 rounded w-40'></div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className='grid lg:grid-cols-2 gap-8'>
-              {(categories || []).map((category, index) => {
-                const categoryProducts = (products || []).filter(
-                  p => p.category?.slug === category.slug
-                );
-                const bgColors = [
-                  'bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border-orange-100 dark:border-orange-800',
-                  'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-100 dark:border-blue-800',
-                  'bg-gradient-to-br from-accent/10 to-accent/20 dark:from-accent/20 dark:to-accent/30 border-accent/20 dark:border-accent/30',
-                ];
-                const buttonColors = [
-                  'bg-primary hover:bg-primary/90 text-white',
-                  'bg-secondary hover:bg-secondary/90 text-white',
-                  'bg-accent hover:bg-accent/90 text-white',
-                ];
-
-                return (
+            {loading ? (
+              <div className='grid gap-8 lg:grid-cols-2'>
+                {[...Array(4)].map((_, index) => (
                   <div
-                    key={category.id}
-                    className={`${bgColors[index % bgColors.length]} p-8 rounded-2xl border`}
+                    key={index}
+                    className='border-border bg-card animate-pulse rounded-2xl border p-8'
                   >
-                    <div className='text-6xl mb-6'>{category.icon}</div>
-                    <h3 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
-                      {category.name}
-                    </h3>
-                    <p className='text-gray-700 dark:text-gray-300 mb-6'>{category.description}</p>
-                    <ul className='space-y-2 mb-6'>
-                      {categoryProducts.slice(0, 4).map(product => (
-                        <li
-                          key={product.id}
-                          className='flex items-center text-gray-700 dark:text-gray-300'
-                        >
-                          <span className='text-accent mr-2'>✓</span>
-                          {product.name}
-                          {product.basePrice && (
-                            <span className='ml-auto text-sm text-accent font-medium'>
-                              ${product.basePrice.toFixed(2)}/{product.priceUnit}
-                            </span>
-                          )}
-                        </li>
+                    <div className='bg-muted mb-6 h-16 w-16 rounded' />
+                    <div className='bg-muted mb-4 h-6 rounded' />
+                    <div className='bg-muted mb-6 h-4 rounded' />
+                    <div className='mb-6 space-y-2'>
+                      {[...Array(4)].map((_, idx) => (
+                        <div
+                          key={idx}
+                          className='bg-muted h-4 rounded'
+                        />
                       ))}
-                      {categoryProducts.length > 4 && (
-                        <li className='flex items-center text-gray-600'>
-                          <span className='text-accent mr-2'>✓</span>+{categoryProducts.length - 4}{' '}
-                          productos más
-                        </li>
-                      )}
-                    </ul>
-                    <div className='flex gap-3'>
-                      <button
-                        onClick={() => scrollToSection('cotizar')}
-                        className={`inline-block ${buttonColors[index % buttonColors.length]} text-white px-6 py-3 rounded-lg transition-colors`}
-                      >
-                        Solicitar Cotización
-                      </button>
-                      <button
-                        onClick={() => {
-                          setSelectedCategory(category.slug);
-                          document
-                            .getElementById('todos-productos')
-                            ?.scrollIntoView({ behavior: 'smooth' });
-                        }}
-                        className='inline-block border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'
-                      >
-                        Ver {categoryProducts.length} productos
-                      </button>
                     </div>
+                    <div className='bg-muted h-10 w-40 rounded' />
                   </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* All Products Section - Dynamic */}
-      <section
-        className='pt-20 pb-20 bg-gray-50 dark:bg-gray-800'
-        id='todos-productos'
-      >
-        <div className='container mx-auto px-4'>
-          <div className='text-center mb-16'>
-            <div className='inline-block bg-accent/10 dark:bg-accent/20 text-accent px-4 py-2 rounded-full text-sm font-medium mb-4'>
-              Catálogo Completo
-            </div>
-            <h2 className='text-4xl font-bold text-gray-900 dark:text-white mb-6'>
-              Todos Nuestros Productos Ecuatorianos
-            </h2>
-            <p className='text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8'>
-              {loading
-                ? 'Cargando productos...'
-                : `${(filteredProducts || []).length} variedades de productos premium ecuatorianos disponibles para exportación mundial`}
-            </p>
-
-            {/* Category Filter */}
-            {!loading && (categories || []).length > 0 && (
-              <div className='flex flex-wrap justify-center gap-3 mb-8'>
-                <button
-                  onClick={() => setSelectedCategory('all')}
-                  className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
-                    selectedCategory === 'all'
-                      ? 'bg-accent text-white'
-                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-accent/10 border border-gray-200 dark:border-gray-600'
-                  }`}
-                >
-                  Todos ({(products || []).length})
-                </button>
-                {(categories || []).map(category => {
-                  const categoryProductCount = (products || []).filter(
+                ))}
+              </div>
+            ) : (
+              <div className='grid gap-8 lg:grid-cols-2'>
+                {(categories || []).map((category, index) => {
+                  const categoryProducts = (products || []).filter(
                     p => p.category?.slug === category.slug
-                  ).length;
+                  );
+                  const bgColors = [
+                    'bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 hover:from-primary/10 hover:to-primary/15',
+                    'bg-gradient-to-br from-secondary/5 to-secondary/10 border-secondary/20 hover:from-secondary/10 hover:to-secondary/15',
+                    'bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20 hover:from-accent/10 hover:to-accent/15',
+                  ];
+
                   return (
-                    <button
+                    <div
                       key={category.id}
-                      onClick={() => setSelectedCategory(category.slug)}
-                      className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
-                        selectedCategory === category.slug
-                          ? 'bg-accent text-white'
-                          : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-accent/10 border border-gray-200 dark:border-gray-600'
-                      }`}
+                      className={`${bgColors[index % bgColors.length]} rounded-2xl border p-8`}
                     >
-                      <span className='mr-2'>{category.icon}</span>
-                      {category.name} ({categoryProductCount})
-                    </button>
+                      <div className='mb-6 text-6xl'>{category.icon}</div>
+                      <h3 className='text-foreground mb-4 text-2xl font-bold'>{category.name}</h3>
+                      <p className='text-muted-foreground mb-6'>{category.description}</p>
+                      <ul className='mb-6 space-y-2'>
+                        {categoryProducts.slice(0, 4).map(product => (
+                          <li
+                            key={product.id}
+                            className='text-muted-foreground flex items-center'
+                          >
+                            <span className='text-accent mr-2'>✓</span>
+                            {product.name}
+                            {product.basePrice && (
+                              <span className='text-accent ml-auto text-sm font-medium'>
+                                ${product.basePrice.toFixed(2)}/{product.priceUnit}
+                              </span>
+                            )}
+                          </li>
+                        ))}
+                        {categoryProducts.length > 4 && (
+                          <li className='text-muted-foreground flex items-center'>
+                            <span className='text-accent mr-2'>✓</span>+
+                            {categoryProducts.length - 4} productos más
+                          </li>
+                        )}
+                      </ul>
+                      <div className='flex gap-3'>
+                        <Button
+                          onClick={() => scrollToSection('quote')}
+                          variant={index === 0 ? 'default' : index === 1 ? 'secondary' : 'accent'}
+                          size='lg'
+                        >
+                          Solicitar Cotización
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            setSelectedCategory(category.slug);
+                            // Scroll to the catalog section within the same products section
+                            const catalogElement = document.querySelector(
+                              '#products .products-catalog'
+                            );
+                            if (catalogElement) {
+                              catalogElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                          }}
+                          variant='outline'
+                          size='lg'
+                        >
+                          Ver {categoryProducts.length} productos
+                        </Button>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
             )}
           </div>
 
-          {/* Products Grid */}
-          {loading ? (
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4'>
-              {[...Array(12)].map((_, index) => (
-                <div
-                  key={index}
-                  className='bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600 animate-pulse'
-                >
-                  <div className='h-4 bg-gray-200 dark:bg-gray-600 rounded mb-2'></div>
-                  <div className='h-3 bg-gray-100 dark:bg-gray-500 rounded'></div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4'>
-              {(filteredProducts || []).map(product => (
-                <div
-                  key={product.id}
-                  className='bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900/50 transition-shadow text-center group cursor-pointer'
-                  onClick={() => {
-                    // Scroll to quote section
-                    document.getElementById('cotizar')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  <div className='mb-2'>
-                    <span className='text-2xl'>{product.category?.icon || '📦'}</span>
-                  </div>
-                  <h4 className='font-semibold text-gray-900 dark:text-white text-sm mb-1 group-hover:text-accent transition-colors'>
-                    {product.name}
-                  </h4>
-                  <p className='text-xs text-gray-600 dark:text-gray-400 mb-2'>
-                    {product.shortDescription || 'Premium quality'}
-                  </p>
-                  <div className='flex items-center justify-center gap-1 text-xs text-gray-500 dark:text-gray-400'>
-                    <span className='text-accent'>✓</span>
-                    <span>{product.origin}</span>
-                  </div>
-                  {product.basePrice && (
-                    <div className='mt-2 text-xs font-medium text-accent'>
-                      ${product.basePrice.toFixed(2)}/{product.priceUnit}
-                    </div>
-                  )}
-                  {product.certifications && product.certifications.length > 0 && (
-                    <div className='mt-2 flex flex-wrap gap-1 justify-center'>
-                      {product.certifications.slice(0, 2).map((cert, idx) => (
-                        <span
-                          key={idx}
-                          className='text-xs bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary px-2 py-1 rounded'
-                        >
-                          {cert}
-                        </span>
-                      ))}
-                      {product.certifications.length > 2 && (
-                        <span className='text-xs text-gray-500 dark:text-gray-400'>
-                          +{product.certifications.length - 2}
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* No products found */}
-          {!loading && (filteredProducts || []).length === 0 && (
-            <div className='text-center py-12'>
-              <div className='text-6xl mb-4'>🔍</div>
-              <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-2'>
-                No se encontraron productos
-              </h3>
-              <p className='text-gray-600 dark:text-gray-400'>
-                Intenta seleccionar una categoría diferente
+          {/* Complete Catalog */}
+          <div className='products-catalog border-border/20 border-t pt-20'>
+            <div className='mb-16 text-center'>
+              <div className='bg-accent/10 text-accent mb-4 inline-block rounded-full px-4 py-2 text-sm font-medium'>
+                Catálogo Completo
+              </div>
+              <h2 className='text-foreground mb-6 text-4xl font-bold'>
+                Todos Nuestros Productos Ecuatorianos
+              </h2>
+              <p className='text-muted-foreground mx-auto mb-8 max-w-3xl text-xl'>
+                {loading
+                  ? 'Cargando productos...'
+                  : `${(filteredProducts || []).length} variedades de productos premium ecuatorianos disponibles para exportación mundial`}
               </p>
+
+              {/* Category Filter */}
+              {!loading && (categories || []).length > 0 && (
+                <div className='mb-8 flex flex-wrap justify-center gap-3'>
+                  <Button
+                    onClick={() => setSelectedCategory('all')}
+                    variant={selectedCategory === 'all' ? 'accent' : 'outline'}
+                    size='sm'
+                    className='rounded-full'
+                  >
+                    Todos ({(products || []).length})
+                  </Button>
+                  {(categories || []).map(category => {
+                    const categoryProductCount = (products || []).filter(
+                      p => p.category?.slug === category.slug
+                    ).length;
+                    return (
+                      <Button
+                        key={category.id}
+                        onClick={() => setSelectedCategory(category.slug)}
+                        variant={selectedCategory === category.slug ? 'accent' : 'outline'}
+                        size='sm'
+                        className='rounded-full'
+                      >
+                        <span className='mr-2'>{category.icon}</span>
+                        {category.name} ({categoryProductCount})
+                      </Button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          )}
+
+            {/* Products Grid */}
+            {loading ? (
+              <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
+                {[...Array(12)].map((_, index) => (
+                  <div
+                    key={index}
+                    className='border-border bg-card animate-pulse rounded-lg border p-4'
+                  >
+                    <div className='bg-muted mb-2 h-4 rounded' />
+                    <div className='bg-muted h-3 rounded' />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
+                {(filteredProducts || []).map(product => (
+                  <div
+                    key={product.id}
+                    className='group border-border bg-card hover:border-accent/30 focus:ring-accent/50 cursor-pointer rounded-lg border p-4 text-center transition-all duration-300 hover:shadow-lg focus:ring-2 focus:ring-offset-2 focus:outline-none'
+                    onClick={() => {
+                      // Scroll to quote section
+                      document.getElementById('quote')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        document.getElementById('quote')?.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    role='button'
+                    tabIndex={0}
+                    aria-label={`Cotizar ${product.name}`}
+                  >
+                    <div className='mb-2'>
+                      <span className='text-2xl'>{product.category?.icon || '📦'}</span>
+                    </div>
+                    <h4 className='group-hover:text-accent text-foreground mb-1 text-sm font-semibold transition-colors'>
+                      {product.name}
+                    </h4>
+                    <p className='text-muted-foreground mb-2 text-xs'>
+                      {product.shortDescription || 'Premium quality'}
+                    </p>
+                    <div className='text-muted-foreground flex items-center justify-center gap-1 text-xs'>
+                      <span className='text-accent'>✓</span>
+                      <span>{product.origin}</span>
+                    </div>
+                    {product.basePrice && (
+                      <div className='text-accent mt-2 text-xs font-medium'>
+                        ${product.basePrice.toFixed(2)}/{product.priceUnit}
+                      </div>
+                    )}
+                    {product.certifications && product.certifications.length > 0 && (
+                      <div className='mt-2 flex flex-wrap justify-center gap-1'>
+                        {product.certifications.slice(0, 2).map((cert, idx) => (
+                          <span
+                            key={idx}
+                            className='bg-primary/10 text-primary rounded px-2 py-1 text-xs'
+                          >
+                            {cert}
+                          </span>
+                        ))}
+                        {product.certifications.length > 2 && (
+                          <span className='text-muted-foreground text-xs'>
+                            +{product.certifications.length - 2}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* No products found */}
+            {!loading && (filteredProducts || []).length === 0 && (
+              <div className='py-12 text-center'>
+                <div className='mb-4 text-6xl'>🔍</div>
+                <h3 className='text-foreground mb-2 text-xl font-semibold'>
+                  No se encontraron productos
+                </h3>
+                <p className='text-muted-foreground'>Intenta seleccionar una categoría diferente</p>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
       {/* Quote Section */}
       <section
-        className='pt-20 pb-20 bg-gradient-to-br from-secondary via-primary to-accent text-white'
-        id='cotizar'
+        className='from-secondary via-primary to-accent bg-gradient-to-br pt-20 pb-20 text-white'
+        id='quote'
       >
         <div className='container mx-auto px-4'>
-          <div className='max-w-4xl mx-auto'>
-            <div className='text-center mb-12'>
-              <div className='inline-block bg-white/20 px-4 py-2 rounded-full text-sm font-medium mb-4'>
+          <div className='mx-auto max-w-4xl'>
+            <div className='mb-12 text-center'>
+              <div className='mb-4 inline-block rounded-full bg-white/20 px-4 py-2 text-sm font-medium'>
                 Sistema Avanzado de Cotizaciones
               </div>
-              <h2 className='text-4xl font-bold mb-6'>
+              <h2 className='mb-6 text-4xl font-bold'>
                 Cotizaciones Interactivas y Personalizadas
               </h2>
-              <p className='text-xl opacity-90 mb-8'>
+              <p className='mb-8 text-xl opacity-90'>
                 Nuestro nuevo sistema de cotizaciones te permite seleccionar productos específicos,
                 calcular precios en tiempo real y recibir propuestas personalizadas por email
                 automáticamente.
               </p>
 
-              <div className='grid md:grid-cols-3 gap-6 mb-12'>
-                <div className='bg-white/10 backdrop-blur-sm p-6 rounded-xl'>
-                  <div className='text-3xl mb-4'>🔍</div>
-                  <h3 className='text-lg font-semibold mb-2'>Búsqueda Inteligente</h3>
-                  <p className='opacity-90 text-sm'>
+              <div className='mb-12 grid gap-6 md:grid-cols-3'>
+                <div className='rounded-xl bg-white/10 p-6 backdrop-blur-sm'>
+                  <div className='mb-4 text-3xl'>🔍</div>
+                  <h3 className='mb-2 text-lg font-semibold'>Búsqueda Inteligente</h3>
+                  <p className='text-sm opacity-90'>
                     Encuentra productos rápidamente con nuestro sistema de búsqueda avanzado
                   </p>
                 </div>
 
-                <div className='bg-white/10 backdrop-blur-sm p-6 rounded-xl'>
-                  <div className='text-3xl mb-4'>🛒</div>
-                  <h3 className='text-lg font-semibold mb-2'>Selección Múltiple</h3>
-                  <p className='opacity-90 text-sm'>
+                <div className='rounded-xl bg-white/10 p-6 backdrop-blur-sm'>
+                  <div className='mb-4 text-3xl'>🛒</div>
+                  <h3 className='mb-2 text-lg font-semibold'>Selección Múltiple</h3>
+                  <p className='text-sm opacity-90'>
                     Combina múltiples productos en una sola cotización con cantidades personalizadas
                   </p>
                 </div>
 
-                <div className='bg-white/10 backdrop-blur-sm p-6 rounded-xl'>
-                  <div className='text-3xl mb-4'>📧</div>
-                  <h3 className='text-lg font-semibold mb-2'>Envío Automático</h3>
-                  <p className='opacity-90 text-sm'>
+                <div className='rounded-xl bg-white/10 p-6 backdrop-blur-sm'>
+                  <div className='mb-4 text-3xl'>📧</div>
+                  <h3 className='mb-2 text-lg font-semibold'>Envío Automático</h3>
+                  <p className='text-sm opacity-90'>
                     Recibe cotizaciones profesionales por email con seguimiento automático
                   </p>
                 </div>
@@ -522,16 +558,16 @@ export default function HomePage() {
 
       {/* Quality Section */}
       <section
-        className='pt-20 pb-20 bg-white dark:bg-gray-900'
-        id='calidad'
+        className='bg-background pt-20 pb-20'
+        id='quality'
       >
         <div className='container mx-auto px-4'>
-          <div className='grid lg:grid-cols-2 gap-12 items-center'>
+          <div className='grid items-center gap-12 lg:grid-cols-2'>
             <div>
-              <h2 className='text-4xl font-bold text-gray-900 dark:text-white mb-6'>
+              <h2 className='text-foreground mb-6 text-4xl font-bold'>
                 Calidad Mundial, Origen Ecuatoriano
               </h2>
-              <p className='text-xl text-gray-600 dark:text-gray-300 mb-8'>
+              <p className='text-muted-foreground mb-8 text-xl'>
                 Nuestros productos cumplen con los más altos estándares internacionales de calidad y
                 seguridad alimentaria. Cada envío está respaldado por certificaciones reconocidas
                 mundialmente y procesos de trazabilidad completos desde la finca hasta el destino
@@ -539,32 +575,28 @@ export default function HomePage() {
               </p>
 
               <div className='grid grid-cols-2 gap-6'>
-                <div className='text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-                  <div className='text-3xl font-bold text-gray-900 dark:text-accent mb-2'>
-                    HACCP
-                  </div>
-                  <div className='text-gray-600 dark:text-gray-400'>Análisis de Peligros</div>
+                <div className='bg-muted rounded-lg p-4 text-center'>
+                  <div className='text-accent mb-2 text-3xl font-bold'>HACCP</div>
+                  <div className='text-muted-foreground'>Análisis de Peligros</div>
                 </div>
-                <div className='text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-                  <div className='text-3xl font-bold text-gray-900 dark:text-accent mb-2'>BRC</div>
-                  <div className='text-gray-600 dark:text-gray-400'>Seguridad Alimentaria</div>
+                <div className='bg-muted rounded-lg p-4 text-center'>
+                  <div className='text-accent mb-2 text-3xl font-bold'>BRC</div>
+                  <div className='text-muted-foreground'>Seguridad Alimentaria</div>
                 </div>
-                <div className='text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-                  <div className='text-3xl font-bold text-gray-900 dark:text-accent mb-2'>BAP</div>
-                  <div className='text-gray-600 dark:text-gray-400'>Acuicultura Responsable</div>
+                <div className='bg-muted rounded-lg p-4 text-center'>
+                  <div className='text-accent mb-2 text-3xl font-bold'>BAP</div>
+                  <div className='text-muted-foreground'>Acuicultura Responsable</div>
                 </div>
-                <div className='text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-                  <div className='text-3xl font-bold text-gray-900 dark:text-accent mb-2'>
-                    GlobalGAP
-                  </div>
-                  <div className='text-gray-600 dark:text-gray-400'>Buenas Prácticas</div>
+                <div className='bg-muted rounded-lg p-4 text-center'>
+                  <div className='text-accent mb-2 text-3xl font-bold'>GlobalGAP</div>
+                  <div className='text-muted-foreground'>Buenas Prácticas</div>
                 </div>
               </div>
             </div>
 
-            <div className='bg-gradient-to-br from-accent to-secondary p-12 rounded-2xl text-white text-center'>
-              <div className='text-6xl mb-6'>🏆</div>
-              <h3 className='text-2xl font-bold mb-4'>Reconocimientos Internacionales</h3>
+            <div className='from-accent to-secondary rounded-2xl bg-gradient-to-br p-12 text-center text-white'>
+              <div className='mb-6 text-6xl'>🏆</div>
+              <h3 className='mb-4 text-2xl font-bold'>Reconocimientos Internacionales</h3>
               <p className='opacity-90'>
                 Premiados por la excelencia en exportación y compromiso con la calidad en múltiples
                 mercados internacionales. Más de 4 años de experiencia.
@@ -576,48 +608,48 @@ export default function HomePage() {
 
       {/* Global Reach */}
       <section
-        className='pt-20 pb-20 bg-gray-50 dark:bg-gray-800'
-        id='mercados'
+        className='bg-muted/30 pt-20 pb-20'
+        id='markets'
       >
         <div className='container mx-auto px-4'>
-          <div className='text-center mb-16'>
-            <div className='inline-block bg-accent/10 dark:bg-accent/20 text-gray-800 dark:text-accent px-4 py-2 rounded-full text-sm font-medium mb-4'>
+          <div className='mb-16 text-center'>
+            <div className='bg-accent/10 text-accent mb-4 inline-block rounded-full px-4 py-2 text-sm font-medium'>
               Alcance Global
             </div>
-            <h2 className='text-4xl font-bold text-gray-900 dark:text-white mb-6'>
+            <h2 className='text-foreground mb-6 text-4xl font-bold'>
               Desde Ecuador Hacia el Mundo
             </h2>
-            <p className='text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto'>
+            <p className='text-muted-foreground mx-auto max-w-4xl text-xl'>
               Desde Ecuador hacia el mundo, nuestra red logística con oficina de distribución en
               Miami nos permite llegar a los principales mercados mundiales con la eficiencia y
               calidad que nuestros clientes demandan
             </p>
           </div>
 
-          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16'>
+          <div className='mb-16 grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6'>
             <div className='text-center'>
-              <div className='text-4xl font-bold text-gray-900 dark:text-accent'>8+</div>
-              <div className='text-gray-600 dark:text-gray-400'>Países Atendidos</div>
+              <div className='text-accent text-4xl font-bold'>2+</div>
+              <div className='text-muted-foreground'>Países Atendidos</div>
             </div>
             <div className='text-center'>
-              <div className='text-4xl font-bold text-gray-900 dark:text-accent'>50+</div>
-              <div className='text-gray-600 dark:text-gray-400'>Contenedores por Año</div>
+              <div className='text-accent text-4xl font-bold'>1+</div>
+              <div className='text-muted-foreground'>Contenedores por Año</div>
             </div>
             <div className='text-center'>
-              <div className='text-4xl font-bold text-gray-900 dark:text-accent'>4+</div>
-              <div className='text-gray-600 dark:text-gray-400'>Años de Experiencia</div>
+              <div className='text-accent text-4xl font-bold'>4+</div>
+              <div className='text-muted-foreground'>Años de Experiencia</div>
             </div>
             <div className='text-center'>
-              <div className='text-4xl font-bold text-gray-900 dark:text-accent'>100%</div>
-              <div className='text-gray-600 dark:text-gray-400'>Productos Certificados</div>
+              <div className='text-accent text-4xl font-bold'>100%</div>
+              <div className='text-muted-foreground'>Productos Certificados</div>
             </div>
             <div className='text-center'>
-              <div className='text-4xl font-bold text-gray-900 dark:text-accent'>99.8%</div>
-              <div className='text-gray-600 dark:text-gray-400'>Satisfacción del Cliente</div>
+              <div className='text-accent text-4xl font-bold'>99.8%</div>
+              <div className='text-muted-foreground'>Satisfacción del Cliente</div>
             </div>
             <div className='text-center'>
-              <div className='text-4xl font-bold text-gray-900 dark:text-accent'>24/7</div>
-              <div className='text-gray-600 dark:text-gray-400'>Soporte Especializado</div>
+              <div className='text-accent text-4xl font-bold'>24/7</div>
+              <div className='text-muted-foreground'>Soporte Especializado</div>
             </div>
           </div>
         </div>
@@ -625,95 +657,77 @@ export default function HomePage() {
 
       {/* Contact Section */}
       <section
-        className='pt-20 pb-20 bg-white dark:bg-gray-900'
-        id='contacto'
+        className='bg-background pt-20 pb-20'
+        id='contact'
       >
         <div className='container mx-auto px-4'>
-          <div className='text-center mb-16'>
-            <div className='inline-block bg-accent/10 dark:bg-accent/20 text-gray-800 dark:text-accent px-4 py-2 rounded-full text-sm font-medium mb-4'>
+          <div className='mb-16 text-center'>
+            <div className='bg-accent/10 text-accent mb-4 inline-block rounded-full px-4 py-2 text-sm font-medium'>
               Contacto
             </div>
-            <h2 className='text-4xl font-bold text-gray-900 dark:text-white mb-6'>
-              Conecta con Nuestro Equipo
-            </h2>
-            <p className='text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto'>
+            <h2 className='text-foreground mb-6 text-4xl font-bold'>Conecta con Nuestro Equipo</h2>
+            <p className='text-muted-foreground mx-auto max-w-3xl text-xl'>
               Estamos aquí para ayudarte con todas tus necesidades de importación de productos
               ecuatorianos
             </p>
           </div>
 
-          <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-8'>
-            <div className='text-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl'>
-              <div className='text-4xl mb-4'>🏢</div>
-              <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-                Oficina Principal
-              </h4>
-              <p className='text-gray-600 dark:text-gray-400'>
+          <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-4'>
+            <div className='bg-muted rounded-xl p-6 text-center'>
+              <div className='mb-4 text-4xl'>🏢</div>
+              <h4 className='text-foreground mb-2 text-lg font-semibold'>Oficina Principal</h4>
+              <p className='text-muted-foreground'>
                 Samborondón, Guayas
                 <br />
                 Ecuador
               </p>
             </div>
 
-            <div className='text-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl'>
-              <div className='text-4xl mb-4'>🏢</div>
-              <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+            <div className='bg-muted rounded-xl p-6 text-center'>
+              <div className='mb-4 text-4xl'>🏢</div>
+              <h4 className='text-foreground mb-2 text-lg font-semibold'>
                 Oficina de Distribución
               </h4>
-              <p className='text-gray-600 dark:text-gray-400'>
+              <p className='text-muted-foreground'>
                 Miami, Florida
                 <br />
                 Estados Unidos
               </p>
             </div>
 
-            <div className='text-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl'>
-              <div className='text-4xl mb-4'>📧</div>
-              <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-                Email Comercial
-              </h4>
-              <p className='text-gray-600 dark:text-gray-400'>
+            <div className='bg-muted rounded-xl p-6 text-center'>
+              <div className='mb-4 text-4xl'>📧</div>
+              <h4 className='text-foreground mb-2 text-lg font-semibold'>Email Comercial</h4>
+              <p className='text-muted-foreground'>
                 sales@zivahinternational.com
                 <br />
                 info@zivahinternational.com
               </p>
             </div>
 
-            <div className='text-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl'>
-              <div className='text-4xl mb-4'>📱</div>
-              <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
-                Teléfonos
-              </h4>
-              <p className='text-gray-600 dark:text-gray-400'>
-                +1 (305) XXX-XXXX
-                <br />
-                WhatsApp: +593 9X XXX XXXX
-              </p>
+            <div className='bg-muted rounded-xl p-6 text-center'>
+              <div className='mb-4 text-4xl'>📱</div>
+              <h4 className='text-foreground mb-2 text-lg font-semibold'>Teléfono</h4>
+              <p className='text-muted-foreground'>+593999002893</p>
             </div>
           </div>
 
-          <div className='mt-12 text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl'>
-            <div className='text-4xl mb-4'>⏰</div>
-            <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-              Horario de Atención
-            </h4>
-            <div className='grid md:grid-cols-2 gap-6'>
+          <div className='bg-muted mt-12 rounded-xl p-8 text-center'>
+            <div className='mb-4 text-4xl'>⏰</div>
+            <h4 className='text-foreground mb-4 text-lg font-semibold'>Horario de Atención</h4>
+            <div className='grid gap-6 md:grid-cols-2'>
               <div>
-                <strong className='text-gray-900 dark:text-white'>Sede Principal (Ecuador):</strong>
+                <strong className='text-foreground'>Sede Principal (Ecuador):</strong>
                 <br />
-                <span className='text-gray-600 dark:text-gray-400'>
+                <span className='text-muted-foreground'>
                   Lunes - Viernes: 8:00 AM - 6:00 PM ECT
-                  <br />
-                  Sábados: 9:00 AM - 2:00 PM ECT
                 </span>
               </div>
               <div>
-                <strong className='text-gray-900 dark:text-white'>Oficina Miami:</strong>
+                <strong className='text-foreground'>Oficina Miami:</strong>
                 <br />
-                <span className='text-gray-600 dark:text-gray-400'>
+                <span className='text-muted-foreground'>
                   Lunes - Viernes: 8:00 AM - 6:00 PM EST
-                  <br />
-                  Sábados: 9:00 AM - 2:00 PM EST
                 </span>
               </div>
             </div>
@@ -722,73 +736,70 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className='bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white py-16'>
+      <footer className='bg-muted/50 text-foreground py-16'>
         <div className='container mx-auto px-4'>
-          <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12'>
+          <div className='mb-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4'>
             <div>
-              <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+              <h4 className='text-foreground mb-4 text-lg font-semibold'>
                 ZIVAH International S.A.
               </h4>
-              <p className='text-gray-600 dark:text-gray-400 text-sm mb-4'>
+              <p className='text-muted-foreground mb-4 text-sm'>
                 Exportadores premium de productos ecuatorianos con más de 4 años conectando Ecuador
                 con el mundo desde nuestra sede principal en Samborondón, Guayas.
               </p>
-              <p className='text-gray-600 dark:text-gray-400 text-sm'>
-                <strong className='text-gray-900 dark:text-white'>Especialistas en:</strong>{' '}
-                Acuicultura, Larvas de Camarón, Frutas Tropicales, Productos del Mar y Café de
-                Altura.
+              <p className='text-muted-foreground text-sm'>
+                <strong className='text-foreground'>Especialistas en:</strong> Acuicultura, Larvas
+                de Camarón, Frutas Tropicales, Productos del Mar y Café de Altura.
               </p>
             </div>
 
             <div>
-              <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Productos Principales
-              </h4>
-              <ul className='space-y-2 text-gray-600 dark:text-gray-400'>
+              <h4 className='text-foreground mb-4 text-lg font-semibold'>Productos Principales</h4>
+              <ul className='text-muted-foreground space-y-2'>
                 <li>
                   <a
-                    href='#productos'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#products'
+                    className='hover:text-accent transition-colors'
                   >
                     Frutas Tropicales
                   </a>
                 </li>
                 <li>
                   <a
-                    href='#productos'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#products'
+                    className='hover:text-accent transition-colors'
                   >
                     Productos del Mar
                   </a>
                 </li>
                 <li>
                   <a
-                    href='#productos'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#products'
+                    className='hover:text-accent transition-colors'
                   >
                     Café Arábica
                   </a>
                 </li>
                 <li>
                   <a
-                    href='#productos'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#products'
+                    className='hover:text-accent transition-colors'
                   >
                     Camarón Premium
                   </a>
                 </li>
                 <li>
                   <a
-                    href='#productos'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#products'
+                    className='hover:text-accent transition-colors'
                   >
                     Larvas de Camarón
                   </a>
                 </li>
                 <li>
                   <a
-                    href='#todos-productos'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#products'
+                    className='hover:text-accent transition-colors'
                   >
                     Ver Catálogo Completo
                   </a>
@@ -797,46 +808,44 @@ export default function HomePage() {
             </div>
 
             <div>
-              <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Servicios
-              </h4>
-              <ul className='space-y-2 text-gray-600 dark:text-gray-400'>
+              <h4 className='text-foreground mb-4 text-lg font-semibold'>Servicios</h4>
+              <ul className='text-muted-foreground space-y-2'>
                 <li>
                   <a
-                    href='#calidad'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#quality'
+                    className='hover:text-accent transition-colors'
                   >
                     Certificaciones
                   </a>
                 </li>
                 <li>
                   <a
-                    href='#cotizar'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#quote'
+                    className='hover:text-accent transition-colors'
                   >
                     Cotizaciones
                   </a>
                 </li>
                 <li>
                   <a
-                    href='#mercados'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#markets'
+                    className='hover:text-accent transition-colors'
                   >
                     Distribución Global
                   </a>
                 </li>
                 <li>
                   <a
-                    href='#contacto'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#contact'
+                    className='hover:text-accent transition-colors'
                   >
                     Asesoría Técnica
                   </a>
                 </li>
                 <li>
                   <a
-                    href='#contacto'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    href='#contact'
+                    className='hover:text-accent transition-colors'
                   >
                     Soporte 24/7
                   </a>
@@ -845,12 +854,12 @@ export default function HomePage() {
             </div>
 
             <div>
-              <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>Legal</h4>
-              <ul className='space-y-2 text-gray-600 dark:text-gray-400'>
+              <h4 className='text-foreground mb-4 text-lg font-semibold'>Legal</h4>
+              <ul className='text-muted-foreground space-y-2'>
                 <li>
                   <Link
                     href='/legal/privacy-policy'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    className='hover:text-accent transition-colors'
                   >
                     Política de Privacidad
                   </Link>
@@ -858,7 +867,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href='/legal/terms-of-service'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    className='hover:text-accent transition-colors'
                   >
                     Términos y Condiciones
                   </Link>
@@ -866,7 +875,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href='/legal/cookie-policy'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    className='hover:text-accent transition-colors'
                   >
                     Política de Cookies
                   </Link>
@@ -874,7 +883,7 @@ export default function HomePage() {
                 <li>
                   <Link
                     href='/legal/data-protection'
-                    className='hover:text-accent dark:hover:text-accent transition-colors'
+                    className='hover:text-accent transition-colors'
                   >
                     Protección de Datos
                   </Link>
@@ -883,12 +892,12 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className='border-t border-gray-300 dark:border-gray-700 pt-8'>
-            <div className='flex flex-col md:flex-row justify-between items-center'>
-              <p className='text-gray-600 dark:text-gray-400 text-sm'>
+          <div className='border-border border-t pt-8'>
+            <div className='flex flex-col items-center justify-between md:flex-row'>
+              <p className='text-muted-foreground text-sm'>
                 &copy; 2025 ZIVAH International S.A. Todos los derechos reservados.
               </p>
-              <p className='text-gray-600 dark:text-gray-400 text-sm mt-2 md:mt-0'>
+              <p className='text-muted-foreground mt-2 text-sm md:mt-0'>
                 Exportadores Premium de Productos Ecuatorianos
               </p>
             </div>

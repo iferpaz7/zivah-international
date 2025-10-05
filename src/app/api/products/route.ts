@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-
 import { z } from 'zod';
 
 import { ProductService } from '@/lib/services/product.service';

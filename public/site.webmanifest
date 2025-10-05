@@ -66,19 +66,19 @@
       "name": "Solicitar Cotización",
       "short_name": "Cotizar",
       "description": "Solicitar cotización de productos",
-      "url": "/#cotizar"
+      "url": "/#quote"
     },
     {
       "name": "Ver Productos",
-      "short_name": "Productos", 
+      "short_name": "Productos",
       "description": "Explorar catálogo de productos",
-      "url": "/#productos"
+      "url": "/#products"
     },
     {
       "name": "Contacto",
       "short_name": "Contacto",
       "description": "Información de contacto",
-      "url": "/#contacto"
+      "url": "/#contact"
     }
   ]
 }

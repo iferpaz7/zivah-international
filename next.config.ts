@@ -1,25 +1,24 @@
-import type { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
-  // React optimizations
-  reactStrictMode: true,
-
-  // Performance optimizations
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Enable experimental features
   experimental: {
-    // Enable optimizePackageImports for better tree shaking
-    optimizePackageImports: ['@heroicons/react', 'lucide-react'],
-    // Enable optimizeCss for better CSS optimization
-    optimizeCss: true,
-    // Enable scrollRestoration for better UX
-    scrollRestoration: true,
+    serverComponentsExternalPackages: ['@prisma/client'],
   },
 
-  // Image optimization
+  // Image configuration
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'plus.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'unsplash.com',
       },
       {
         protocol: 'https',
@@ -29,27 +28,40 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'www.zivahinternational.com',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+      },
     ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  // Compression and optimization
-  compress: true,
-
-  // Headers for better caching and security
+  // Headers for security and performance
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
           {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
             key: 'X-Frame-Options',
-            value: 'DENY',
+            value: 'SAMEORIGIN',
           },
           {
             key: 'X-Content-Type-Options',
@@ -57,7 +69,12 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            value: 'origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value:
+              'camera=(), microphone=(), geolocation=(), interest-cohort=(), accelerometer=(), gyroscope=(), magnetometer=(), payment=(), usb=()',
           },
         ],
       },
@@ -66,17 +83,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value:
-              'public, max-age=300, s-maxage=600, stale-while-revalidate=86400',
-          },
-        ],
-      },
-      {
-        source: '/_next/static/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            value: 'no-store, max-age=0',
           },
         ],
       },
@@ -92,66 +99,44 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Webpack optimizations
-  webpack: (config, { dev, isServer }) => {
-    // Optimize bundle splitting
-    if (!dev && !isServer) {
-      config.optimization.splitChunks.chunks = 'all';
-      config.optimization.splitChunks.cacheGroups = {
-        ...config.optimization.splitChunks.cacheGroups,
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-          priority: 10,
-        },
-        react: {
-          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-          name: 'react',
-          chunks: 'all',
-          priority: 20,
-        },
-      };
-    }
-
-    // Add bundle analyzer in development
-    if (dev && !isServer) {
-      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-      if (process.env.ANALYZE === 'true') {
-        config.plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: 'server',
-            openAnalyzer: true,
-          })
-        );
-      }
-    }
-
-    return config;
+  // Redirects for SEO
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+    ];
   },
 
-  // Enable source maps in production for debugging
-  productionBrowserSourceMaps: false,
+  // Environment variables
+  env: {
+    CUSTOM_KEY: process.env.CUSTOM_KEY,
+  },
 
-  // PWA and service worker
-  // Service worker headers are handled separately
+  // Compiler options
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
 
-  // Enable trailing slash for better SEO
-  trailingSlash: false,
-
-  // Disable x-powered-by header
-  poweredByHeader: false,
-
-  // Enable etag generation
-  generateEtags: true,
-
-  // Fix workspace root warning
-  outputFileTracingRoot: __dirname,
+  // TypeScript configuration
+  typescript: {
+    ignoreBuildErrors: false,
+  },
 
   // ESLint configuration
   eslint: {
-    // Allow build to complete even with ESLint errors
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
+  },
+
+  // Output configuration
+  output: 'standalone',
+
+  // Webpack configuration
+  webpack: (config: unknown) => {
+    // Add custom webpack configurations if needed
+    return config;
   },
 };
 

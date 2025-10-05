@@ -1,10 +1,10 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import Link from 'next/link';
-
 import { updateConsent } from './Analytics';
+import { Button } from './ui/button';
 
 interface CookiePreferences {
   necessary: boolean;
@@ -126,17 +126,17 @@ export default function CookieConsent() {
   return (
     <>
       {/* Cookie Banner */}
-      <div className='fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg'>
+      <div className='fixed right-0 bottom-0 left-0 z-50 border-t border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800'>
         <div className='container mx-auto px-4 py-6'>
-          <div className='flex flex-col lg:flex-row items-start lg:items-center gap-4'>
+          <div className='flex flex-col items-start gap-4 lg:flex-row lg:items-center'>
             <div className='flex-1'>
-              <div className='flex items-center gap-3 mb-3'>
+              <div className='mb-3 flex items-center gap-3'>
                 <div className='text-2xl'>🍪</div>
                 <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>
                   Cookies en ZIVAH International
                 </h3>
               </div>
-              <p className='text-gray-700 dark:text-gray-300 text-sm leading-relaxed'>
+              <p className='text-sm leading-relaxed text-gray-700 dark:text-gray-300'>
                 Utilizamos cookies para mejorar su experiencia, analizar el tráfico y personalizar
                 el contenido. Al continuar navegando, acepta nuestro uso de cookies según nuestra{' '}
                 <Link
@@ -149,25 +149,28 @@ export default function CookieConsent() {
               </p>
             </div>
 
-            <div className='flex flex-col sm:flex-row gap-3 lg:ml-6'>
-              <button
+            <div className='flex flex-col gap-3 sm:flex-row lg:ml-6'>
+              <Button
                 onClick={() => setShowPreferences(true)}
-                className='px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors'
+                variant='secondary'
+                size='sm'
               >
                 Gestionar Preferencias
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={acceptNecessaryOnly}
-                className='px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors'
+                variant='outline'
+                size='sm'
               >
                 Solo Necesarias
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={acceptAllCookies}
-                className='px-4 py-2 text-sm font-medium text-white bg-accent hover:bg-accent/90 rounded-lg transition-colors'
+                variant='accent'
+                size='sm'
               >
                 Aceptar Todas
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -175,10 +178,10 @@ export default function CookieConsent() {
 
       {/* Preferences Modal */}
       {showPreferences && (
-        <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50'>
-          <div className='bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto'>
+        <div className='bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4'>
+          <div className='max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white shadow-xl dark:bg-gray-800'>
             <div className='p-6'>
-              <div className='flex items-center justify-between mb-6'>
+              <div className='mb-6 flex items-center justify-between'>
                 <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
                   Preferencias de Cookies
                 </h3>
@@ -192,16 +195,16 @@ export default function CookieConsent() {
 
               <div className='space-y-6'>
                 {/* Necessary Cookies */}
-                <div className='border border-gray-200 dark:border-gray-700 rounded-lg p-4'>
-                  <div className='flex items-center justify-between mb-3'>
+                <div className='rounded-lg border border-gray-200 p-4 dark:border-gray-700'>
+                  <div className='mb-3 flex items-center justify-between'>
                     <h4 className='font-semibold text-gray-900 dark:text-white'>
                       Cookies Necesarias
                     </h4>
-                    <span className='text-xs bg-accent/10 dark:bg-accent/20 text-gray-800 dark:text-accent px-2 py-1 rounded'>
+                    <span className='bg-accent/10 dark:bg-accent/20 dark:text-accent rounded px-2 py-1 text-xs text-gray-800'>
                       Siempre activas
                     </span>
                   </div>
-                  <p className='text-sm text-gray-600 dark:text-gray-400 mb-3'>
+                  <p className='mb-3 text-sm text-gray-600 dark:text-gray-400'>
                     Estas cookies son esenciales para el funcionamiento del sitio web y no pueden
                     ser desactivadas.
                   </p>
@@ -217,19 +220,20 @@ export default function CookieConsent() {
                 </div>
 
                 {/* Analytics Cookies */}
-                <div className='border border-gray-200 dark:border-gray-700 rounded-lg p-4'>
-                  <div className='flex items-center justify-between mb-3'>
+                <div className='rounded-lg border border-gray-200 p-4 dark:border-gray-700'>
+                  <div className='mb-3 flex items-center justify-between'>
                     <h4 className='font-semibold text-gray-900 dark:text-white'>
                       Cookies de Análisis
                     </h4>
-                    <label className='relative inline-flex items-center cursor-pointer'>
+                    <label className='relative inline-flex cursor-pointer items-center'>
+                      <span className='sr-only'>Habilitar cookies de análisis</span>
                       <input
                         type='checkbox'
                         checked={preferences.analytics}
                         onChange={e => updatePreference('analytics', e.target.checked)}
-                        className='sr-only peer'
+                        className='peer sr-only'
                       />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/30 dark:peer-focus:ring-accent/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-accent"></div>
+                      <div className="peer-focus:ring-accent/30 dark:peer-focus:ring-accent/50 peer peer-checked:bg-accent h-6 w-11 rounded-full bg-gray-200 peer-focus:ring-4 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:border-gray-600 dark:bg-gray-700" />
                     </label>
                   </div>
                   <p className='text-sm text-gray-600 dark:text-gray-400'>
@@ -239,19 +243,20 @@ export default function CookieConsent() {
                 </div>
 
                 {/* Functional Cookies */}
-                <div className='border border-gray-200 dark:border-gray-700 rounded-lg p-4'>
-                  <div className='flex items-center justify-between mb-3'>
+                <div className='rounded-lg border border-gray-200 p-4 dark:border-gray-700'>
+                  <div className='mb-3 flex items-center justify-between'>
                     <h4 className='font-semibold text-gray-900 dark:text-white'>
                       Cookies Funcionales
                     </h4>
-                    <label className='relative inline-flex items-center cursor-pointer'>
+                    <label className='relative inline-flex cursor-pointer items-center'>
+                      <span className='sr-only'>Habilitar cookies funcionales</span>
                       <input
                         type='checkbox'
                         checked={preferences.functional}
                         onChange={e => updatePreference('functional', e.target.checked)}
-                        className='sr-only peer'
+                        className='peer sr-only'
                       />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/30 dark:peer-focus:ring-accent/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-accent"></div>
+                      <div className="peer-focus:ring-accent/30 dark:peer-focus:ring-accent/50 peer peer-checked:bg-accent h-6 w-11 rounded-full bg-gray-200 peer-focus:ring-4 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:border-gray-600 dark:bg-gray-700" />
                     </label>
                   </div>
                   <p className='text-sm text-gray-600 dark:text-gray-400'>
@@ -261,19 +266,20 @@ export default function CookieConsent() {
                 </div>
 
                 {/* Marketing Cookies */}
-                <div className='border border-gray-200 dark:border-gray-700 rounded-lg p-4'>
-                  <div className='flex items-center justify-between mb-3'>
+                <div className='rounded-lg border border-gray-200 p-4 dark:border-gray-700'>
+                  <div className='mb-3 flex items-center justify-between'>
                     <h4 className='font-semibold text-gray-900 dark:text-white'>
                       Cookies de Marketing
                     </h4>
-                    <label className='relative inline-flex items-center cursor-pointer'>
+                    <label className='relative inline-flex cursor-pointer items-center'>
+                      <span className='sr-only'>Habilitar cookies de marketing</span>
                       <input
                         type='checkbox'
                         checked={preferences.marketing}
                         onChange={e => updatePreference('marketing', e.target.checked)}
-                        className='sr-only peer'
+                        className='peer sr-only'
                       />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/30 dark:peer-focus:ring-accent/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-accent"></div>
+                      <div className="peer-focus:ring-accent/30 dark:peer-focus:ring-accent/50 peer peer-checked:bg-accent h-6 w-11 rounded-full bg-gray-200 peer-focus:ring-4 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:border-gray-600 dark:bg-gray-700" />
                     </label>
                   </div>
                   <p className='text-sm text-gray-600 dark:text-gray-400'>
@@ -283,22 +289,26 @@ export default function CookieConsent() {
                 </div>
               </div>
 
-              <div className='flex flex-col sm:flex-row gap-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700'>
-                <button
+              <div className='border-border mt-6 flex flex-col gap-3 border-t pt-6 sm:flex-row'>
+                <Button
                   onClick={acceptNecessaryOnly}
-                  className='flex-1 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors'
+                  variant='outline'
+                  size='default'
+                  className='flex-1'
                 >
                   Solo Necesarias
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={saveCustomPreferences}
-                  className='flex-1 px-4 py-2 text-sm font-medium text-white bg-accent hover:bg-accent/90 rounded-lg transition-colors'
+                  variant='accent'
+                  size='default'
+                  className='flex-1'
                 >
                   Guardar Preferencias
-                </button>
+                </Button>
               </div>
 
-              <p className='text-xs text-gray-500 dark:text-gray-400 mt-4 text-center'>
+              <p className='mt-4 text-center text-xs text-gray-500 dark:text-gray-400'>
                 Para más información, consulte nuestra{' '}
                 <Link
                   href='/legal/cookie-policy'

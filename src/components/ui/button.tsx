@@ -1,50 +1,46 @@
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-import { Slot } from '@radix-ui/react-slot';
-import { type VariantProps, cva } from 'class-variance-authority';
-
-import { cn } from '@/lib/utils';
+// ...existing code...
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center rounded-md text-sm font-medium whitespace-nowrap transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        default: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm',
+        outline:
+          'border-input bg-background hover:bg-accent/10 hover:text-accent hover:border-accent border-2',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-sm',
+        ghost: 'hover:bg-accent/10 hover:text-accent',
         link: 'text-primary underline-offset-4 hover:underline',
 
         // Zivah International Brand Variants
-        accent: 'bg-accent text-accent-foreground hover:bg-dark-accent focus-visible:ring-accent',
-        corporate:
-          'bg-primary text-primary-foreground hover:bg-secondary focus-visible:ring-primary',
+        accent: 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm',
+        corporate: 'bg-primary text-primary-foreground hover:bg-secondary shadow-sm',
+
+        // Call-to-action variants used in product pages
+        'cta-primary': 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg',
+        'cta-secondary': 'bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-md',
 
         // Navigation & Interactive Variants
-        nav: 'text-gray-700 dark:text-gray-300 hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg',
-        'nav-active': 'text-accent bg-accent/10 dark:bg-accent/20 rounded-lg',
-        'nav-mobile':
-          'w-full text-left hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg',
+        nav: 'text-foreground hover:text-accent hover:bg-muted',
+        'nav-active': 'text-accent bg-accent/10',
+        'nav-mobile': 'text-foreground hover:text-accent hover:bg-muted w-full text-left',
 
         // Glass morphism variants
-        glass:
-          'bg-white/20 dark:bg-gray-800/30 backdrop-blur-md border border-white/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-700/40',
+        glass: 'bg-background/20 border-border/30 hover:bg-background/30 border backdrop-blur-md',
         'glass-button':
-          'backdrop-blur-sm bg-white/10 border border-white/20 hover:bg-white/20 dark:bg-gray-800/20 dark:hover:bg-gray-700/40',
+          'bg-background/10 border-border/20 hover:bg-background/20 border backdrop-blur-sm',
 
         // Utility variants
-        icon: 'p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg',
+        icon: 'hover:bg-muted p-2',
         notification:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/90 text-xs px-3 py-1',
-        success: 'bg-accent text-accent-foreground hover:bg-accent/90',
-        warning: 'bg-warning text-warning-foreground hover:bg-warning/90',
-
-        // Product page specific variants
-        'cta-primary': 'bg-accent hover:bg-accent/90 text-white font-medium',
-        'cta-secondary':
-          'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700',
+          'bg-secondary text-secondary-foreground hover:bg-secondary/90 px-3 py-1 text-xs',
+        success: 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm',
+        warning: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm',
       },
       size: {
         default: 'h-10 px-4 py-2',
@@ -80,9 +76,12 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
+    // Compute classes in a stable order: base variants first, then user-supplied className.
+    const computedClassName = `${buttonVariants({ variant, size })} ${className ?? ''}`.trim();
+
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={computedClassName}
         ref={ref}
         {...props}
       />

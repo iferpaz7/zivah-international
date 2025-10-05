@@ -95,7 +95,7 @@ export async function securityMiddleware(request: NextRequest) {
     request.headers.get('cf-connecting-ip') ||
     'unknown';
   const userAgent = request.headers.get('user-agent') || '';
-  const method = request.method;
+  const { method } = request;
 
   // Block known malicious IPs
   if (blockedIPs.has(ip)) {

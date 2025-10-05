@@ -1,18 +1,16 @@
-import { Suspense } from 'react';
+import './globals.css';
 
 import type { Metadata } from 'next';
 import { Inter, Montserrat } from 'next/font/google';
+import { Suspense } from 'react';
 
 import Analytics from '@/components/Analytics';
 import BusinessIntelligence from '@/components/BusinessIntelligence';
 import ClientThemeProvider from '@/components/ClientThemeProvider';
 import CookieConsent from '@/components/CookieConsent';
 import { ErrorBoundary, NetworkStatus } from '@/components/ErrorHandling';
-import SEOOptimization from '@/components/SEOOptimization';
 import ServiceWorkerRegistration from '@/components/ServiceWorker';
 import WebVitals from '@/components/WebVitals';
-
-import './globals.css';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -88,7 +86,7 @@ export const metadata: Metadata = {
     'business:contact_data:postal_code': '092301',
     'business:contact_data:country_name': 'Ecuador',
     'business:contact_data:email': 'info@zivahinternational.com',
-    'business:contact_data:phone_number': '+593-4-XXX-XXXX',
+    'business:contact_data:phone_number': '+593999002893',
     'business:contact_data:website': 'https://zivahinternational.com',
   },
   metadataBase: new URL('https://zivahinternational.com'),
@@ -255,7 +253,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className='min-h-screen antialiased font-sans bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300'>
+      <body
+        className='bg-background text-foreground min-h-screen font-sans antialiased transition-colors duration-300'
+        suppressHydrationWarning
+      >
         <ErrorBoundary>
           <ClientThemeProvider>
             <Suspense fallback={null}>

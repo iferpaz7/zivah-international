@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 
 import { createApiResponse, handleApiError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
-import { RATE_LIMITS, checkRateLimit } from '@/lib/rate-limit';
+import { checkRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 
 export async function GET(request: NextRequest) {
   try {

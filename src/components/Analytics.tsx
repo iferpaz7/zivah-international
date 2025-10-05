@@ -1,13 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
-
 import { usePathname, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+    gtag: (...args: unknown[]) => void;
+    dataLayer: unknown[];
   }
 }
 
@@ -26,8 +25,8 @@ export function initGA() {
 
   // Initialize gtag
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function () {
-    window.dataLayer.push(arguments);
+  window.gtag = function (...args: unknown[]) {
+    window.dataLayer.push(args);
   };
 
   window.gtag('js', new Date());
@@ -66,7 +65,7 @@ export function trackEvent(action: string, category: string, label?: string, val
   window.gtag('event', action, {
     event_category: category,
     event_label: label,
-    value: value,
+    value,
   });
 }
 
@@ -76,8 +75,8 @@ export function trackConversion(conversionId: string, value?: number, currency: 
 
   window.gtag('event', 'conversion', {
     send_to: conversionId,
-    value: value,
-    currency: currency,
+    value,
+    currency,
   });
 }
 
@@ -127,7 +126,7 @@ export function trackQuoteRequest(
   window.gtag('event', 'begin_checkout', {
     currency: 'USD',
     value: totalValue,
-    items: items,
+    items,
   });
 }
 
@@ -149,7 +148,7 @@ export function updateConsent(consent: {
 }) {
   if (typeof window === 'undefined' || !window.gtag) return;
 
-  const consentUpdate: any = {};
+  const consentUpdate: Record<string, string> = {};
 
   if (consent.analytics !== undefined) {
     consentUpdate.analytics_storage = consent.analytics ? 'granted' : 'denied';

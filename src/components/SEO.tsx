@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-
 import Head from 'next/head';
+import { useEffect } from 'react';
 
 interface SEOProps {
   title?: string;
@@ -146,7 +145,7 @@ export default function SEO({
       name: 'ZIVAH International S.A.',
       url: 'https://zivahinternational.com',
       logo: 'https://zivahinternational.com/assets/images/zivah-logo.svg',
-      description: description,
+      description,
       foundingDate: '2020',
       industry: 'Exportación de productos ecuatorianos',
       address: {
@@ -159,7 +158,7 @@ export default function SEO({
       },
       contactPoint: {
         '@type': 'ContactPoint',
-        telephone: '+593-4-XXX-XXXX',
+        telephone: '+593999002893',
         email: 'info@zivahinternational.com',
         contactType: 'customer service',
         areaServed: 'Worldwide',
@@ -216,7 +215,7 @@ export default function SEO({
         ...baseData,
         '@type': 'Article',
         headline: title,
-        image: image,
+        image,
         author: {
           '@type': 'Organization',
           name: author,
@@ -244,8 +243,8 @@ export default function SEO({
         ...baseData,
         '@type': 'Product',
         name: title,
-        image: image,
-        description: description,
+        image,
+        description,
         brand: {
           '@type': 'Brand',
           name: 'ZIVAH International S.A.',

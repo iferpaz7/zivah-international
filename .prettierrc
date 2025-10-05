@@ -16,19 +16,7 @@
   "htmlWhitespaceSensitivity": "css",
   "singleAttributePerLine": true,
   "experimentalTernaries": false,
-  "plugins": ["prettier-plugin-tailwindcss", "@trivago/prettier-plugin-sort-imports"],
-  "importOrder": [
-    "^(react/(.*)$)|^(react$)",
-    "^(next/(.*)$)|^(next$)",
-    "<THIRD_PARTY_MODULES>",
-    "^@/components/(.*)$",
-    "^@/lib/(.*)$",
-    "^@/types/(.*)$",
-    "^@/(.*)$",
-    "^[./]"
-  ],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true,
+  "plugins": ["prettier-plugin-tailwindcss"],
   "tailwindAttributes": ["className", "class"],
   "tailwindFunctions": ["clsx", "cn", "cva", "tw"]
 }

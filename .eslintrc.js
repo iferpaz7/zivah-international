@@ -9,7 +9,7 @@ module.exports = {
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier', 'simple-import-sort', 'unused-imports', 'import'],
+  plugins: ['@typescript-eslint', 'simple-import-sort', 'unused-imports'],
   parserOptions: {
     ecmaVersion: 2022,
     sourceType: 'module',
@@ -23,9 +23,6 @@ module.exports = {
     node: true,
   },
   rules: {
-    // Prettier integration
-    'prettier/prettier': 'error',
-
     // TypeScript rules
     '@typescript-eslint/no-unused-vars': [
       'warn',

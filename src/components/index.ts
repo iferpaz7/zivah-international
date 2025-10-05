@@ -1,5 +1,5 @@
 // UI Components - All consolidated in ui folder
-export { Button, buttonVariants, type ButtonProps } from './ui/button';
+export { Button, type ButtonProps, buttonVariants } from './ui/button';
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 export { FormActions, FormField, FormGrid, FormSection } from './ui/form-components';
 export { Input } from './ui/input';

@@ -7,5 +7,13 @@ interface ClientThemeProviderProps {
 }
 
 export default function ClientThemeProvider({ children }: ClientThemeProviderProps) {
-  return <ThemeProvider>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider
+      attribute='class'
+      defaultTheme='system'
+      enableSystem
+    >
+      {children}
+    </ThemeProvider>
+  );
 }

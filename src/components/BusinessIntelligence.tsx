@@ -151,7 +151,7 @@ export default function BusinessIntelligence() {
     };
 
     // Track time on page
-    let startTime = Date.now();
+    const startTime = Date.now();
     const handleBeforeUnload = () => {
       const timeSpent = (Date.now() - startTime) / 1000;
       tracking.trackTimeOnPage(window.location.pathname, timeSpent);

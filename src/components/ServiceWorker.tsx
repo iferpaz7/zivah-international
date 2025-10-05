@@ -81,7 +81,7 @@ export default function ServiceWorkerRegistration() {
   return (
     <>
       {updateAvailable && (
-        <div className='fixed bottom-4 right-4 z-50 bg-secondary text-white px-4 py-3 rounded-lg shadow-lg'>
+        <div className='bg-secondary fixed right-4 bottom-4 z-50 rounded-lg px-4 py-3 text-white shadow-lg'>
           <div className='flex items-center justify-between'>
             <div>
               <p className='font-medium'>Update Available</p>
@@ -90,13 +90,13 @@ export default function ServiceWorkerRegistration() {
             <div className='ml-4 flex space-x-2'>
               <button
                 onClick={updateServiceWorker}
-                className='bg-white text-secondary px-3 py-1 rounded text-sm font-medium hover:bg-gray-100'
+                className='bg-background text-secondary hover:bg-muted rounded px-3 py-1 text-sm font-medium'
               >
                 Update
               </button>
               <button
                 onClick={() => setUpdateAvailable(false)}
-                className='text-white hover:text-gray-200 text-sm'
+                className='text-sm text-white hover:text-gray-200'
               >
                 Later
               </button>

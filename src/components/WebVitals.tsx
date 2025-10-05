@@ -62,7 +62,7 @@ function sendToAnalytics({ name, delta, value, id }: any) {
 // Performance monitoring utilities
 export const performanceUtils = {
   // Measure function execution time
-  measureExecutionTime: function <T>(fn: () => T, label: string): T {
+  measureExecutionTime<T>(fn: () => T, label: string): T {
     const start = performance.now();
     const result = fn();
     const end = performance.now();
@@ -71,7 +71,7 @@ export const performanceUtils = {
   },
 
   // Measure async function execution time
-  measureAsyncExecutionTime: async function <T>(fn: () => Promise<T>, label: string): Promise<T> {
+  async measureAsyncExecutionTime<T>(fn: () => Promise<T>, label: string): Promise<T> {
     const start = performance.now();
     const result = await fn();
     const end = performance.now();

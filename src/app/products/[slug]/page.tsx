@@ -119,8 +119,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className='min-h-screen bg-gray-50 dark:bg-gray-900 py-16'>
-      <div className='container mx-auto px-4 max-w-6xl'>
+    <div className='min-h-screen bg-gray-50 py-16 dark:bg-gray-900'>
+      <div className='container mx-auto max-w-6xl px-4'>
         {/* Breadcrumb */}
         <nav className='mb-8'>
           <ol className='flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400'>
@@ -135,7 +135,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <li>/</li>
             <li>
               <Link
-                href='/#productos'
+                href='/#products'
                 className='hover:text-accent dark:hover:text-accent'
               >
                 Productos
@@ -151,26 +151,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </Link>
             </li>
             <li>/</li>
-            <li className='text-gray-900 dark:text-white font-medium'>{product.name}</li>
+            <li className='font-medium text-gray-900 dark:text-white'>{product.name}</li>
           </ol>
         </nav>
 
         {/* Product Header */}
-        <div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-8'>
-          <div className='grid md:grid-cols-2 gap-8 p-8'>
+        <div className='mb-8 overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800'>
+          <div className='grid gap-8 p-8 md:grid-cols-2'>
             {/* Product Image */}
             <div className='space-y-4'>
-              <div className='aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden'>
+              <div className='aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700'>
                 {product.imageUrl ? (
                   <Image
                     src={product.imageUrl}
                     alt={product.name}
                     width={500}
                     height={500}
-                    className='w-full h-full object-cover'
+                    className='h-full w-full object-cover'
                   />
                 ) : (
-                  <div className='w-full h-full flex items-center justify-center text-6xl'>📦</div>
+                  <div className='flex h-full w-full items-center justify-center text-6xl'>📦</div>
                 )}
               </div>
 
@@ -180,7 +180,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {product.certifications.map((cert, index) => (
                     <span
                       key={index}
-                      className='px-3 py-1 bg-accent/10 dark:bg-accent/20 text-gray-800 dark:text-accent text-sm font-medium rounded-full'
+                      className='bg-accent/10 dark:bg-accent/20 dark:text-accent rounded-full px-3 py-1 text-sm font-medium text-gray-800'
                     >
                       {cert}
                     </span>
@@ -192,7 +192,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Product Info */}
             <div className='space-y-6'>
               <div>
-                <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-2'>
+                <h1 className='mb-2 text-3xl font-bold text-gray-900 dark:text-white'>
                   {product.name}
                 </h1>
                 <p className='text-lg text-gray-600 dark:text-gray-300'>
@@ -201,10 +201,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
 
               {/* Price */}
-              <div className='bg-gray-50 dark:bg-gray-700 p-4 rounded-lg'>
-                <div className='flex items-center justify-between mb-2'>
+              <div className='rounded-lg bg-gray-50 p-4 dark:bg-gray-700'>
+                <div className='mb-2 flex items-center justify-between'>
                   <span className='text-sm text-gray-600 dark:text-gray-400'>Precio base:</span>
-                  <span className='text-2xl font-bold text-accent dark:text-accent'>
+                  <span className='text-accent dark:text-accent text-2xl font-bold'>
                     ${product.basePrice.toFixed(2)} {product.priceUnit}
                   </span>
                 </div>
@@ -255,32 +255,32 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
 
         {/* Product Details */}
-        <div className='grid lg:grid-cols-3 gap-8'>
+        <div className='grid gap-8 lg:grid-cols-3'>
           {/* Main Content */}
-          <div className='lg:col-span-2 space-y-8'>
+          <div className='space-y-8 lg:col-span-2'>
             {/* Description */}
-            <div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8'>
-              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
+            <div className='rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800'>
+              <h2 className='mb-4 text-2xl font-bold text-gray-900 dark:text-white'>
                 Descripción del Producto
               </h2>
-              <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
+              <p className='leading-relaxed text-gray-700 dark:text-gray-300'>
                 {product.description}
               </p>
             </div>
 
             {/* Specifications */}
             {product.specifications && (
-              <div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8'>
-                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
+              <div className='rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800'>
+                <h2 className='mb-4 text-2xl font-bold text-gray-900 dark:text-white'>
                   Especificaciones Técnicas
                 </h2>
-                <div className='grid md:grid-cols-2 gap-4'>
+                <div className='grid gap-4 md:grid-cols-2'>
                   {Object.entries(product.specifications).map(([key, value]) => (
                     <div
                       key={key}
-                      className='flex justify-between py-2 border-b border-gray-200 dark:border-gray-700'
+                      className='flex justify-between border-b border-gray-200 py-2 dark:border-gray-700'
                     >
-                      <span className='font-medium text-gray-900 dark:text-white capitalize'>
+                      <span className='font-medium text-gray-900 capitalize dark:text-white'>
                         {key.replace(/([A-Z])/g, ' $1').trim()}:
                       </span>
                       <span className='text-gray-600 dark:text-gray-400'>{value}</span>
@@ -292,17 +292,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             {/* Nutritional Info */}
             {product.nutritionalInfo && (
-              <div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8'>
-                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
+              <div className='rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800'>
+                <h2 className='mb-4 text-2xl font-bold text-gray-900 dark:text-white'>
                   Información Nutricional
                 </h2>
-                <div className='grid md:grid-cols-2 gap-4'>
+                <div className='grid gap-4 md:grid-cols-2'>
                   {Object.entries(product.nutritionalInfo).map(([key, value]) => (
                     <div
                       key={key}
-                      className='flex justify-between py-2 border-b border-gray-200 dark:border-gray-700'
+                      className='flex justify-between border-b border-gray-200 py-2 dark:border-gray-700'
                     >
-                      <span className='font-medium text-gray-900 dark:text-white capitalize'>
+                      <span className='font-medium text-gray-900 capitalize dark:text-white'>
                         {key.replace(/([A-Z])/g, ' $1').trim()}:
                       </span>
                       <span className='text-gray-600 dark:text-gray-400'>{value}</span>
@@ -316,27 +316,37 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {/* Sidebar */}
           <div className='space-y-8'>
             {/* Quick Quote Form */}
-            <div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6'>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+            <div className='rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800'>
+              <h3 className='mb-4 text-lg font-semibold text-gray-900 dark:text-white'>
                 Cotización Rápida
               </h3>
               <form className='space-y-4'>
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'>
+                  <label
+                    htmlFor='quantity-required'
+                    className='mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'
+                  >
                     Cantidad requerida
                   </label>
                   <input
+                    id='quantity-required'
                     type='number'
                     min={product.minOrderQty}
                     placeholder={`Mínimo ${product.minOrderQty}`}
-                    className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                    className='w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
                   />
                 </div>
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'>
+                  <label
+                    htmlFor='destination-country'
+                    className='mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300'
+                  >
                     País de destino
                   </label>
-                  <select className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white'>
+                  <select
+                    id='destination-country'
+                    className='w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+                  >
                     <option>Estados Unidos</option>
                     <option>Unión Europea</option>
                     <option>Canadá</option>
@@ -354,14 +364,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             {/* Related Products */}
-            <div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6'>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+            <div className='rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800'>
+              <h3 className='mb-4 text-lg font-semibold text-gray-900 dark:text-white'>
                 Productos Relacionados
               </h3>
               <div className='space-y-3'>
                 <Link
                   href='/products/cafe-arabica'
-                  className='block p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'
+                  className='block rounded-lg border border-gray-200 p-3 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
                 >
                   <div className='font-medium text-gray-900 dark:text-white'>
                     Café Arábica Premium
@@ -370,7 +380,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </Link>
                 <Link
                   href='/products/camaron-vannamei'
-                  className='block p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'
+                  className='block rounded-lg border border-gray-200 p-3 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
                 >
                   <div className='font-medium text-gray-900 dark:text-white'>Camarón Vannamei</div>
                   <div className='text-sm text-gray-600 dark:text-gray-400'>Certificado BAP</div>
@@ -379,18 +389,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             {/* Contact Info */}
-            <div className='bg-accent/5 dark:bg-accent/10 border border-accent/20 dark:border-accent/30 rounded-lg p-6'>
-              <h3 className='text-lg font-semibold text-accent dark:text-accent mb-4'>
+            <div className='bg-accent/5 dark:bg-accent/10 border-accent/20 dark:border-accent/30 rounded-lg border p-6'>
+              <h3 className='text-accent dark:text-accent mb-4 text-lg font-semibold'>
                 ¿Necesita más información?
               </h3>
-              <div className='space-y-2 text-sm text-accent dark:text-accent'>
+              <div className='text-accent dark:text-accent space-y-2 text-sm'>
                 <p>📧 sales@zivahinternational.com</p>
-                <p>📱 +1 (305) XXX-XXXX</p>
+                <p>📱 +593999002893</p>
                 <p>🏢 Samborondón, Guayas, Ecuador</p>
               </div>
               <Link
-                href='/#contacto'
-                className='inline-block mt-4 text-accent dark:text-accent hover:underline font-medium'
+                href='/#contact'
+                className='text-accent dark:text-accent mt-4 inline-block font-medium hover:underline'
               >
                 Contactar ahora →
               </Link>
@@ -399,10 +409,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
 
         {/* Back to Products */}
-        <div className='text-center mt-12'>
+        <div className='mt-12 text-center'>
           <Link
-            href='/#todos-productos'
-            className='inline-flex items-center text-accent dark:text-accent hover:text-accent/90 dark:hover:text-accent/90 transition-colors'
+            href='/#products'
+            className='text-accent dark:text-accent hover:text-accent/90 dark:hover:text-accent/90 inline-flex items-center transition-colors'
           >
             ← Ver todos los productos
           </Link>

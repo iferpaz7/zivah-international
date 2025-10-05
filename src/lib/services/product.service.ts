@@ -1,7 +1,6 @@
 import type { Prisma } from '@prisma/client';
 
 import { prisma } from '@/lib/prisma';
-
 import {
   CreateProductInput,
   PaginatedResponse,

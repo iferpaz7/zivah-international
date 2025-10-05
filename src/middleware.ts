@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 
-import { enforceHTTPS, getSecurityHeaders, logSecurityEvent } from '@/lib/https';
+import { enforceHTTPS, logSecurityEvent } from '@/lib/https';
 import { securityMiddleware } from '@/lib/security';
 
 export function middleware(request: NextRequest) {

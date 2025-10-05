@@ -4,6 +4,23 @@ Modern Next.js website for **ZIVAH International S.A.**, premium Ecuadorian prod
 
 ## ✅ **Project Status: PRODUCTION READY**
 
+**Current Version**: 1.0.0
+**Last Updated**: October 2025
+**Next.js Version**: 15.5.3
+**Database**: PostgreSQL with Prisma ORM 6.16.1
+
+### 🌟 **Key Features Implemented**
+
+- ✅ **Multi-page Website**: Home, Products, Quality, Markets, Quote, Contact pages
+- ✅ **Dynamic Product Catalog**: 30+ products across 3 categories with filtering
+- ✅ **Advanced Quote System**: Multi-product quotes with measurements and specifications
+- ✅ **Admin Dashboard**: User management, quote processing, analytics
+- ✅ **Internationalization Ready**: Spanish content with English route structure
+- ✅ **PWA Features**: Service worker, offline functionality, web manifest
+- ✅ **SEO Optimized**: Meta tags, structured data, sitemap generation
+- ✅ **Performance Monitoring**: Core Web Vitals, analytics integration
+- ✅ **Security**: Rate limiting, input validation, GDPR compliance
+
 ### 🚀 **Tech Stack**
 
 - **Framework**: Next.js 15.5.3 with App Router
@@ -13,6 +30,7 @@ Modern Next.js website for **ZIVAH International S.A.**, premium Ecuadorian prod
 - **Language**: TypeScript 5.9.2 with strict mode
 - **State Management**: React hooks with context
 - **Forms**: React Hook Form with Zod validation
+- **UI Components**: Radix UI primitives with custom styling
 - **Email**: Nodemailer for contact forms
 - **Analytics**: Google Analytics 4 with custom events
 - **Performance**: Web Vitals monitoring
@@ -30,7 +48,12 @@ zivah-international/
 │   │   ├── layout.tsx         # Root layout with theme provider
 │   │   ├── page.tsx           # Homepage with dynamic content
 │   │   ├── sitemap.ts         # Dynamic sitemap generation
+│   │   ├── contact/           # Contact page
 │   │   ├── legal/             # Legal pages (privacy, terms, etc.)
+│   │   ├── markets/           # Markets page
+│   │   ├── products/          # Products pages (individual product pages)
+│   │   ├── quality/           # Quality certifications page
+│   │   ├── quote/             # Quote request page
 │   │   └── api/               # API routes
 │   │       ├── auth/          # NextAuth authentication
 │   │       ├── categories/    # Product categories endpoint
@@ -40,6 +63,7 @@ zivah-international/
 │   ├── components/            # React components
 │   │   ├── Analytics.tsx      # Google Analytics integration
 │   │   ├── BusinessIntelligence.tsx # Business tracking
+│   │   ├── ClientThemeProvider.tsx # Client-side theme provider
 │   │   ├── CookieConsent.tsx  # GDPR cookie consent
 │   │   ├── ErrorHandling.tsx  # Error boundaries and loading states
 │   │   ├── LazyLoad.tsx       # Lazy loading utilities
@@ -52,19 +76,22 @@ zivah-international/
 │   │   ├── ThemeProvider.tsx  # Theme context provider
 │   │   ├── ThemeToggle.tsx    # Dark/light mode toggle
 │   │   ├── WebVitals.tsx      # Core Web Vitals monitoring
+│   │   ├── ui/               # Reusable UI components
 │   │   └── index.ts          # Component exports
 │   ├── lib/                   # Utilities and services
 │   │   ├── auth.ts           # Authentication utilities
 │   │   ├── email.ts          # Email service
 │   │   ├── errors.ts         # Error handling utilities
+│   │   ├── hooks/            # Custom React hooks
 │   │   ├── https.ts          # HTTPS and security utilities
 │   │   ├── logger.ts         # Logging utilities
 │   │   ├── prisma.ts         # Database client
 │   │   ├── rate-limit.ts     # Rate limiting
+│   │   ├── security-config.ts # Security configuration
 │   │   ├── security.ts       # Security middleware
+│   │   ├── services/         # Business logic services
 │   │   ├── utils.ts          # Helper functions
 │   │   ├── validation.ts     # Input validation
-│   │   ├── services/         # Business logic services
 │   │   └── validations/      # Validation schemas
 │   ├── middleware.ts         # Next.js middleware
 │   └── types/                # TypeScript definitions
@@ -98,46 +125,48 @@ zivah-international/
 ### 📱 **Dynamic Content**
 
 - PostgreSQL database with 3 categories, 30+ products
-- API-driven product catalog
-- Real-time category filtering
-- Product search and display
-- Quote request system
+- API-driven product catalog with filtering
+- Real-time category and product search
+- Interactive quote request system
+- Multi-page structure (Home, Products, Quality, Markets, Quote, Contact)
 
 ### 🎨 **Modern UI/UX**
 
-- Responsive design (mobile-first)
-- Smooth scrolling navigation
-- Glass morphism effects
-- Professional ZIVAH branding
-- Interactive hover states
+- Responsive design (mobile-first approach)
+- Smooth scrolling navigation with section detection
+- Glass morphism effects and modern aesthetics
+- Professional ZIVAH branding with Ecuadorian theme
+- Interactive hover states and animations
+- Dark/light mode toggle with system preference detection
 
 ### ⚡ **Performance & SEO**
 
-- Next.js 15 App Router optimization
-- Core Web Vitals monitoring
+- Next.js 15 App Router with optimized routing
+- Core Web Vitals monitoring and reporting
 - Image optimization with lazy loading
 - Comprehensive SEO suite with structured data
-- Google Analytics 4 integration
+- Google Analytics 4 integration with custom events
 - Service worker for PWA functionality
 - Dynamic sitemap generation
 - Cookie consent with GDPR compliance
+- Meta tags and Open Graph optimization
 
 ### 🔒 **Security & Compliance**
 
-- Rate limiting and DDoS protection
-- Input validation and sanitization
-- HTTPS enforcement
-- CSRF protection
+- Rate limiting and DDoS protection (Upstash)
+- Input validation with Zod schemas
+- HTTPS enforcement and security headers
+- CSRF protection and authentication
 - GDPR cookie compliance
-- Security headers and middleware
+- Security middleware and error handling
 
 ### 📊 **Business Intelligence**
 
-- Conversion tracking
-- User engagement analytics
-- Performance monitoring
-- Business metrics dashboard
-- Automated reporting
+- Conversion tracking and analytics
+- User engagement metrics
+- Performance monitoring dashboard
+- Business metrics and reporting
+- Automated email notifications
 
 ## 🛠️ **Development**
 
@@ -297,26 +326,60 @@ The following files are excluded from formatting:
 
 ## 🗄️ **Database Schema**
 
-### Categories Table
+### Core Tables
 
-- id, name, slug, description
-- icon, color, sort_order
-- is_active, timestamps
+#### Categories Table
 
-### Products Table
+- `id`, `name`, `slug`, `description`
+- `icon`, `color`, `sort_order`, `is_active`
+- `created_at`, `updated_at`
 
-- id, name, slug, category_id
-- description, short_description, sku
-- base_price, price_unit, stock_quantity
-- image_url, origin, harvest_season
-- certifications, nutritional_info
-- is_active, is_featured, timestamps
+#### Products Table
 
-### Quotes Table (Future)
+- `id`, `name`, `slug`, `category_id`
+- `description`, `short_description`, `sku`, `code`
+- `specifications`, `stock_quantity`, `min_order_qty`
+- `image_url`, `image_gallery`, `origin`, `harvest_season`
+- `certifications`, `nutritional_info`
+- `is_active`, `is_featured`, `seo_title`, `seo_description`
+- `measure_id`, `created_at`, `updated_at`
 
-- Quote requests and items
-- Customer information
-- Product selections
+#### Product Variants Table
+
+- `id`, `product_id`, `name`, `sku`, `price`, `stock_qty`
+- `is_active`, `attributes`, `created_at`, `updated_at`
+
+#### Quotes System
+
+- **Quotes Table**: `id`, `quote_number`, customer info, status, totals, dates
+- **Quote Items Table**: `quote_id`, `product_id`, quantity, pricing, specifications
+- **Quote Communications Table**: Communication history and notes
+
+### Supporting Tables
+
+#### Measures & Currencies
+
+- **Measure Families**: Weight, volume, count units
+- **Measures**: Individual measurement units with conversions
+- **Currencies**: Supported currencies for pricing
+
+#### Users & Authentication
+
+- **Users Table**: Admin/user accounts with roles and permissions
+- **Accounts/Sessions**: NextAuth.js authentication tables
+
+#### Countries & Localization
+
+- **Countries Table**: Shipping destinations with calling codes
+- **Activity Logs**: User action tracking
+
+### Key Relationships
+
+- **Products** → **Categories** (many-to-one)
+- **Products** → **Measures** (many-to-one)
+- **Quotes** → **Quote Items** (one-to-many)
+- **Quote Items** → **Products** (many-to-one)
+- **Users** → **Quotes** (one-to-many for assignments)
 
 ## 🚀 **API Endpoints**
 
@@ -691,7 +754,7 @@ Unauthorized use, reproduction, or distribution is prohibited.
 - **Website**: [zivahinternational.com](https://zivahinternational.com)
 - **Headquarters**: Samborondón, Guayas, Ecuador
 - **Distribution**: Miami, Florida, USA
-- **Phone**: +593-4-XXX-XXXX
+- **Phone**: +593999002893
 
 ### Development Team
 

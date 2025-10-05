@@ -136,7 +136,7 @@ class EmailService {
           <div style="background: #d4edda; padding: 15px; border-radius: 5px;">
             <h3>Información de Contacto:</h3>
             <p>Email: ${data.customerEmail}</p>
-            <p>Teléfono: +593 4 234 5678</p>
+            <p>Teléfono: +593999002893</p>
             <p>Website: www.zivahinternational.com</p>
           </div>
 

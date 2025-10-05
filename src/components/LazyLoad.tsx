@@ -1,8 +1,7 @@
 'use client';
 
-import { ReactNode, useEffect, useRef, useState } from 'react';
-
 import Image from 'next/image';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 interface LazyLoadProps {
   children: ReactNode;
@@ -173,7 +172,7 @@ export function LazyImage({
   if (hasError) {
     return (
       <div
-        className={`bg-gray-200 flex items-center justify-center text-gray-500 text-sm ${className}`}
+        className={`flex items-center justify-center bg-gray-200 text-sm text-gray-500 ${className}`}
       >
         Failed to load image
       </div>

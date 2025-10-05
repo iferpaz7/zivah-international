@@ -1,17 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useTheme } from 'next-themes';
 
-import { useTheme } from './ThemeProvider';
+import { useMounted } from '@/lib/hooks/use-mounted';
+
 import { Button } from './ui/button';
 
 export default function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const mounted = useMounted();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   // Prevent hydration mismatch by not rendering until mounted
   if (!mounted) {
@@ -20,9 +21,10 @@ export default function ThemeToggle() {
         variant='glass'
         size='icon'
         disabled
+        className='group ring-offset-background focus-visible:ring-ring relative inline-flex items-center justify-center overflow-hidden rounded-md bg-gray-200 text-sm font-medium whitespace-nowrap transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-800'
       >
-        <div className='relative w-6 h-6'>
-          <div className='w-6 h-6 bg-gray-300 rounded animate-pulse' />
+        <div className='relative h-6 w-6'>
+          <div className='h-6 w-6 animate-pulse rounded bg-gray-300' />
         </div>
       </Button>
     );
@@ -30,17 +32,17 @@ export default function ThemeToggle() {
 
   return (
     <Button
-      variant='glass'
+      variant='outline'
       size='icon'
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-      className='group'
+      className='group border-border/50 bg-background/50 hover:bg-accent/10 hover:border-accent/30 relative overflow-hidden backdrop-blur-sm transition-all duration-300'
     >
-      <div className='relative w-6 h-6'>
+      <div className='relative h-6 w-6'>
         {/* Sun Icon */}
         <svg
-          className={`absolute inset-0 w-6 h-6 text-yellow-500 transition-all duration-300 ${
-            theme === 'dark' ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'
+          className={`absolute inset-0 h-6 w-6 text-yellow-500 transition-all duration-500 group-hover:text-yellow-400 ${
+            theme === 'dark' ? 'scale-0 rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100'
           }`}
           fill='currentColor'
           viewBox='0 0 20 20'
@@ -54,8 +56,8 @@ export default function ThemeToggle() {
 
         {/* Moon Icon */}
         <svg
-          className={`absolute inset-0 w-6 h-6 text-secondary transition-all duration-300 ${
-            theme === 'light' ? 'opacity-0 -rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'
+          className={`absolute inset-0 h-6 w-6 text-blue-400 transition-all duration-500 group-hover:text-blue-300 ${
+            theme === 'light' ? 'scale-0 -rotate-90 opacity-0' : 'scale-100 rotate-0 opacity-100'
           }`}
           fill='currentColor'
           viewBox='0 0 20 20'
@@ -63,6 +65,9 @@ export default function ThemeToggle() {
           <path d='M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z' />
         </svg>
       </div>
+
+      {/* Subtle glow effect on hover */}
+      <div className='from-accent/5 to-primary/5 absolute inset-0 rounded-md bg-gradient-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
     </Button>
   );
 }
