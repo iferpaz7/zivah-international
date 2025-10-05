@@ -16,6 +16,15 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.production
+
+# FTP Configuration (contains sensitive credentials)
+.ftpconfig
+ftp_upload.txt
+ftp_upload_script.txt
+
+# Deployment folder
+deploy/
 
 # IDE files
 .vscode/
