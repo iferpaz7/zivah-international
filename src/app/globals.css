@@ -2,28 +2,20 @@
 
 /* Zivah International Brand System - Custom CSS variables only */
 :root {
-  --zivah-lime: #7cb342;
-  --zivah-green: #2e7d32;
-  --zivah-dark-green: #1b5e20;
-  --zivah-navy: #0d47a1;
-  --zivah-blue: #1976d2;
-  --zivah-coral: #ff5722;
-  --zivah-light-coral: #ff8a65;
-  --zivah-blue-gray: #37474f;
-  --zivah-charcoal: #263238;
+  --primary: #ff6231;
+  --secondary: #055aad;
+  --accent: #0d8c49;
+  --dark: #090709;
+  --dark-accent: #082c20;
 }
 
 /* Dark mode adjustments for custom variables */
 .dark {
-  --zivah-lime: #8bc34a;
-  --zivah-green: #4caf50;
-  --zivah-dark-green: #2e7d32;
-  --zivah-navy: #1565c0;
-  --zivah-blue: #2196f3;
-  --zivah-coral: #ff6b35;
-  --zivah-light-coral: #ff8a65;
-  --zivah-blue-gray: #546e7a;
-  --zivah-charcoal: #37474f;
+  --primary: #ff7b47;
+  --secondary: #1a75d6;
+  --accent: #26a65b;
+  --dark: #1a1a1a;
+  --dark-accent: #0d4b2e;
 }
 
 /* Smooth scroll behavior */
@@ -111,11 +103,11 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: var(--zivah-dark-green);
+  background-color: var(--dark-accent);
 }
 
 .btn-secondary {
-  background-color: var(--zivah-lime);
+  background-color: var(--primary);
   color: white;
   font-weight: 500;
   padding: 0.75rem 1.5rem;

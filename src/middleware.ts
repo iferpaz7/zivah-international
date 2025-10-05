@@ -1,10 +1,7 @@
 import { NextRequest } from 'next/server';
+
+import { enforceHTTPS, getSecurityHeaders, logSecurityEvent } from '@/lib/https';
 import { securityMiddleware } from '@/lib/security';
-import {
-  enforceHTTPS,
-  getSecurityHeaders,
-  logSecurityEvent,
-} from '@/lib/https';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

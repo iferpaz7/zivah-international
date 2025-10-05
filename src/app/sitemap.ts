@@ -72,12 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Category pages
-  const categoryPages = [
-    'fruits',
-    'seafood',
-    'coffee-beans',
-    'aquaculture',
-  ].map(slug => ({
+  const categoryPages = ['fruits', 'seafood', 'coffee-beans', 'aquaculture'].map(slug => ({
     url: `${baseUrl}/categories/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
@@ -151,9 +146,7 @@ Crawl-delay: 1`;
       result => result.status === 'fulfilled' && result.value
     ).length;
 
-    console.log(
-      `Sitemap submitted to ${successful}/${searchEngines.length} search engines`
-    );
+    console.log(`Sitemap submitted to ${successful}/${searchEngines.length} search engines`);
   },
 
   // Validate sitemap URLs
@@ -194,9 +187,7 @@ Crawl-delay: 1`;
   },
 
   // Generate sitemap index for large sites
-  generateSitemapIndex: (
-    sitemaps: { url: string; lastModified: Date }[]
-  ): string => {
+  generateSitemapIndex: (sitemaps: { url: string; lastModified: Date }[]): string => {
     const sitemapElements = sitemaps
       .map(
         sitemap => `
@@ -242,10 +233,7 @@ export async function generateDynamicSitemap(
   getProducts: () => Promise<Array<{ slug: string; updatedAt: Date }>>,
   getCategories: () => Promise<Array<{ slug: string; updatedAt: Date }>>
 ): Promise<MetadataRoute.Sitemap> {
-  const [products, categories] = await Promise.all([
-    getProducts(),
-    getCategories(),
-  ]);
+  const [products, categories] = await Promise.all([getProducts(), getCategories()]);
 
   const productUrls = products.map(product => ({
     url: `${baseUrl}/products/${product.slug}`,

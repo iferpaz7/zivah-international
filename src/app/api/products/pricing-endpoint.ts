@@ -1,21 +1,15 @@
 // API endpoint to get product pricing for different measures
 // File: src/app/api/products/[id]/pricing/route.ts
-
-import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+import prisma from '@/lib/prisma';
+
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const productId = parseInt(params.id);
 
     if (isNaN(productId)) {
-      return NextResponse.json(
-        { error: 'Invalid product ID' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 });
     }
 
     // Get product with all its pricing information
@@ -56,9 +50,7 @@ export async function GET(
     // Build pricing matrix
     const pricingData = compatibleMeasures.map((measure: any) => {
       // Check if there's a specific price for this measure
-      const specificPrice = product.productPrices.find(
-        (pp: any) => pp.measureId === measure.id
-      );
+      const specificPrice = product.productPrices.find((pp: any) => pp.measureId === measure.id);
 
       let unitPrice = null;
       let priceType = 'unavailable';
@@ -101,9 +93,6 @@ export async function GET(
     });
   } catch (error) {
     console.error('Error fetching product pricing:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

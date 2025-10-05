@@ -36,10 +36,7 @@ export async function disconnectDatabase(): Promise<void> {
 // Transaction helper
 export async function withTransaction<T>(
   operation: (
-    tx: Omit<
-      PrismaClient,
-      '$connect' | '$disconnect' | '$on' | '$transaction' | '$extends'
-    >
+    tx: Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$extends'>
   ) => Promise<T>
 ): Promise<T> {
   return await prisma.$transaction(operation);

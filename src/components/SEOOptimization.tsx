@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import SEO from './SEO';
 import WebVitals from './WebVitals';
 
@@ -50,9 +51,7 @@ export default function SEOOptimization({
 
         // Check for Open Graph tags
         const ogTitle = document.querySelector('meta[property="og:title"]');
-        const ogDesc = document.querySelector(
-          'meta[property="og:description"]'
-        );
+        const ogDesc = document.querySelector('meta[property="og:description"]');
         const ogImage = document.querySelector('meta[property="og:image"]');
 
         if (!ogTitle) issues.push('Open Graph title missing');
@@ -64,9 +63,7 @@ export default function SEOOptimization({
         if (!canonical) issues.push('Canonical URL missing');
 
         // Check for structured data
-        const structuredDataScript = document.querySelector(
-          'script[type="application/ld+json"]'
-        );
+        const structuredDataScript = document.querySelector('script[type="application/ld+json"]');
         if (!structuredDataScript) issues.push('Structured data missing');
 
         if (issues.length > 0) {
@@ -98,10 +95,7 @@ export default function SEOOptimization({
       });
 
       // Preload critical images
-      const criticalImages = [
-        '/assets/images/zivah-logo.svg',
-        '/assets/images/icons/favicon.svg',
-      ];
+      const criticalImages = ['/assets/images/zivah-logo.svg', '/assets/images/icons/favicon.svg'];
 
       criticalImages.forEach(src => {
         const link = document.createElement('link');
@@ -131,8 +125,7 @@ export default function SEOOptimization({
 
         if (navigation) {
           const loadTime = navigation.loadEventEnd - navigation.fetchStart;
-          const domContentLoaded =
-            navigation.domContentLoadedEventEnd - navigation.fetchStart;
+          const domContentLoaded = navigation.domContentLoadedEventEnd - navigation.fetchStart;
 
           // Log performance metrics
           console.log('Page Load Performance:', {
@@ -151,8 +144,7 @@ export default function SEOOptimization({
               value: Math.round(loadTime),
               custom_map: {
                 dom_content_loaded: domContentLoaded,
-                dns_lookup:
-                  navigation.domainLookupEnd - navigation.domainLookupStart,
+                dns_lookup: navigation.domainLookupEnd - navigation.domainLookupStart,
               },
             });
           }
@@ -217,8 +209,7 @@ export const seoOptimizationUtils = {
       const response = await fetch(url, { method: 'HEAD' });
       const loadTime = performance.now() - startTime;
 
-      report.scores.loadSpeed =
-        loadTime < 1000 ? 100 : loadTime < 3000 ? 70 : 50;
+      report.scores.loadSpeed = loadTime < 1000 ? 100 : loadTime < 3000 ? 70 : 50;
 
       if (loadTime > 3000) {
         report.issues.push('Page load time is too slow');
@@ -282,18 +273,14 @@ export const seoOptimizationUtils = {
     );
 
     return results.map(result =>
-      result.status === 'fulfilled'
-        ? result.value
-        : { url: result.reason, status: 0, broken: true }
+      result.status === 'fulfilled' ? result.value : { url: result.reason, status: 0, broken: true }
     );
   },
 
   // Monitor search rankings (placeholder for actual implementation)
   monitorSearchRankings: (keywords: string[], domain: string) => {
     // This would integrate with SEO tools like SEMrush, Ahrefs, etc.
-    console.log(
-      `Monitoring rankings for ${keywords.length} keywords on ${domain}`
-    );
+    console.log(`Monitoring rankings for ${keywords.length} keywords on ${domain}`);
     return {
       keywords,
       domain,
@@ -315,10 +302,7 @@ export function useSEOOptimization(options: SEOOptimizationProps) {
   }, []);
 
   return {
-    validateSEO: () =>
-      seoOptimizationUtils.generateSEOReport(
-        options.url || window.location.href
-      ),
+    validateSEO: () => seoOptimizationUtils.generateSEOReport(options.url || window.location.href),
     optimizeImage: seoOptimizationUtils.optimizeImageForSEO,
     generateURL: seoOptimizationUtils.generateSEOFriendlyURL,
   };

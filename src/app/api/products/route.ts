@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ProductService } from '@/lib/services/product.service';
-import { productFiltersSchema, createProductSchema } from '@/lib/validations';
+
 import { z } from 'zod';
+
+import { ProductService } from '@/lib/services/product.service';
+import { createProductSchema, productFiltersSchema } from '@/lib/validations';
 
 export async function GET(request: NextRequest) {
   try {
@@ -12,9 +14,7 @@ export async function GET(request: NextRequest) {
       categoryId: searchParams.get('categoryId')
         ? parseInt(searchParams.get('categoryId')!)
         : undefined,
-      isActive: searchParams.get('isActive')
-        ? searchParams.get('isActive') === 'true'
-        : undefined,
+      isActive: searchParams.get('isActive') ? searchParams.get('isActive') === 'true' : undefined,
       isFeatured: searchParams.get('isFeatured')
         ? searchParams.get('isFeatured') === 'true'
         : undefined,
@@ -29,13 +29,9 @@ export async function GET(request: NextRequest) {
       certifications: searchParams.get('certifications')
         ? searchParams.get('certifications')!.split(',')
         : undefined,
-      inStock: searchParams.get('inStock')
-        ? searchParams.get('inStock') === 'true'
-        : undefined,
+      inStock: searchParams.get('inStock') ? searchParams.get('inStock') === 'true' : undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!) : 1,
-      pageSize: searchParams.get('pageSize')
-        ? parseInt(searchParams.get('pageSize')!)
-        : 10,
+      pageSize: searchParams.get('pageSize') ? parseInt(searchParams.get('pageSize')!) : 10,
     };
 
     const validatedFilters = productFiltersSchema.parse(filterParams);

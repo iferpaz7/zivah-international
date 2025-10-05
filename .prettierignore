@@ -117,7 +117,30 @@ pnpm-lock.yaml
 # Generated files
 *.min.js
 *.min.css
+*.tsbuildinfo
+next-env.d.ts
+
+# Next.js specific
+.next/
+out/
+build/
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
+public/fallback-*.js
+
+# TypeScript
+*.d.ts
 
 # Documentation
 CHANGELOG.md
 CHANGELOG*
+
+# Config files that should maintain their formatting
+tailwind.config.*
+next.config.*
+postcss.config.*
+
+# Prisma generated
+prisma/client/
+*.prisma

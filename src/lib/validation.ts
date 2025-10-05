@@ -8,18 +8,12 @@ export const contactFormSchema = z.object({
     .max(100, 'Name must be less than 100 characters')
     .regex(/^[a-zA-Z\s\-']+$/, 'Name contains invalid characters'),
 
-  email: z
-    .string()
-    .email('Invalid email address')
-    .max(254, 'Email is too long'),
+  email: z.string().email('Invalid email address').max(254, 'Email is too long'),
 
   phone: z
     .string()
     .optional()
-    .refine(
-      val => !val || /^[\+]?[1-9][\d]{0,15}$/.test(val),
-      'Invalid phone number'
-    ),
+    .refine(val => !val || /^[\+]?[1-9][\d]{0,15}$/.test(val), 'Invalid phone number'),
 
   company: z
     .string()
@@ -30,10 +24,7 @@ export const contactFormSchema = z.object({
     .string()
     .min(10, 'Message must be at least 10 characters')
     .max(2000, 'Message must be less than 2000 characters')
-    .refine(
-      (val: string) => !/<script/i.test(val),
-      'Message contains invalid content'
-    ),
+    .refine((val: string) => !/<script/i.test(val), 'Message contains invalid content'),
 
   subject: z
     .string()
@@ -48,18 +39,12 @@ export const quoteFormSchema = z.object({
     .max(100, 'Name must be less than 100 characters')
     .regex(/^[a-zA-Z\s\-']+$/, 'Name contains invalid characters'),
 
-  customerEmail: z
-    .string()
-    .email('Invalid email address')
-    .max(254, 'Email is too long'),
+  customerEmail: z.string().email('Invalid email address').max(254, 'Email is too long'),
 
   customerPhone: z
     .string()
     .optional()
-    .refine(
-      val => !val || /^[\+]?[1-9][\d]{0,15}$/.test(val),
-      'Invalid phone number'
-    ),
+    .refine(val => !val || /^[\+]?[1-9][\d]{0,15}$/.test(val), 'Invalid phone number'),
 
   company: z
     .string()
@@ -71,10 +56,7 @@ export const quoteFormSchema = z.object({
   recipientEmail: z
     .string()
     .optional()
-    .refine(
-      val => !val || z.string().email().safeParse(val).success,
-      'Invalid recipient email'
-    ),
+    .refine(val => !val || z.string().email().safeParse(val).success, 'Invalid recipient email'),
 
   shippingAddress: z
     .object({
@@ -123,10 +105,7 @@ export const quoteFormSchema = z.object({
 });
 
 export const newsletterSchema = z.object({
-  email: z
-    .string()
-    .email('Invalid email address')
-    .max(254, 'Email is too long'),
+  email: z.string().email('Invalid email address').max(254, 'Email is too long'),
 
   name: z
     .string()
@@ -147,10 +126,7 @@ export const searchSchema = z.object({
     .string()
     .min(1, 'Search query is required')
     .max(100, 'Search query is too long')
-    .refine(
-      val => !/<script/i.test(val),
-      'Search query contains invalid content'
-    ),
+    .refine(val => !/<script/i.test(val), 'Search query contains invalid content'),
 
   category: z.string().optional(),
   limit: z.number().int().min(1).max(100).default(20),

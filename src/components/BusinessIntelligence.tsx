@@ -1,23 +1,16 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import { useAnalytics } from './Analytics';
 
 // Business Intelligence tracking for ZIVAH International
 export function useBusinessTracking() {
-  const {
-    trackEvent,
-    trackConversion,
-    trackProductView,
-    trackQuoteRequest,
-    trackFormSubmission,
-  } = useAnalytics();
+  const { trackEvent, trackConversion, trackProductView, trackQuoteRequest, trackFormSubmission } =
+    useAnalytics();
 
   // Track business-specific events
-  const trackBusinessEvent = (
-    eventName: string,
-    properties?: Record<string, any>
-  ) => {
+  const trackBusinessEvent = (eventName: string, properties?: Record<string, any>) => {
     trackEvent(eventName, 'business', JSON.stringify(properties));
   };
 
@@ -73,18 +66,12 @@ export function useBusinessTracking() {
       product_count: quoteData.products.length,
       has_company: !!quoteData.contactInfo.company,
       destination_country: quoteData.deliveryInfo?.country,
-      total_quantity: quoteData.products.reduce(
-        (sum, p) => sum + p.quantity,
-        0
-      ),
+      total_quantity: quoteData.products.reduce((sum, p) => sum + p.quantity, 0),
     });
   };
 
   // Track document downloads
-  const trackDocumentDownload = (
-    documentName: string,
-    documentType: string
-  ) => {
+  const trackDocumentDownload = (documentName: string, documentType: string) => {
     trackEvent('download', 'engagement', `${documentType}:${documentName}`);
   };
 
@@ -154,8 +141,7 @@ export default function BusinessIntelligence() {
     let maxScrollDepth = 0;
     const handleScroll = () => {
       const scrollTop = window.pageYOffset;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = Math.round((scrollTop / docHeight) * 100);
 
       if (scrollPercent > maxScrollDepth) {

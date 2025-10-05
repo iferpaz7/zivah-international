@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 // This would typically come from your database/API
@@ -13,8 +13,7 @@ const getProduct = async (slug: string) => {
       slug: 'camaron-vannamei',
       description:
         'Camarón Vannamei de la más alta calidad, cultivado en aguas controladas de Ecuador. Con certificaciones internacionales BAP, HACCP y GlobalGAP.',
-      shortDescription:
-        'Camarón blanco ecuatoriano premium con certificación internacional',
+      shortDescription: 'Camarón blanco ecuatoriano premium con certificación internacional',
       specifications: {
         tamaño: '16/20, 21/25, 26/30, 31/35 por libra',
         presentación: 'Congelado IQF, cabeza on/off',
@@ -87,9 +86,7 @@ interface ProductPageProps {
   }>;
 }
 
-export async function generateMetadata({
-  params,
-}: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
 
@@ -128,7 +125,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <li>
               <Link
                 href='/'
-                className='hover:text-green-600 dark:hover:text-green-400'
+                className='hover:text-accent dark:hover:text-accent'
               >
                 Inicio
               </Link>
@@ -137,7 +134,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <li>
               <Link
                 href='/#productos'
-                className='hover:text-green-600 dark:hover:text-green-400'
+                className='hover:text-accent dark:hover:text-accent'
               >
                 Productos
               </Link>
@@ -146,15 +143,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <li>
               <Link
                 href={`/#${product.category.slug}`}
-                className='hover:text-green-600 dark:hover:text-green-400'
+                className='hover:text-accent dark:hover:text-accent'
               >
                 {product.category.name}
               </Link>
             </li>
             <li>/</li>
-            <li className='text-gray-900 dark:text-white font-medium'>
-              {product.name}
-            </li>
+            <li className='text-gray-900 dark:text-white font-medium'>{product.name}</li>
           </ol>
         </nav>
 
@@ -173,9 +168,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     className='w-full h-full object-cover'
                   />
                 ) : (
-                  <div className='w-full h-full flex items-center justify-center text-6xl'>
-                    📦
-                  </div>
+                  <div className='w-full h-full flex items-center justify-center text-6xl'>📦</div>
                 )}
               </div>
 
@@ -185,7 +178,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {product.certifications.map((cert, index) => (
                     <span
                       key={index}
-                      className='px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 text-sm font-medium rounded-full'
+                      className='px-3 py-1 bg-accent/10 dark:bg-accent/20 text-gray-800 dark:text-accent text-sm font-medium rounded-full'
                     >
                       {cert}
                     </span>
@@ -208,35 +201,28 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {/* Price */}
               <div className='bg-gray-50 dark:bg-gray-700 p-4 rounded-lg'>
                 <div className='flex items-center justify-between mb-2'>
-                  <span className='text-sm text-gray-600 dark:text-gray-400'>
-                    Precio base:
-                  </span>
-                  <span className='text-2xl font-bold text-green-600 dark:text-green-400'>
+                  <span className='text-sm text-gray-600 dark:text-gray-400'>Precio base:</span>
+                  <span className='text-2xl font-bold text-accent dark:text-accent'>
                     ${product.basePrice.toFixed(2)} {product.priceUnit}
                   </span>
                 </div>
                 <div className='flex items-center justify-between text-sm'>
-                  <span className='text-gray-600 dark:text-gray-400'>
-                    Cantidad mínima:
-                  </span>
+                  <span className='text-gray-600 dark:text-gray-400'>Cantidad mínima:</span>
                   <span className='font-medium'>
                     {product.minOrderQty} {product.priceUnit.split('/')[1]}
                   </span>
                 </div>
                 <div className='flex items-center justify-between text-sm'>
-                  <span className='text-gray-600 dark:text-gray-400'>
-                    Stock disponible:
-                  </span>
+                  <span className='text-gray-600 dark:text-gray-400'>Stock disponible:</span>
                   <span className='font-medium'>
-                    {product.stockQuantity.toLocaleString()}{' '}
-                    {product.priceUnit.split('/')[1]}
+                    {product.stockQuantity.toLocaleString()} {product.priceUnit.split('/')[1]}
                   </span>
                 </div>
               </div>
 
               {/* Quick Actions */}
               <div className='flex gap-4'>
-                <button className='flex-1 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors'>
+                <button className='flex-1 bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-lg font-medium transition-colors'>
                   Solicitar Cotización
                 </button>
                 <button className='px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'>
@@ -247,20 +233,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {/* Origin & Season */}
               <div className='grid grid-cols-2 gap-4 text-sm'>
                 <div>
-                  <span className='font-medium text-gray-900 dark:text-white'>
-                    Origen:
-                  </span>
-                  <p className='text-gray-600 dark:text-gray-400'>
-                    {product.origin}
-                  </p>
+                  <span className='font-medium text-gray-900 dark:text-white'>Origen:</span>
+                  <p className='text-gray-600 dark:text-gray-400'>{product.origin}</p>
                 </div>
                 <div>
-                  <span className='font-medium text-gray-900 dark:text-white'>
-                    Temporada:
-                  </span>
-                  <p className='text-gray-600 dark:text-gray-400'>
-                    {product.harvestSeason}
-                  </p>
+                  <span className='font-medium text-gray-900 dark:text-white'>Temporada:</span>
+                  <p className='text-gray-600 dark:text-gray-400'>{product.harvestSeason}</p>
                 </div>
               </div>
             </div>
@@ -288,21 +266,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   Especificaciones Técnicas
                 </h2>
                 <div className='grid md:grid-cols-2 gap-4'>
-                  {Object.entries(product.specifications).map(
-                    ([key, value]) => (
-                      <div
-                        key={key}
-                        className='flex justify-between py-2 border-b border-gray-200 dark:border-gray-700'
-                      >
-                        <span className='font-medium text-gray-900 dark:text-white capitalize'>
-                          {key.replace(/([A-Z])/g, ' $1').trim()}:
-                        </span>
-                        <span className='text-gray-600 dark:text-gray-400'>
-                          {value}
-                        </span>
-                      </div>
-                    )
-                  )}
+                  {Object.entries(product.specifications).map(([key, value]) => (
+                    <div
+                      key={key}
+                      className='flex justify-between py-2 border-b border-gray-200 dark:border-gray-700'
+                    >
+                      <span className='font-medium text-gray-900 dark:text-white capitalize'>
+                        {key.replace(/([A-Z])/g, ' $1').trim()}:
+                      </span>
+                      <span className='text-gray-600 dark:text-gray-400'>{value}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -314,21 +288,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   Información Nutricional
                 </h2>
                 <div className='grid md:grid-cols-2 gap-4'>
-                  {Object.entries(product.nutritionalInfo).map(
-                    ([key, value]) => (
-                      <div
-                        key={key}
-                        className='flex justify-between py-2 border-b border-gray-200 dark:border-gray-700'
-                      >
-                        <span className='font-medium text-gray-900 dark:text-white capitalize'>
-                          {key.replace(/([A-Z])/g, ' $1').trim()}:
-                        </span>
-                        <span className='text-gray-600 dark:text-gray-400'>
-                          {value}
-                        </span>
-                      </div>
-                    )
-                  )}
+                  {Object.entries(product.nutritionalInfo).map(([key, value]) => (
+                    <div
+                      key={key}
+                      className='flex justify-between py-2 border-b border-gray-200 dark:border-gray-700'
+                    >
+                      <span className='font-medium text-gray-900 dark:text-white capitalize'>
+                        {key.replace(/([A-Z])/g, ' $1').trim()}:
+                      </span>
+                      <span className='text-gray-600 dark:text-gray-400'>{value}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -366,7 +336,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
                 <button
                   type='submit'
-                  className='w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors'
+                  className='w-full bg-accent hover:bg-accent/90 text-white px-4 py-2 rounded-lg font-medium transition-colors'
                 >
                   Solicitar Cotización
                 </button>
@@ -386,37 +356,31 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <div className='font-medium text-gray-900 dark:text-white'>
                     Café Arábica Premium
                   </div>
-                  <div className='text-sm text-gray-600 dark:text-gray-400'>
-                    Desde Ecuador
-                  </div>
+                  <div className='text-sm text-gray-600 dark:text-gray-400'>Desde Ecuador</div>
                 </Link>
                 <Link
                   href='/products/camaron-vannamei'
                   className='block p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'
                 >
-                  <div className='font-medium text-gray-900 dark:text-white'>
-                    Camarón Vannamei
-                  </div>
-                  <div className='text-sm text-gray-600 dark:text-gray-400'>
-                    Certificado BAP
-                  </div>
+                  <div className='font-medium text-gray-900 dark:text-white'>Camarón Vannamei</div>
+                  <div className='text-sm text-gray-600 dark:text-gray-400'>Certificado BAP</div>
                 </Link>
               </div>
             </div>
 
             {/* Contact Info */}
-            <div className='bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6'>
-              <h3 className='text-lg font-semibold text-green-900 dark:text-green-100 mb-4'>
+            <div className='bg-accent/5 dark:bg-accent/10 border border-accent/20 dark:border-accent/30 rounded-lg p-6'>
+              <h3 className='text-lg font-semibold text-accent dark:text-accent mb-4'>
                 ¿Necesita más información?
               </h3>
-              <div className='space-y-2 text-sm text-green-800 dark:text-green-200'>
+              <div className='space-y-2 text-sm text-accent dark:text-accent'>
                 <p>📧 sales@zivahinternational.com</p>
                 <p>📱 +1 (305) XXX-XXXX</p>
                 <p>🏢 Samborondón, Guayas, Ecuador</p>
               </div>
               <Link
                 href='/#contacto'
-                className='inline-block mt-4 text-green-600 dark:text-green-400 hover:underline font-medium'
+                className='inline-block mt-4 text-accent dark:text-accent hover:underline font-medium'
               >
                 Contactar ahora →
               </Link>
@@ -428,7 +392,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div className='text-center mt-12'>
           <Link
             href='/#todos-productos'
-            className='inline-flex items-center text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors'
+            className='inline-flex items-center text-accent dark:text-accent hover:text-accent/90 dark:hover:text-accent/90 transition-colors'
           >
             ← Ver todos los productos
           </Link>

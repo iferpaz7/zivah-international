@@ -1,11 +1,6 @@
 import { z } from 'zod';
-import {
-  QuoteStatus,
-  QuotePriority,
-  UserRole,
-  SettingType,
-  CommunicationType,
-} from '@/types';
+
+import { CommunicationType, QuotePriority, QuoteStatus, SettingType, UserRole } from '@/types';
 
 // ============================================================================
 // PRODUCT VALIDATION SCHEMAS
@@ -45,16 +40,8 @@ export const createProductSchema = z.object({
   specifications: z.record(z.string(), z.any()).optional(),
   price: z.number().positive('El precio debe ser mayor a 0').optional(),
   priceUnit: z.string().max(20).optional(),
-  stockQuantity: z
-    .number()
-    .int()
-    .min(0, 'El stock no puede ser negativo')
-    .default(0),
-  minOrderQty: z
-    .number()
-    .int()
-    .positive('La cantidad mínima debe ser mayor a 0')
-    .default(1),
+  stockQuantity: z.number().int().min(0, 'El stock no puede ser negativo').default(0),
+  minOrderQty: z.number().int().positive('La cantidad mínima debe ser mayor a 0').default(1),
   imageUrl: z.string().url('Debe ser una URL válida').optional(),
   imageGallery: z.array(z.string().url()).optional(),
   origin: z.string().max(100).default('Ecuador'),
@@ -103,10 +90,7 @@ export const addressSchema = z.object({
 export const quoteItemSchema = z.object({
   productId: z.number().int().positive('Debe seleccionar un producto válido'),
   quantity: z.number().int().positive('La cantidad debe ser mayor a 0'),
-  unitPrice: z
-    .number()
-    .positive('El precio unitario debe ser mayor a 0')
-    .optional(),
+  unitPrice: z.number().positive('El precio unitario debe ser mayor a 0').optional(),
   notes: z.string().optional(),
   specifications: z.record(z.string(), z.any()).optional(),
 });
@@ -125,15 +109,8 @@ export const createQuoteSchema = z
       .max(20, 'El teléfono no puede exceder 20 caracteres')
       .optional(),
     company: z.string().max(255).optional(),
-    countryId: z
-      .number()
-      .int()
-      .positive('Debe seleccionar un país válido')
-      .optional(),
-    recipientEmail: z
-      .string()
-      .email('Debe ser un email válido para envío')
-      .optional(),
+    countryId: z.number().int().positive('Debe seleccionar un país válido').optional(),
+    recipientEmail: z.string().email('Debe ser un email válido para envío').optional(),
     shippingAddress: addressSchema.optional(),
     message: z.string().optional(),
     items: z.array(quoteItemSchema).min(1, 'Debe incluir al menos un producto'),
@@ -210,10 +187,7 @@ export const createUserSchema = z.object({
     .string()
     .min(3, 'El usuario debe tener al menos 3 caracteres')
     .max(50, 'El usuario no puede exceder 50 caracteres')
-    .regex(
-      /^[a-zA-Z0-9_]+$/,
-      'Solo se permiten letras, números y guiones bajos'
-    ),
+    .regex(/^[a-zA-Z0-9_]+$/, 'Solo se permiten letras, números y guiones bajos'),
   email: z.string().email('Debe ser un email válido'),
   password: z
     .string()
@@ -233,9 +207,7 @@ export const createUserSchema = z.object({
   department: z.string().max(100).optional(),
 });
 
-export const updateUserSchema = createUserSchema
-  .partial()
-  .omit({ password: true });
+export const updateUserSchema = createUserSchema.partial().omit({ password: true });
 
 export const changePasswordSchema = z
   .object({
@@ -306,10 +278,7 @@ export const createSiteSettingSchema = z.object({
     .string()
     .min(1, 'La clave es requerida')
     .max(100, 'La clave no puede exceder 100 caracteres')
-    .regex(
-      /^[a-z0-9_]+$/,
-      'Solo se permiten letras minúsculas, números y guiones bajos'
-    ),
+    .regex(/^[a-z0-9_]+$/, 'Solo se permiten letras minúsculas, números y guiones bajos'),
   value: z.string().optional(),
   type: z.nativeEnum(SettingType),
   category: z.string().max(50).optional(),
@@ -318,9 +287,7 @@ export const createSiteSettingSchema = z.object({
   validationRules: z.record(z.string(), z.any()).optional(),
 });
 
-export const updateSiteSettingSchema = createSiteSettingSchema
-  .partial()
-  .omit({ key: true });
+export const updateSiteSettingSchema = createSiteSettingSchema.partial().omit({ key: true });
 
 // ============================================================================
 // PAGE MANAGEMENT SCHEMAS
@@ -335,10 +302,7 @@ export const createPageSchema = z.object({
     .string()
     .min(1, 'El slug es requerido')
     .max(255, 'El slug no puede exceder 255 caracteres')
-    .regex(
-      /^[a-z0-9\-]+$/,
-      'Solo se permiten letras minúsculas, números y guiones'
-    ),
+    .regex(/^[a-z0-9\-]+$/, 'Solo se permiten letras minúsculas, números y guiones'),
   content: z.string().min(1, 'El contenido es requerido'),
   excerpt: z.string().max(500).optional(),
   metaTitle: z.string().max(255).optional(),
@@ -381,10 +345,7 @@ export const paginationSchema = z.object({
 
 export const searchSchema = z
   .object({
-    query: z
-      .string()
-      .min(1, 'La búsqueda debe tener al menos 1 carácter')
-      .optional(),
+    query: z.string().min(1, 'La búsqueda debe tener al menos 1 carácter').optional(),
     filters: z.record(z.string(), z.any()).optional(),
   })
   .merge(paginationSchema);
@@ -398,12 +359,7 @@ export const fileUploadSchema = z.object({
   originalname: z.string(),
   encoding: z.string(),
   mimetype: z.string().refine(type => {
-    const allowedTypes = [
-      'image/jpeg',
-      'image/png',
-      'image/webp',
-      'image/svg+xml',
-    ];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
     return allowedTypes.includes(type);
   }, 'Solo se permiten archivos de imagen (JPEG, PNG, WebP, SVG)'),
   size: z.number().max(10 * 1024 * 1024, 'El archivo no puede exceder 10MB'),
@@ -445,9 +401,7 @@ export type CreateUserInput = z.infer<typeof createUserSchema>;
 export type UpdateUserInput = z.infer<typeof updateUserSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type ContactSubmissionInput = z.infer<typeof contactSubmissionSchema>;
-export type NewsletterSubscriptionInput = z.infer<
-  typeof newsletterSubscriptionSchema
->;
+export type NewsletterSubscriptionInput = z.infer<typeof newsletterSubscriptionSchema>;
 export type CreateSiteSettingInput = z.infer<typeof createSiteSettingSchema>;
 export type UpdateSiteSettingInput = z.infer<typeof updateSiteSettingSchema>;
 export type CreatePageInput = z.infer<typeof createPageSchema>;

@@ -345,23 +345,23 @@ export default config;
 /* TailwindCSS v4 Component Classes */
 @layer components {
   .btn-primary {
-    @apply bg-zivah-green hover:bg-zivah-dark-green text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl;
+    @apply bg-zivah-green hover:bg-zivah-dark-green rounded-lg px-6 py-3 font-semibold text-white shadow-lg transition-colors duration-200 hover:shadow-xl;
   }
 
   .btn-secondary {
-    @apply bg-zivah-coral hover:bg-zivah-light-coral text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200;
+    @apply bg-zivah-coral hover:bg-zivah-light-coral rounded-lg px-6 py-3 font-semibold text-white transition-colors duration-200;
   }
 
   .card-zivah {
-    @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100;
+    @apply rounded-xl border border-gray-100 bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl;
   }
 
   .gradient-hero {
-    @apply bg-gradient-to-br from-zivah-coral to-zivah-green;
+    @apply from-zivah-coral to-zivah-green bg-gradient-to-br;
   }
 
   .gradient-ocean {
-    @apply bg-gradient-to-br from-zivah-navy to-zivah-blue;
+    @apply from-zivah-navy to-zivah-blue bg-gradient-to-br;
   }
 }
 
@@ -496,6 +496,11 @@ export class QuoteService {
 #### Next.js API Routes
 
 ```typescript
+// app/api/auth/[...nextauth]/route.ts
+import NextAuth from 'next-auth';
+
+import { authOptions } from '@/lib/auth';
+
 // app/api/products/route.ts
 export async function GET(request: Request): Promise<Response>;
 export async function POST(request: Request): Promise<Response>;
@@ -532,9 +537,6 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ): Promise<Response>;
 
-// app/api/auth/[...nextauth]/route.ts
-import NextAuth from 'next-auth';
-import { authOptions } from '@/lib/auth';
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
 
@@ -575,10 +577,7 @@ export class EmailService {
 
 // lib/services/auth.service.ts
 export class AuthService {
-  async verifyCredentials(
-    username: string,
-    password: string
-  ): Promise<User | null>;
+  async verifyCredentials(username: string, password: string): Promise<User | null>;
   async hashPassword(password: string): Promise<string>;
   async comparePassword(password: string, hash: string): Promise<boolean>;
   async createUser(data: CreateUserInput): Promise<User>;
@@ -726,8 +725,7 @@ export const metadata: Metadata = {
   // Migrated from existing meta tags
   title: {
     template: '%s | ZIVAH International S.A.',
-    default:
-      'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    default: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
   },
   description:
     'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas y oficina de distribución en Miami.',
@@ -761,8 +759,7 @@ export const metadata: Metadata = {
     alternateLocale: 'en_US',
     url: 'https://zivahinternational.com',
     siteName: 'ZIVAH International S.A.',
-    title:
-      'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
     description:
       'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
     images: [
@@ -776,8 +773,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title:
-      'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
     description:
       'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo.',
     images: ['/images/og/zivah-twitter-card.jpg'],
@@ -1013,10 +1009,7 @@ export function createErrorResponse(error: AppError): ApiErrorResponse {
   };
 }
 
-export function createSuccessResponse<T>(
-  data: T,
-  message?: string
-): ApiSuccessResponse<T> {
+export function createSuccessResponse<T>(data: T, message?: string): ApiSuccessResponse<T> {
   return {
     error: false,
     data,
@@ -1271,6 +1264,10 @@ module.exports = nextConfig;
 
 ```typescript
 // lib/logger.ts
+// Integration with Vercel Analytics
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 import { Logger } from '@/lib/logger';
 
 export class AppLogger {
@@ -1279,10 +1276,6 @@ export class AppLogger {
   static error(message: string, context?: Record<string, any>): void;
   static debug(message: string, context?: Record<string, any>): void;
 }
-
-// Integration with Vercel Analytics
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 ```
 
 ### Health Checks and Monitoring

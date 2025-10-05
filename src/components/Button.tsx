@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { cn } from '@/lib/utils';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,22 +9,16 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { className, variant = 'primary', size = 'md', children, ...props },
-    ref
-  ) => {
+  ({ className, variant = 'primary', size = 'md', children, ...props }, ref) => {
     const baseStyles =
       'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
 
     const variants = {
-      primary:
-        'bg-zivah-green text-white hover:bg-zivah-dark-green focus-visible:ring-zivah-green',
-      secondary:
-        'bg-zivah-lime text-white hover:bg-zivah-green focus-visible:ring-zivah-lime',
+      primary: 'bg-accent text-white hover:bg-dark-accent focus-visible:ring-accent',
+      secondary: 'bg-primary text-white hover:bg-secondary focus-visible:ring-primary',
       outline:
-        'border border-zivah-green text-zivah-green hover:bg-zivah-green hover:text-white focus-visible:ring-zivah-green',
-      ghost:
-        'text-zivah-green hover:bg-zivah-green/10 focus-visible:ring-zivah-green',
+        'border border-accent text-accent hover:bg-accent hover:text-white focus-visible:ring-accent',
+      ghost: 'text-accent hover:bg-accent/10 focus-visible:ring-accent',
     };
 
     const sizes = {

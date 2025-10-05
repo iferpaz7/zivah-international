@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { cn } from '@/lib/utils';
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -21,10 +22,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, children, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn(
-        'rounded-lg border border-gray-200 bg-white shadow-sm',
-        className
-      )}
+      className={cn('rounded-lg border border-gray-200 bg-white shadow-sm', className)}
       {...props}
     >
       {children}
@@ -46,7 +44,11 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
 
 const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
   ({ className, children, ...props }, ref) => (
-    <div ref={ref} className={cn('p-6 pt-0', className)} {...props}>
+    <div
+      ref={ref}
+      className={cn('p-6 pt-0', className)}
+      {...props}
+    >
       {children}
     </div>
   )

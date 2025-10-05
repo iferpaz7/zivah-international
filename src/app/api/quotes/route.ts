@@ -1,3 +1,5 @@
+import { NextRequest, NextResponse } from 'next/server';
+
 import { emailService } from '@/lib/email';
 import { createApiResponse, handleApiError } from '@/lib/errors';
 import { logger } from '@/lib/logger';
@@ -10,17 +12,13 @@ import {
   sanitizeEmail,
   sanitizeString,
 } from '@/lib/validation';
-import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
     const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = Math.min(
-      parseInt(searchParams.get('pageSize') || '10'),
-      100
-    );
+    const pageSize = Math.min(parseInt(searchParams.get('pageSize') || '10'), 100);
     const status = searchParams.get('status');
     const userId = searchParams.get('userId');
 
@@ -98,17 +96,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error: true,
-          message:
-            rateLimitCheck.reason ||
-            'Demasiadas solicitudes. Intente nuevamente más tarde.',
+          message: rateLimitCheck.reason || 'Demasiadas solicitudes. Intente nuevamente más tarde.',
           timestamp: new Date().toISOString(),
         },
         {
           status: 429,
           headers: {
-            'Retry-After': Math.ceil(
-              (rateLimitCheck.waitTime || 30000) / 1000
-            ).toString(),
+            'Retry-After': Math.ceil((rateLimitCheck.waitTime || 30000) / 1000).toString(),
           },
         }
       );
@@ -120,14 +114,10 @@ export async function POST(request: NextRequest) {
     const sanitizedBody = {
       customerName: sanitizeString(body.customerName || ''),
       customerEmail: sanitizeEmail(body.customerEmail || ''),
-      customerPhone: body.customerPhone
-        ? sanitizeString(body.customerPhone)
-        : undefined,
+      customerPhone: body.customerPhone ? sanitizeString(body.customerPhone) : undefined,
       company: body.company ? sanitizeString(body.company) : undefined,
       countryId: body.countryId,
-      recipientEmail: body.recipientEmail
-        ? sanitizeEmail(body.recipientEmail)
-        : undefined,
+      recipientEmail: body.recipientEmail ? sanitizeEmail(body.recipientEmail) : undefined,
       shippingAddress: body.shippingAddress,
       message: body.message ? sanitizeString(body.message) : undefined,
       items:
@@ -148,8 +138,7 @@ export async function POST(request: NextRequest) {
       sanitizedBody.message,
     ];
     if (sanitizedBody.company) textFields.push(sanitizedBody.company);
-    if (sanitizedBody.recipientEmail)
-      textFields.push(sanitizedBody.recipientEmail);
+    if (sanitizedBody.recipientEmail) textFields.push(sanitizedBody.recipientEmail);
     sanitizedBody.items.forEach((item: any) => {
       if (item.notes) textFields.push(item.notes);
     });
@@ -234,9 +223,7 @@ export async function POST(request: NextRequest) {
           country: (quote as any).countryRef?.name,
           currency: 'USD', // TODO: Fetch actual currency from currencyId
           currencyId: quote.currencyId,
-          totalAmount: quote.totalAmount
-            ? Number(quote.totalAmount)
-            : undefined,
+          totalAmount: quote.totalAmount ? Number(quote.totalAmount) : undefined,
           items: (quote as any).items.map((item: any) => ({
             productName: item.product?.name || 'Producto',
             quantity: item.quantity,
@@ -247,10 +234,7 @@ export async function POST(request: NextRequest) {
           quoteNumber: quote.quoteNumber,
         };
 
-        emailSent = await emailService.sendQuoteEmail(
-          emailData,
-          validatedData.recipientEmail
-        );
+        emailSent = await emailService.sendQuoteEmail(emailData, validatedData.recipientEmail);
 
         // Update email status
         await prisma.quote.update({

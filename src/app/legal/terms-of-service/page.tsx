@@ -5,8 +5,7 @@ export const metadata: Metadata = {
   title: 'Términos y Condiciones | ZIVAH International S.A.',
   description:
     'Términos y condiciones de uso del sitio web de ZIVAH International S.A. - Condiciones para el uso de nuestros servicios.',
-  keywords:
-    'términos condiciones, términos uso, condiciones servicio, ZIVAH International',
+  keywords: 'términos condiciones, términos uso, condiciones servicio, ZIVAH International',
   robots: {
     index: true,
     follow: true,
@@ -50,10 +49,9 @@ export default function TermsOfServicePage() {
               1. Aceptación de los Términos
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-              Al acceder y utilizar el sitio web de ZIVAH International S.A.
-              (&quot;nosotros&quot;, &quot;nuestro&quot; o &quot;ZIVAH&quot;),
-              usted acepta estar sujeto a estos Términos y Condiciones de Uso.
-              Si no está de acuerdo con estos términos, no debe utilizar este
+              Al acceder y utilizar el sitio web de ZIVAH International S.A. (&quot;nosotros&quot;,
+              &quot;nuestro&quot; o &quot;ZIVAH&quot;), usted acepta estar sujeto a estos Términos y
+              Condiciones de Uso. Si no está de acuerdo con estos términos, no debe utilizar este
               sitio web ni nuestros servicios.
             </p>
           </section>
@@ -65,22 +63,20 @@ export default function TermsOfServicePage() {
             </h2>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
               <li>
-                <strong>&quot;Sitio Web&quot;:</strong> El sitio web de ZIVAH
-                International S.A. ubicado en zivahinternational.com
+                <strong>&quot;Sitio Web&quot;:</strong> El sitio web de ZIVAH International S.A.
+                ubicado en zivahinternational.com
               </li>
               <li>
-                <strong>&quot;Servicios&quot;:</strong> Todos los servicios
-                ofrecidos por ZIVAH International S.A., incluyendo cotizaciones,
-                información de productos, y soporte
+                <strong>&quot;Servicios&quot;:</strong> Todos los servicios ofrecidos por ZIVAH
+                International S.A., incluyendo cotizaciones, información de productos, y soporte
               </li>
               <li>
-                <strong>&quot;Usuario&quot;:</strong> Cualquier persona que
-                accede o utiliza el Sitio Web
-              </li>
-              <li>
-                <strong>&quot;Contenido&quot;:</strong> Toda la información,
-                texto, gráficos, imágenes, y otros materiales disponibles en el
+                <strong>&quot;Usuario&quot;:</strong> Cualquier persona que accede o utiliza el
                 Sitio Web
+              </li>
+              <li>
+                <strong>&quot;Contenido&quot;:</strong> Toda la información, texto, gráficos,
+                imágenes, y otros materiales disponibles en el Sitio Web
               </li>
             </ul>
           </section>
@@ -95,8 +91,8 @@ export default function TermsOfServicePage() {
               3.1 Uso Permitido
             </h3>
             <p className='text-gray-700 dark:text-gray-300 mb-4'>
-              Usted puede utilizar el Sitio Web únicamente para fines legales y
-              de acuerdo con estos términos. Está autorizado para:
+              Usted puede utilizar el Sitio Web únicamente para fines legales y de acuerdo con estos
+              términos. Está autorizado para:
             </p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 mb-4'>
               <li>Acceder y navegar por el contenido informativo</li>
@@ -108,9 +104,7 @@ export default function TermsOfServicePage() {
             <h3 className='text-xl font-medium text-gray-900 dark:text-white mb-3'>
               3.2 Uso Prohibido
             </h3>
-            <p className='text-gray-700 dark:text-gray-300 mb-4'>
-              Queda estrictamente prohibido:
-            </p>
+            <p className='text-gray-700 dark:text-gray-300 mb-4'>Queda estrictamente prohibido:</p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
               <li>Utilizar el sitio web para fines ilegales o fraudulentos</li>
               <li>Intentar acceder a áreas restringidas sin autorización</li>
@@ -131,27 +125,26 @@ export default function TermsOfServicePage() {
               4.1 Información de Productos
             </h3>
             <p className='text-gray-700 dark:text-gray-300 mb-4'>
-              Toda la información sobre productos en nuestro sitio web es de
-              carácter general e informativo. Las especificaciones, precios y
-              disponibilidad pueden cambiar sin previo aviso.
+              Toda la información sobre productos en nuestro sitio web es de carácter general e
+              informativo. Las especificaciones, precios y disponibilidad pueden cambiar sin previo
+              aviso.
             </p>
 
             <h3 className='text-xl font-medium text-gray-900 dark:text-white mb-3'>
               4.2 Cotizaciones
             </h3>
             <p className='text-gray-700 dark:text-gray-300 mb-4'>
-              Las cotizaciones proporcionadas son válidas por el período
-              especificado en cada caso. No constituyen una oferta firme hasta
-              que sean confirmadas por escrito por ZIVAH International S.A.
+              Las cotizaciones proporcionadas son válidas por el período especificado en cada caso.
+              No constituyen una oferta firme hasta que sean confirmadas por escrito por ZIVAH
+              International S.A.
             </p>
 
             <h3 className='text-xl font-medium text-gray-900 dark:text-white mb-3'>
               4.3 Disponibilidad
             </h3>
             <p className='text-gray-700 dark:text-gray-300'>
-              Nos esforzamos por mantener la precisión de la información de
-              productos, pero no garantizamos la disponibilidad de todos los
-              productos en todo momento.
+              Nos esforzamos por mantener la precisión de la información de productos, pero no
+              garantizamos la disponibilidad de todos los productos en todo momento.
             </p>
           </section>
 
@@ -161,15 +154,13 @@ export default function TermsOfServicePage() {
               5. Propiedad Intelectual
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-              Todo el contenido del Sitio Web, incluyendo pero no limitado a
-              texto, gráficos, logotipos, imágenes, software y código fuente,
-              está protegido por leyes de propiedad intelectual y es propiedad
-              de ZIVAH International S.A. o sus licenciantes.
+              Todo el contenido del Sitio Web, incluyendo pero no limitado a texto, gráficos,
+              logotipos, imágenes, software y código fuente, está protegido por leyes de propiedad
+              intelectual y es propiedad de ZIVAH International S.A. o sus licenciantes.
             </p>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-              Queda prohibida la reproducción, distribución, modificación o
-              creación de obras derivadas sin el consentimiento expreso y por
-              escrito de ZIVAH International S.A.
+              Queda prohibida la reproducción, distribución, modificación o creación de obras
+              derivadas sin el consentimiento expreso y por escrito de ZIVAH International S.A.
             </p>
           </section>
 
@@ -182,7 +173,7 @@ export default function TermsOfServicePage() {
               El uso de nuestros servicios está sujeto a nuestra{' '}
               <Link
                 href='/legal/privacy-policy'
-                className='text-green-600 dark:text-green-400 hover:underline'
+                className='text-accent hover:underline'
               >
                 Política de Privacidad
               </Link>
@@ -200,29 +191,27 @@ export default function TermsOfServicePage() {
               7.1 Información General
             </h3>
             <p className='text-gray-700 dark:text-gray-300 mb-4'>
-              La información proporcionada en este sitio web es de carácter
-              general y no constituye asesoramiento profesional específico.
-              Siempre debe consultar con expertos calificados para decisiones
-              comerciales.
+              La información proporcionada en este sitio web es de carácter general y no constituye
+              asesoramiento profesional específico. Siempre debe consultar con expertos calificados
+              para decisiones comerciales.
             </p>
 
             <h3 className='text-xl font-medium text-gray-900 dark:text-white mb-3'>
               7.2 No Garantías
             </h3>
             <p className='text-gray-700 dark:text-gray-300 mb-4'>
-              El sitio web y los servicios se proporcionan &quot;tal cual&quot;
-              sin garantías de ningún tipo, expresas o implícitas, incluyendo
-              pero no limitado a garantías de comerciabilidad, idoneidad para un
-              propósito particular, o no infracción.
+              El sitio web y los servicios se proporcionan &quot;tal cual&quot; sin garantías de
+              ningún tipo, expresas o implícitas, incluyendo pero no limitado a garantías de
+              comerciabilidad, idoneidad para un propósito particular, o no infracción.
             </p>
 
             <h3 className='text-xl font-medium text-gray-900 dark:text-white mb-3'>
               7.3 Limitación de Responsabilidad
             </h3>
             <p className='text-gray-700 dark:text-gray-300'>
-              ZIVAH International S.A. no será responsable por daños directos,
-              indirectos, incidentales, especiales o consecuentes que resulten
-              del uso o la imposibilidad de usar nuestros servicios.
+              ZIVAH International S.A. no será responsable por daños directos, indirectos,
+              incidentales, especiales o consecuentes que resulten del uso o la imposibilidad de
+              usar nuestros servicios.
             </p>
           </section>
 
@@ -232,11 +221,10 @@ export default function TermsOfServicePage() {
               8. Terminación
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-              Podemos terminar o suspender su acceso al sitio web
-              inmediatamente, sin previo aviso, por cualquier motivo, incluyendo
-              pero no limitado a la violación de estos términos. Tras la
-              terminación, cesarán todos los derechos y licencias otorgados bajo
-              estos términos.
+              Podemos terminar o suspender su acceso al sitio web inmediatamente, sin previo aviso,
+              por cualquier motivo, incluyendo pero no limitado a la violación de estos términos.
+              Tras la terminación, cesarán todos los derechos y licencias otorgados bajo estos
+              términos.
             </p>
           </section>
 
@@ -246,10 +234,9 @@ export default function TermsOfServicePage() {
               9. Ley Aplicable y Jurisdicción
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-              Estos términos se regirán e interpretarán de acuerdo con las leyes
-              de la República del Ecuador. Cualquier disputa que surja de estos
-              términos estará sujeta a la jurisdicción exclusiva de los
-              tribunales competentes de Guayas, Ecuador.
+              Estos términos se regirán e interpretarán de acuerdo con las leyes de la República del
+              Ecuador. Cualquier disputa que surja de estos términos estará sujeta a la jurisdicción
+              exclusiva de los tribunales competentes de Guayas, Ecuador.
             </p>
           </section>
 
@@ -259,11 +246,10 @@ export default function TermsOfServicePage() {
               10. Modificaciones
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-              Nos reservamos el derecho de modificar estos términos en cualquier
-              momento. Los cambios entrarán en vigor inmediatamente después de
-              su publicación en el sitio web. El uso continuado del sitio web
-              después de dichos cambios constituye su aceptación de los términos
-              modificados.
+              Nos reservamos el derecho de modificar estos términos en cualquier momento. Los
+              cambios entrarán en vigor inmediatamente después de su publicación en el sitio web. El
+              uso continuado del sitio web después de dichos cambios constituye su aceptación de los
+              términos modificados.
             </p>
           </section>
 
@@ -273,8 +259,7 @@ export default function TermsOfServicePage() {
               11. Contacto
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-              Si tiene preguntas sobre estos Términos y Condiciones, puede
-              contactarnos:
+              Si tiene preguntas sobre estos Términos y Condiciones, puede contactarnos:
             </p>
             <div className='bg-gray-50 dark:bg-gray-700 p-6 rounded-lg'>
               <div className='grid md:grid-cols-2 gap-6'>
@@ -313,7 +298,7 @@ export default function TermsOfServicePage() {
         <div className='text-center mt-8'>
           <Link
             href='/'
-            className='inline-flex items-center text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors'
+            className='inline-flex items-center text-accent hover:text-dark-accent transition-colors'
           >
             ← Volver al Inicio
           </Link>

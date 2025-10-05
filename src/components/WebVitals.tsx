@@ -10,9 +10,7 @@ export default function WebVitals() {
     // Dynamic import to avoid SSR issues
     const loadWebVitals = async () => {
       try {
-        const { onCLS, onFCP, onINP, onLCP, onTTFB } = await import(
-          'web-vitals'
-        );
+        const { onCLS, onFCP, onINP, onLCP, onTTFB } = await import('web-vitals');
 
         // Core Web Vitals
         onCLS(sendToAnalytics);
@@ -73,10 +71,7 @@ export const performanceUtils = {
   },
 
   // Measure async function execution time
-  measureAsyncExecutionTime: async function <T>(
-    fn: () => Promise<T>,
-    label: string
-  ): Promise<T> {
+  measureAsyncExecutionTime: async function <T>(fn: () => Promise<T>, label: string): Promise<T> {
     const start = performance.now();
     const result = await fn();
     const end = performance.now();
@@ -143,17 +138,14 @@ export const performanceUtils = {
         tcpConnect: navigation.connectEnd - navigation.connectStart,
         serverResponse: navigation.responseEnd - navigation.requestStart,
         pageLoad: navigation.loadEventEnd - navigation.fetchStart,
-        domContentLoaded:
-          navigation.domContentLoadedEventEnd - navigation.fetchStart,
+        domContentLoaded: navigation.domContentLoadedEventEnd - navigation.fetchStart,
       };
     }
     return null;
   },
 
   // Monitor resource loading
-  monitorResourceLoading: (
-    callback: (resources: PerformanceResourceTiming[]) => void
-  ) => {
+  monitorResourceLoading: (callback: (resources: PerformanceResourceTiming[]) => void) => {
     if ('PerformanceObserver' in window) {
       const observer = new PerformanceObserver(list => {
         callback(list.getEntries() as PerformanceResourceTiming[]);

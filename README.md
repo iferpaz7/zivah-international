@@ -477,7 +477,7 @@ SMTP_PASS="your-app-password"
 
 ```tsx
 // Display products with filtering
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function ProductCatalog() {
   const [products, setProducts] = useState([]);
@@ -491,7 +491,10 @@ function ProductCatalog() {
 
   return (
     <div>
-      <select value={category} onChange={e => setCategory(e.target.value)}>
+      <select
+        value={category}
+        onChange={e => setCategory(e.target.value)}
+      >
         <option value='all'>All Categories</option>
         <option value='fruits'>Fruits</option>
         <option value='seafood'>Seafood</option>

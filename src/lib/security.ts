@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { getSecurityHeaders } from './https';
 
 // Simple in-memory rate limiter (for development)
@@ -84,12 +85,7 @@ const blockedUserAgents = [
 ];
 
 // Rate limiting for sensitive endpoints
-const sensitiveEndpoints = [
-  '/api/auth',
-  '/api/quotes',
-  '/api/contact',
-  '/api/products',
-];
+const sensitiveEndpoints = ['/api/auth', '/api/quotes', '/api/contact', '/api/products'];
 
 export async function securityMiddleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
@@ -133,9 +129,7 @@ export async function securityMiddleware(request: NextRequest) {
             'Retry-After': '900', // 15 minutes
             'X-RateLimit-Limit': '100',
             'X-RateLimit-Remaining': '0',
-            'X-RateLimit-Reset': new Date(
-              Date.now() + 15 * 60 * 1000
-            ).toISOString(),
+            'X-RateLimit-Reset': new Date(Date.now() + 15 * 60 * 1000).toISOString(),
           },
         });
       }
@@ -166,15 +160,7 @@ export async function securityMiddleware(request: NextRequest) {
   }
 
   // Block dangerous HTTP methods
-  const allowedMethods = [
-    'GET',
-    'POST',
-    'PUT',
-    'DELETE',
-    'PATCH',
-    'HEAD',
-    'OPTIONS',
-  ];
+  const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
   if (!allowedMethods.includes(method)) {
     console.warn(`Blocked dangerous HTTP method: ${method} from ${ip}`);
     return new NextResponse('Method Not Allowed', { status: 405 });
@@ -196,10 +182,7 @@ export async function securityMiddleware(request: NextRequest) {
   // Add rate limit headers
   response.headers.set('X-RateLimit-Limit', '100');
   response.headers.set('X-RateLimit-Remaining', '99'); // This would be dynamic in production
-  response.headers.set(
-    'X-RateLimit-Reset',
-    new Date(Date.now() + 15 * 60 * 1000).toISOString()
-  );
+  response.headers.set('X-RateLimit-Reset', new Date(Date.now() + 15 * 60 * 1000).toISOString());
 
   return response;
 }
@@ -236,9 +219,6 @@ export function generateCSRFToken(): string {
 }
 
 // Validate CSRF token
-export function validateCSRFToken(
-  token: string,
-  sessionToken: string
-): boolean {
+export function validateCSRFToken(token: string, sessionToken: string): boolean {
   return token === sessionToken && token.length === 36; // UUID length
 }

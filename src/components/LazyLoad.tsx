@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState, ReactNode } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
+
 import Image from 'next/image';
 
 interface LazyLoadProps {
@@ -62,7 +63,10 @@ export default function LazyLoad({
   }, [rootMargin, threshold, once, delay]);
 
   return (
-    <div ref={elementRef} className={className}>
+    <div
+      ref={elementRef}
+      className={className}
+    >
       {isInView ? children : fallback}
     </div>
   );
@@ -177,14 +181,15 @@ export function LazyImage({
   }
 
   return (
-    <div ref={containerRef} className={className}>
+    <div
+      ref={containerRef}
+      className={className}
+    >
       {isLoaded && (
         <Image
           src={src}
           alt={alt}
-          className={`transition-opacity duration-300 ${
-            isLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+          className={`transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
           onLoad={handleLoad}
           onError={handleError}
           width={props.width || 400}
@@ -225,11 +230,7 @@ export function usePerformanceMonitor(componentName: string) {
 }
 
 // Debounced lazy loading for lists
-export function useDebouncedLazyLoad<T>(
-  items: T[],
-  batchSize: number = 10,
-  delay: number = 100
-) {
+export function useDebouncedLazyLoad<T>(items: T[], batchSize: number = 10, delay: number = 100) {
   const [visibleItems, setVisibleItems] = useState<T[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);

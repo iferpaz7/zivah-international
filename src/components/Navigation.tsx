@@ -1,8 +1,10 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+
 import ThemeToggle from './ThemeToggle';
 
 interface NavigationProps {
@@ -27,24 +29,14 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
   // Handle section detection
   useEffect(() => {
     const handleScroll = () => {
-      const sections = [
-        'home',
-        'productos',
-        'todos-productos',
-        'calidad',
-        'cotizar',
-        'contacto',
-      ];
+      const sections = ['home', 'productos', 'todos-productos', 'calidad', 'cotizar', 'contacto'];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
           const { offsetTop, offsetHeight } = element;
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + offsetHeight
-          ) {
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
             setActiveSection(section);
             break;
           }
@@ -113,14 +105,14 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
                 onClick={() => scrollToSection(item.id)}
                 className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                   activeSection === item.id
-                    ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                    ? 'text-accent bg-accent/10 dark:bg-accent/20'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800'
                 }`}
               >
                 <span className='mr-2'>{item.icon}</span>
                 {item.label}
                 {activeSection === item.id && (
-                  <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-green-600 dark:bg-green-400 rounded-full'></div>
+                  <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-accent rounded-full'></div>
                 )}
               </button>
             ))}
@@ -142,7 +134,7 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
             {/* CTA Button */}
             <button
               onClick={() => scrollToSection('cotizar')}
-              className='hidden md:inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg'
+              className='hidden md:inline-flex items-center bg-accent hover:bg-dark-accent text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg'
             >
               <span className='mr-2'>💬</span>
               Cotizar
@@ -151,15 +143,13 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className='lg:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors'
+              className='lg:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-accent transition-colors'
               aria-label='Toggle mobile menu'
             >
               <div className='w-6 h-6 flex flex-col justify-center items-center'>
                 <span
                   className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
-                    isMobileMenuOpen
-                      ? 'rotate-45 translate-y-1'
-                      : '-translate-y-1'
+                    isMobileMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-1'
                   }`}
                 ></span>
                 <span
@@ -169,9 +159,7 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
                 ></span>
                 <span
                   className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
-                    isMobileMenuOpen
-                      ? '-rotate-45 -translate-y-1'
-                      : 'translate-y-1'
+                    isMobileMenuOpen ? '-rotate-45 -translate-y-1' : 'translate-y-1'
                   }`}
                 ></span>
               </div>
@@ -194,8 +182,8 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
                   onClick={() => scrollToSection(item.id)}
                   className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${
                     activeSection === item.id
-                      ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      ? 'text-accent bg-accent/10'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   <span className='mr-3'>{item.icon}</span>
@@ -218,7 +206,7 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
 
               <button
                 onClick={() => scrollToSection('cotizar')}
-                className='w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-medium transition-colors shadow-md'
+                className='w-full bg-accent hover:bg-dark-accent text-white px-4 py-3 rounded-lg font-medium transition-colors shadow-md'
               >
                 <span className='mr-2'>💬</span>
                 Solicitar Cotización
@@ -230,25 +218,25 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
               <div className='grid grid-cols-2 gap-3'>
                 <Link
                   href='/legal/privacy-policy'
-                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors'
+                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-accent transition-colors'
                 >
                   Privacidad
                 </Link>
                 <Link
                   href='/legal/terms-of-service'
-                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors'
+                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-accent transition-colors'
                 >
                   Términos
                 </Link>
                 <Link
                   href='/legal/cookie-policy'
-                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors'
+                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-accent transition-colors'
                 >
                   Cookies
                 </Link>
                 <Link
                   href='/legal/data-protection'
-                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors'
+                  className='text-sm text-gray-600 dark:text-gray-400 hover:text-accent transition-colors'
                 >
                   Protección Datos
                 </Link>

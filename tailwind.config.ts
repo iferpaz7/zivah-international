@@ -5,17 +5,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        zivah: {
-          lime: '#7CB342',
-          green: '#2E7D32',
-          'dark-green': '#1B5E20',
-          navy: '#0D47A1',
-          blue: '#1976D2',
-          coral: '#FF5722',
-          'light-coral': '#FF8A65',
-          'blue-gray': '#37474F',
-          charcoal: '#263238',
-        },
+        primary: '#ff6231', // Orange
+        secondary: '#055aad', // Blue
+        accent: '#0d8c49', // Green
+        dark: '#090709', // Black
+        'dark-accent': '#082c20', // Dark Green
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

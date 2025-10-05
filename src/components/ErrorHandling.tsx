@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -12,10 +12,7 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 
-export class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -59,18 +56,15 @@ function ErrorFallback({ error, reset }: { error: Error; reset: () => void }) {
     <div className='min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4'>
       <div className='max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center'>
         <div className='text-6xl mb-4'>⚠️</div>
-        <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
-          Algo salió mal
-        </h2>
+        <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Algo salió mal</h2>
         <p className='text-gray-600 dark:text-gray-400 mb-6'>
-          Ha ocurrido un error inesperado. Por favor, intenta recargar la
-          página.
+          Ha ocurrido un error inesperado. Por favor, intenta recargar la página.
         </p>
 
         <div className='space-y-3'>
           <button
             onClick={reset}
-            className='w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors'
+            className='w-full bg-accent hover:bg-dark-accent text-white px-4 py-2 rounded-lg font-medium transition-colors'
           >
             Intentar de nuevo
           </button>
@@ -115,11 +109,9 @@ export function LoadingSpinner({
   return (
     <div className='flex flex-col items-center justify-center p-8'>
       <div
-        className={`${sizeClasses[size]} border-4 border-green-200 dark:border-green-800 border-t-green-600 dark:border-t-green-400 rounded-full animate-spin mb-4`}
+        className={`${sizeClasses[size]} border-4 border-accent/20 border-t-accent rounded-full animate-spin mb-4`}
       ></div>
-      {message && (
-        <p className='text-gray-600 dark:text-gray-400 text-sm'>{message}</p>
-      )}
+      {message && <p className='text-gray-600 dark:text-gray-400 text-sm'>{message}</p>}
     </div>
   );
 }
@@ -189,7 +181,7 @@ interface ToastProps {
 
 export function Toast({ message, type, onClose }: ToastProps) {
   const typeStyles = {
-    success: 'bg-green-600 text-white',
+    success: 'bg-accent text-white',
     error: 'bg-red-600 text-white',
     warning: 'bg-yellow-600 text-white',
     info: 'bg-blue-600 text-white',

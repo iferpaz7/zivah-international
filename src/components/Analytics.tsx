@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import { usePathname, useSearchParams } from 'next/navigation';
 
 declare global {
@@ -11,8 +12,7 @@ declare global {
 }
 
 // Google Analytics Measurement ID
-const GA_MEASUREMENT_ID =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX';
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX';
 
 // Initialize Google Analytics
 export function initGA() {
@@ -60,12 +60,7 @@ export function trackPageView(url: string) {
 }
 
 // Track events
-export function trackEvent(
-  action: string,
-  category: string,
-  label?: string,
-  value?: number
-) {
+export function trackEvent(action: string, category: string, label?: string, value?: number) {
   if (typeof window === 'undefined' || !window.gtag) return;
 
   window.gtag('event', action, {
@@ -76,11 +71,7 @@ export function trackEvent(
 }
 
 // Track conversions
-export function trackConversion(
-  conversionId: string,
-  value?: number,
-  currency: string = 'USD'
-) {
+export function trackConversion(conversionId: string, value?: number, currency: string = 'USD') {
   if (typeof window === 'undefined' || !window.gtag) return;
 
   window.gtag('event', 'conversion', {
@@ -169,9 +160,7 @@ export function updateConsent(consent: {
   }
 
   if (consent.functional !== undefined) {
-    consentUpdate.functionality_storage = consent.functional
-      ? 'granted'
-      : 'denied';
+    consentUpdate.functionality_storage = consent.functional ? 'granted' : 'denied';
   }
 
   window.gtag('consent', 'update', consentUpdate);
@@ -189,8 +178,7 @@ export default function Analytics() {
     }
 
     // Track page view
-    const url =
-      pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '');
+    const url = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '');
     trackPageView(url);
   }, [pathname, searchParams]);
 

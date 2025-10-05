@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+import { createApiResponse, handleApiError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
 import {
   contactFormSchema,
   formRateLimiter,
-  sanitizeString,
-  sanitizeEmail,
-  isXSS,
   isSQLInjection,
+  isXSS,
+  sanitizeEmail,
+  sanitizeString,
 } from '@/lib/validation';
-import { handleApiError, createApiResponse } from '@/lib/errors';
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,17 +26,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error: true,
-          message:
-            rateLimitCheck.reason ||
-            'Demasiadas solicitudes. Intente nuevamente más tarde.',
+          message: rateLimitCheck.reason || 'Demasiadas solicitudes. Intente nuevamente más tarde.',
           timestamp: new Date().toISOString(),
         },
         {
           status: 429,
           headers: {
-            'Retry-After': Math.ceil(
-              (rateLimitCheck.waitTime || 30000) / 1000
-            ).toString(),
+            'Retry-After': Math.ceil((rateLimitCheck.waitTime || 30000) / 1000).toString(),
           },
         }
       );
@@ -54,19 +51,13 @@ export async function POST(request: NextRequest) {
     };
 
     // Check for malicious content
-    const textFields = [
-      sanitizedBody.name,
-      sanitizedBody.email,
-      sanitizedBody.message,
-    ];
+    const textFields = [sanitizedBody.name, sanitizedBody.email, sanitizedBody.message];
     if (sanitizedBody.company) textFields.push(sanitizedBody.company);
     if (sanitizedBody.subject) textFields.push(sanitizedBody.subject);
 
     for (const field of textFields) {
       if (isXSS(field) || isSQLInjection(field)) {
-        console.warn(
-          `Malicious content detected in contact form from IP: ${ip}`
-        );
+        console.warn(`Malicious content detected in contact form from IP: ${ip}`);
         return createApiResponse(null, 'Contenido no válido detectado.', 400);
       }
     }
@@ -111,10 +102,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
 
     const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = Math.min(
-      parseInt(searchParams.get('pageSize') || '10'),
-      100
-    );
+    const pageSize = Math.min(parseInt(searchParams.get('pageSize') || '10'), 100);
     const type = searchParams.get('type');
     const status = searchParams.get('status');
 

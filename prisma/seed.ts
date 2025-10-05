@@ -908,8 +908,7 @@ async function main() {
       measureId: container40ft.id, // Agricultural products default to 40ft containers
       description:
         'Banano Cavendish de exportación premium cultivado en la costa ecuatoriana. Ecuador es uno de los mayores exportadores mundiales de banano con excelente calidad y vida útil.',
-      shortDescription:
-        'Banano premium de exportación con certificación internacional',
+      shortDescription: 'Banano premium de exportación con certificación internacional',
       sku: 'BAN-CAV-001',
       specifications: {
         weight: '90-150g',
@@ -948,8 +947,7 @@ async function main() {
       isActive: true,
       isFeatured: true,
       seoTitle: 'Banano Cavendish Premium Ecuador - Exportación',
-      seoDescription:
-        'Banano premium certificado de Ecuador, líder mundial en exportación',
+      seoDescription: 'Banano premium certificado de Ecuador, líder mundial en exportación',
     },
   });
 
@@ -988,12 +986,7 @@ async function main() {
       imageUrl: '/assets/images/products/cacao-nacional.jpg',
       origin: 'Ecuador',
       harvestSeason: 'Enero - Mayo, Octubre - Diciembre',
-      certifications: [
-        'Orgánico',
-        'Comercio Justo',
-        'Rainforest Alliance',
-        'UTZ',
-      ],
+      certifications: ['Orgánico', 'Comercio Justo', 'Rainforest Alliance', 'UTZ'],
       nutritionalInfo: {
         calories: 228,
         protein: '19.6g',
@@ -1064,8 +1057,7 @@ async function main() {
       measureId: container40ft.id, // Agricultural products default to 40ft containers
       description:
         'Rosas rojas ecuatorianas de exportación cultivadas en la sierra ecuatoriana. Ecuador es uno de los principales exportadores mundiales de flores, especialmente rosas de alta calidad.',
-      shortDescription:
-        'Rosas premium cultivadas en altura con certificación MPS',
+      shortDescription: 'Rosas premium cultivadas en altura con certificación MPS',
       sku: 'ROS-ROJ-001',
       specifications: {
         variety: 'Red Naomi, Explorer, Freedom',
@@ -1258,12 +1250,7 @@ async function main() {
       imageUrl: '/assets/images/products/cafe-arabica.jpg',
       origin: 'Ecuador',
       harvestSeason: 'Abril - Agosto',
-      certifications: [
-        'Orgánico',
-        'Comercio Justo',
-        'Rainforest Alliance',
-        'SCA',
-      ],
+      certifications: ['Orgánico', 'Comercio Justo', 'Rainforest Alliance', 'SCA'],
       isActive: true,
       isFeatured: true,
     },
@@ -1333,11 +1320,7 @@ async function main() {
         variety: 'Butternut, Kabocha',
         harvest: 'Junio - Diciembre',
         packaging: 'Cajas de 10kg',
-        features: [
-          'Cultivo orgánico',
-          'Rica en nutrientes',
-          'Vida útil extendida',
-        ],
+        features: ['Cultivo orgánico', 'Rica en nutrientes', 'Vida útil extendida'],
       },
       stockQuantity: 2000,
       minOrderQty: 200,
@@ -1368,11 +1351,7 @@ async function main() {
         variety: 'Orange flesh, Purple',
         harvest: 'Todo el año',
         packaging: 'Cajas de 15kg',
-        features: [
-          'Rico en vitamina A',
-          'Antioxidantes naturales',
-          'Fibra alta',
-        ],
+        features: ['Rico en vitamina A', 'Antioxidantes naturales', 'Fibra alta'],
       },
       stockQuantity: 3000,
       minOrderQty: 300,
@@ -1403,11 +1382,7 @@ async function main() {
         brix: '18-22°',
         harvest: 'Mayo - Noviembre',
         packaging: 'Atados de 25kg',
-        features: [
-          'Alto contenido de sacarosa',
-          'Procesamiento natural',
-          'Fibra aprovechable',
-        ],
+        features: ['Alto contenido de sacarosa', 'Procesamiento natural', 'Fibra aprovechable'],
       },
       stockQuantity: 5000,
       minOrderQty: 1000,
@@ -1438,11 +1413,7 @@ async function main() {
         variety: 'Red, Yellow, White',
         harvest: 'Junio - Octubre',
         packaging: 'Sacos de 25kg',
-        features: [
-          'Variedades selectas',
-          'Sabor intenso',
-          'Larga conservación',
-        ],
+        features: ['Variedades selectas', 'Sabor intenso', 'Larga conservación'],
       },
       stockQuantity: 4000,
       minOrderQty: 500,
@@ -1473,11 +1444,7 @@ async function main() {
         variety: 'Verde claro, Verde oscuro',
         harvest: 'Todo el año',
         packaging: 'Cajas de 12kg',
-        features: [
-          'Certificación orgánica',
-          'Bajo en calorías',
-          'Rico en vitamina C',
-        ],
+        features: ['Certificación orgánica', 'Bajo en calorías', 'Rico en vitamina C'],
       },
       stockQuantity: 2500,
       minOrderQty: 250,
@@ -1499,8 +1466,7 @@ async function main() {
       slug: 'coco-tropical',
       code: 'AGR-COC-001', // Agricultural - Coco code
       categoryId: agricolasCategory.id,
-      description:
-        'Coco tropical de la costa ecuatoriana. Agua de coco natural y pulpa fresca.',
+      description: 'Coco tropical de la costa ecuatoriana. Agua de coco natural y pulpa fresca.',
       shortDescription: 'Coco costa ecuatoriana',
       sku: 'COC-TRO-001',
       specifications: {
@@ -1539,11 +1505,7 @@ async function main() {
         curcumin: '3-5%',
         harvest: 'Agosto - Diciembre',
         packaging: 'Cajas de 5kg',
-        features: [
-          'Rica en curcumina',
-          'Propiedades antiinflamatorias',
-          'Antioxidante natural',
-        ],
+        features: ['Rica en curcumina', 'Propiedades antiinflamatorias', 'Antioxidante natural'],
       },
       stockQuantity: 1000,
       minOrderQty: 50,
@@ -1574,11 +1536,7 @@ async function main() {
         moisture: '80-85%',
         harvest: 'Septiembre - Enero',
         packaging: 'Cajas de 10kg',
-        features: [
-          'Sabor intenso',
-          'Propiedades digestivas',
-          'Antiinflamatorio natural',
-        ],
+        features: ['Sabor intenso', 'Propiedades digestivas', 'Antiinflamatorio natural'],
       },
       stockQuantity: 1500,
       minOrderQty: 100,
@@ -1611,11 +1569,7 @@ async function main() {
         variety: 'Blanco, Morado',
         harvest: 'Julio - Noviembre',
         packaging: 'Sacos de 20kg',
-        features: [
-          'Variedades autóctonas',
-          'Alto contenido nutricional',
-          'Versátil en cocina',
-        ],
+        features: ['Variedades autóctonas', 'Alto contenido nutricional', 'Versátil en cocina'],
       },
       stockQuantity: 2000,
       minOrderQty: 200,
@@ -1637,8 +1591,7 @@ async function main() {
       slug: 'nampi',
       code: 'AGR-NPI-001', // Agricultural - Ñampí code
       categoryId: agricolasCategory.id,
-      description:
-        'Ñampí, tubérculo andino tradicional ecuatoriano. Rico en almidón y minerales.',
+      description: 'Ñampí, tubérculo andino tradicional ecuatoriano. Rico en almidón y minerales.',
       shortDescription: 'Ñampí tubérculo andino',
       sku: 'NAM-PI-001',
       specifications: {
@@ -1646,11 +1599,7 @@ async function main() {
         variety: 'Tradicional andino',
         harvest: 'Junio - Octubre',
         packaging: 'Sacos de 18kg',
-        features: [
-          'Tubérculo andino',
-          'Rico en almidón',
-          'Tradicional ecuatoriano',
-        ],
+        features: ['Tubérculo andino', 'Rico en almidón', 'Tradicional ecuatoriano'],
       },
       stockQuantity: 1500,
       minOrderQty: 150,
@@ -1681,11 +1630,7 @@ async function main() {
         length: '15-20cm',
         harvest: 'Todo el año',
         packaging: 'Frascos de vidrio 450g',
-        features: [
-          'Cultivo sustentable',
-          'Certificación orgánica',
-          'Cosecha responsable',
-        ],
+        features: ['Cultivo sustentable', 'Certificación orgánica', 'Cosecha responsable'],
       },
       stockQuantity: 800,
       minOrderQty: 50,
@@ -1748,11 +1693,7 @@ async function main() {
         variety: 'MD2 Golden',
         harvest: 'Todo el año',
         packaging: 'Cajas de 12kg',
-        features: [
-          'Variedad MD2',
-          'Dulzura excepcional',
-          'Bajo contenido ácido',
-        ],
+        features: ['Variedad MD2', 'Dulzura excepcional', 'Bajo contenido ácido'],
       },
       stockQuantity: 4000,
       minOrderQty: 400,
@@ -1783,11 +1724,7 @@ async function main() {
         length: '20-25cm',
         harvest: 'Todo el año',
         packaging: 'Cajas de 18kg',
-        features: [
-          'Para exportación',
-          'Procesamiento industrial',
-          'Rico en almidón',
-        ],
+        features: ['Para exportación', 'Procesamiento industrial', 'Rico en almidón'],
       },
       stockQuantity: 8000,
       minOrderQty: 1000,
@@ -1809,8 +1746,7 @@ async function main() {
       slug: 'yuca-premium',
       code: 'AGR-YUC-001', // Agricultural - Yuca code
       categoryId: agricolasCategory.id,
-      description:
-        'Yuca premium para procesamiento industrial. Tubérculo versátil y nutritivo.',
+      description: 'Yuca premium para procesamiento industrial. Tubérculo versátil y nutritivo.',
       shortDescription: 'Yuca procesamiento industrial',
       sku: 'YUC-PRE-001',
       specifications: {
@@ -1818,11 +1754,7 @@ async function main() {
         diameter: '3-8cm',
         harvest: 'Todo el año',
         packaging: 'Sacos de 25kg',
-        features: [
-          'Procesamiento industrial',
-          'Alto contenido de almidón',
-          'Versátil uso',
-        ],
+        features: ['Procesamiento industrial', 'Alto contenido de almidón', 'Versátil uso'],
       },
       stockQuantity: 6000,
       minOrderQty: 1000,
@@ -1853,11 +1785,7 @@ async function main() {
         varieties: 'Tommy Atkins, Kent, Keitt',
         age: '6-12 meses',
         packaging: 'Bolsas individuales',
-        features: [
-          'Variedades tropicales',
-          'Plantas certificadas',
-          'Adaptadas al clima',
-        ],
+        features: ['Variedades tropicales', 'Plantas certificadas', 'Adaptadas al clima'],
       },
       stockQuantity: 500,
       minOrderQty: 50,
@@ -1888,11 +1816,7 @@ async function main() {
         varieties: 'Hass, Fuerte, Criollo',
         age: '8-18 meses',
         packaging: 'Contenedores individuales',
-        features: [
-          'Plantas injertadas',
-          'Certificación fitosanitaria',
-          'Variedades comerciales',
-        ],
+        features: ['Plantas injertadas', 'Certificación fitosanitaria', 'Variedades comerciales'],
       },
       stockQuantity: 400,
       minOrderQty: 25,
@@ -1923,11 +1847,7 @@ async function main() {
         varieties: 'Naranja Valencia, Limón Tahití, Mandarina',
         age: '6-15 meses',
         packaging: 'Bolsas individuales',
-        features: [
-          'Variedades comerciales',
-          'Adaptadas al trópico',
-          'Certificación sanitaria',
-        ],
+        features: ['Variedades comerciales', 'Adaptadas al trópico', 'Certificación sanitaria'],
       },
       stockQuantity: 600,
       minOrderQty: 50,
@@ -1958,11 +1878,7 @@ async function main() {
         moisture: '1.5% máximo',
         harvest: 'Marzo - Agosto',
         packaging: 'Bolsas vacuum 5kg',
-        features: [
-          'Cultivo especializado',
-          'Premium quality',
-          'Procesamiento artesanal',
-        ],
+        features: ['Cultivo especializado', 'Premium quality', 'Procesamiento artesanal'],
       },
       stockQuantity: 300,
       minOrderQty: 20,
@@ -1993,11 +1909,7 @@ async function main() {
         moisture: '3% máximo',
         harvest: 'Abril - Septiembre',
         packaging: 'Bolsas vacuum 5kg',
-        features: [
-          'Adaptadas al trópico',
-          'Cultivo innovador',
-          'Técnicas especializadas',
-        ],
+        features: ['Adaptadas al trópico', 'Cultivo innovador', 'Técnicas especializadas'],
       },
       stockQuantity: 200,
       minOrderQty: 15,
@@ -2028,11 +1940,7 @@ async function main() {
         moisture: '4% máximo',
         harvest: 'Febrero - Julio',
         packaging: 'Bolsas vacuum 5kg',
-        features: [
-          'Variedades ecuatorianas',
-          'Cultivo tradicional',
-          'Métodos modernos',
-        ],
+        features: ['Variedades ecuatorianas', 'Cultivo tradicional', 'Métodos modernos'],
       },
       stockQuantity: 400,
       minOrderQty: 25,
@@ -2045,26 +1953,18 @@ async function main() {
     },
   });
 
-  console.log(
-    '✅ Comprehensive Ecuadorian export database seeded successfully!'
-  );
+  console.log('✅ Comprehensive Ecuadorian export database seeded successfully!');
   console.log('📊 Created:');
   console.log(
     '  - 3 Ecuadorian export categories: Agrícolas, Marinos y de la Pesca, Otros Productos'
   );
-  console.log(
-    '  - 26 premium export products: Complete catalog matching page.tsx products'
-  );
+  console.log('  - 26 premium export products: Complete catalog matching page.tsx products');
   console.log('  - 2 admin users with contact details');
   console.log(
     '  - All products include detailed specifications, certifications, and export standards'
   );
-  console.log(
-    "  - Categories reflect Ecuador's main export industries and products"
-  );
-  console.log(
-    '  - Larvas de Camarón correctly categorized under Marinos y de la Pesca'
-  );
+  console.log("  - Categories reflect Ecuador's main export industries and products");
+  console.log('  - Larvas de Camarón correctly categorized under Marinos y de la Pesca');
   console.log('  - All products from static page now available in database');
 
   // Create product prices for different measures

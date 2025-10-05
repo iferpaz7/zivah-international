@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 export default function ServiceWorkerRegistration() {
   const [isRegistered, setIsRegistered] = useState(false);
   const [updateAvailable, setUpdateAvailable] = useState(false);
-  const [registration, setRegistration] =
-    useState<ServiceWorkerRegistration | null>(null);
+  const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
 
   useEffect(() => {
     if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
@@ -24,10 +23,7 @@ export default function ServiceWorkerRegistration() {
             const newWorker = reg.installing;
             if (newWorker) {
               newWorker.addEventListener('statechange', () => {
-                if (
-                  newWorker.state === 'installed' &&
-                  navigator.serviceWorker.controller
-                ) {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                   setUpdateAvailable(true);
                 }
               });
@@ -85,7 +81,7 @@ export default function ServiceWorkerRegistration() {
   return (
     <>
       {updateAvailable && (
-        <div className='fixed bottom-4 right-4 z-50 bg-blue-600 text-white px-4 py-3 rounded-lg shadow-lg'>
+        <div className='fixed bottom-4 right-4 z-50 bg-secondary text-white px-4 py-3 rounded-lg shadow-lg'>
           <div className='flex items-center justify-between'>
             <div>
               <p className='font-medium'>Update Available</p>
@@ -94,7 +90,7 @@ export default function ServiceWorkerRegistration() {
             <div className='ml-4 flex space-x-2'>
               <button
                 onClick={updateServiceWorker}
-                className='bg-white text-blue-600 px-3 py-1 rounded text-sm font-medium hover:bg-gray-100'
+                className='bg-white text-secondary px-3 py-1 rounded text-sm font-medium hover:bg-gray-100'
               >
                 Update
               </button>

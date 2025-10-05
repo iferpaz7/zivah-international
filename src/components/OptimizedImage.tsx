@@ -1,7 +1,8 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+
 import Image from 'next/image';
-import { useState, useRef, useEffect } from 'react';
 
 interface OptimizedImageProps {
   src: string;
@@ -79,8 +80,7 @@ export default function OptimizedImage({
   };
 
   // Generate responsive sizes if not provided
-  const defaultSizes =
-    sizes || '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw';
+  const defaultSizes = sizes || '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw';
 
   // Generate blur placeholder if not provided
   const defaultBlurDataURL =
@@ -105,7 +105,10 @@ export default function OptimizedImage({
   }
 
   return (
-    <div ref={imgRef} className={`relative overflow-hidden ${className}`}>
+    <div
+      ref={imgRef}
+      className={`relative overflow-hidden ${className}`}
+    >
       {isInView && (
         <Image
           src={src}

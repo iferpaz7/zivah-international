@@ -1,12 +1,15 @@
 'use client';
 
-import { useBusinessTracking } from '@/components/BusinessIntelligence';
-import { Button } from '@/components/Button';
-import { createQuoteSchema } from '@/lib/validations';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
+
+import { useBusinessTracking } from '@/components/BusinessIntelligence';
+import { Button } from '@/components/Button';
+
+import { createQuoteSchema } from '@/lib/validations';
 
 interface QuoteProduct {
   id: number;
@@ -77,9 +80,7 @@ interface QuoteFormProps {
 }
 
 export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
-  const [products, setProducts] = useState<QuoteProduct[]>(
-    initialProducts || []
-  );
+  const [products, setProducts] = useState<QuoteProduct[]>(initialProducts || []);
   const [countries, setCountries] = useState<Country[]>([]);
   const [measures, setMeasures] = useState<Measure[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<QuoteProduct[]>([]);
@@ -119,8 +120,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
   });
 
   // Business tracking hook
-  const { trackQuoteFormComplete, trackBusinessConversion } =
-    useBusinessTracking();
+  const { trackQuoteFormComplete, trackBusinessConversion } = useBusinessTracking();
 
   // Load countries from API
   useEffect(() => {
@@ -141,16 +141,11 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
           console.log('Loaded countries:', data.data.length); // Debug log
         } else {
           setCountriesError('No countries available. Please contact support.');
-          console.error(
-            'Failed to load countries:',
-            data.message || 'No data returned'
-          );
+          console.error('Failed to load countries:', data.message || 'No data returned');
         }
       })
       .catch(error => {
-        setCountriesError(
-          'Error loading countries. Please check your connection and try again.'
-        );
+        setCountriesError('Error loading countries. Please check your connection and try again.');
         console.error('Error loading countries:', error);
       })
       .finally(() => {
@@ -175,10 +170,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
           setMeasures(data.data);
           console.log('Loaded measures:', data.data.length); // Debug log
         } else {
-          console.error(
-            'Failed to load measures:',
-            data.message || 'No data returned'
-          );
+          console.error('Failed to load measures:', data.message || 'No data returned');
         }
       })
       .catch(error => {
@@ -202,11 +194,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
 
       if (product && item.measureId) {
         // Calculate total price using new system
-        const totalPrice = convertPrice(
-          product,
-          item.measureId,
-          item.quantity || 1
-        );
+        const totalPrice = convertPrice(product, item.measureId, item.quantity || 1);
 
         if (totalPrice !== null) {
           newCalculatedPrices[item.productId] = totalPrice;
@@ -285,18 +273,12 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
 
     // Return only measures from the same family/type
     return measures.filter(
-      m =>
-        m.type === baseMeasure.type ||
-        m.family === baseMeasure.family ||
-        m.id === baseMeasure.id
+      m => m.type === baseMeasure.type || m.family === baseMeasure.family || m.id === baseMeasure.id
     );
   };
 
   // Function to get price for a specific unit
-  const getPriceForUnit = (
-    product: QuoteProduct,
-    measureId: number
-  ): number | null => {
+  const getPriceForUnit = (product: QuoteProduct, measureId: number): number | null => {
     // Check if product has a price matrix
     if (product.priceMatrix && product.priceMatrix[measureId]) {
       return product.priceMatrix[measureId];
@@ -307,10 +289,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
     if (!measure) return null;
 
     // Check if this is the base unit
-    if (
-      measure.shortName === product.priceUnit ||
-      measure.name === product.priceUnit
-    ) {
+    if (measure.shortName === product.priceUnit || measure.name === product.priceUnit) {
       return product.basePrice || 0;
     }
 
@@ -435,9 +414,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
 
     setValue(
       'items',
-      currentItems.map(item =>
-        item.productId === productId ? { ...item, quantity } : item
-      )
+      currentItems.map(item => (item.productId === productId ? { ...item, quantity } : item))
     );
 
     // Recalcular el subtotal con la nueva cantidad
@@ -459,8 +436,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
     if (!product || !newMeasure) return;
 
     // Calculate the new converted price using new system
-    const quantity =
-      currentItems.find(item => item.productId === productId)?.quantity || 1;
+    const quantity = currentItems.find(item => item.productId === productId)?.quantity || 1;
     const unitPrice = getPriceForUnit(product, measureId);
     const totalPrice = convertPrice(product, measureId, quantity);
 
@@ -510,9 +486,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
     const currentItems = watch('items') || [];
     setValue(
       'items',
-      currentItems.map(item =>
-        item.productId === productId ? { ...item, notes } : item
-      )
+      currentItems.map(item => (item.productId === productId ? { ...item, notes } : item))
     );
   };
 
@@ -584,8 +558,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
           products: selectedProducts.map(p => ({
             id: p.id.toString(),
             name: p.name,
-            quantity:
-              data.items.find(item => item.productId === p.id)?.quantity || 0,
+            quantity: data.items.find(item => item.productId === p.id)?.quantity || 0,
           })),
           contactInfo: {
             name: data.customerName,
@@ -626,13 +599,14 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
 
   return (
     <div className='bg-white/10 backdrop-blur-sm p-8 rounded-2xl'>
-      <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='space-y-6'
+      >
         {/* Customer Information */}
         <div className='grid md:grid-cols-2 gap-6'>
           <div>
-            <label className='block text-sm font-medium text-white mb-2'>
-              Nombre Completo *
-            </label>
+            <label className='block text-sm font-medium text-white mb-2'>Nombre Completo *</label>
             <input
               {...register('customerName')}
               type='text'
@@ -640,16 +614,12 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
               placeholder='Tu nombre completo'
             />
             {errors.customerName && (
-              <p className='mt-1 text-sm text-red-300'>
-                {errors.customerName.message}
-              </p>
+              <p className='mt-1 text-sm text-red-300'>{errors.customerName.message}</p>
             )}
           </div>
 
           <div>
-            <label className='block text-sm font-medium text-white mb-2'>
-              Email *
-            </label>
+            <label className='block text-sm font-medium text-white mb-2'>Email *</label>
             <input
               {...register('customerEmail')}
               type='email'
@@ -657,16 +627,12 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
               placeholder='email@empresa.com'
             />
             {errors.customerEmail && (
-              <p className='mt-1 text-sm text-red-300'>
-                {errors.customerEmail.message}
-              </p>
+              <p className='mt-1 text-sm text-red-300'>{errors.customerEmail.message}</p>
             )}
           </div>
 
           <div>
-            <label className='block text-sm font-medium text-white mb-2'>
-              País de Destino *
-            </label>
+            <label className='block text-sm font-medium text-white mb-2'>País de Destino *</label>
             {countriesLoading ? (
               <div className='w-full px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white/70'>
                 Cargando países...
@@ -715,29 +681,22 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                 )}
               />
             )}
-            {errors.countryId && (
-              <p className='mt-1 text-sm text-red-300'>Seleccione un país</p>
-            )}
+            {errors.countryId && <p className='mt-1 text-sm text-red-300'>Seleccione un país</p>}
           </div>
 
           <div>
-            <label className='block text-sm font-medium text-white mb-2'>
-              Teléfono
-            </label>
+            <label className='block text-sm font-medium text-white mb-2'>Teléfono</label>
             <div className='relative'>
-              {watch('countryId') &&
-                countries.find(c => c.id === watch('countryId')) && (
-                  <div className='absolute left-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2 pointer-events-none'>
-                    <span className='text-lg'>
-                      {countries.find(c => c.id === watch('countryId'))?.icon ||
-                        '🌍'}
-                    </span>
-                    <span className='text-white/70 text-sm'>
-                      {countries.find(c => c.id === watch('countryId'))
-                        ?.callingCode || '+'}
-                    </span>
-                  </div>
-                )}
+              {watch('countryId') && countries.find(c => c.id === watch('countryId')) && (
+                <div className='absolute left-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2 pointer-events-none'>
+                  <span className='text-lg'>
+                    {countries.find(c => c.id === watch('countryId'))?.icon || '🌍'}
+                  </span>
+                  <span className='text-white/70 text-sm'>
+                    {countries.find(c => c.id === watch('countryId'))?.callingCode || '+'}
+                  </span>
+                </div>
+              )}
               <input
                 {...register('customerPhone', {
                   validate: value => {
@@ -751,22 +710,17 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                   watch('countryId') ? 'pl-20' : ''
                 }`}
                 placeholder={
-                  countries.find(c => c.id === watch('countryId'))
-                    ?.phoneFormat || '+1 234 567 8900'
+                  countries.find(c => c.id === watch('countryId'))?.phoneFormat || '+1 234 567 8900'
                 }
               />
             </div>
             {errors.customerPhone && (
-              <p className='mt-1 text-sm text-red-300'>
-                {errors.customerPhone.message}
-              </p>
+              <p className='mt-1 text-sm text-red-300'>{errors.customerPhone.message}</p>
             )}
           </div>
 
           <div className='md:col-span-2'>
-            <label className='block text-sm font-medium text-white mb-2'>
-              Empresa
-            </label>
+            <label className='block text-sm font-medium text-white mb-2'>Empresa</label>
             <input
               {...register('company')}
               type='text'
@@ -828,13 +782,11 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                     </small>
                   </div>
                   {products.map(product => {
-                    const isSelected = selectedProducts.find(
-                      p => p.id === product.id
-                    );
+                    const isSelected = selectedProducts.find(p => p.id === product.id);
                     return (
                       <div
                         key={product.id}
-                        className={`p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 text-gray-900 ${isSelected ? 'bg-green-50 border-l-4 border-l-green-500' : ''}`}
+                        className={`p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 text-gray-900 ${isSelected ? 'bg-accent/10 border-l-4 border-l-accent' : ''}`}
                         onClick={() => addProduct(product)}
                       >
                         <div className='flex justify-between items-start'>
@@ -842,18 +794,14 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                             <div className='font-medium flex items-center'>
                               {product.name}
                               {isSelected && (
-                                <span className='ml-2 text-green-600 text-sm'>
-                                  ✓ Agregado
-                                </span>
+                                <span className='ml-2 text-accent text-sm'>✓ Agregado</span>
                               )}
                             </div>
                             <div className='text-sm text-gray-600'>
                               ${product.basePrice || 0} por unidad -{' '}
                               {product.description || 'Sin descripción'}
                             </div>
-                            <div className='text-xs text-gray-400'>
-                              SKU: {product.sku || 'N/A'}
-                            </div>
+                            <div className='text-xs text-gray-400'>SKU: {product.sku || 'N/A'}</div>
                           </div>
                         </div>
                       </div>
@@ -874,7 +822,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                 <button
                   type='button'
                   onClick={() => setShowProductList(false)}
-                  className='text-sm text-blue-600 hover:text-blue-800'
+                  className='text-sm text-secondary hover:text-secondary/80'
                 >
                   Cerrar lista
                 </button>
@@ -909,29 +857,24 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                 </p>
                 <ul className='text-xs space-y-1'>
                   <li>
-                    • <strong>Peso:</strong> kg (kilogramos), MT (toneladas
-                    métricas), lb (libras)
+                    • <strong>Peso:</strong> kg (kilogramos), MT (toneladas métricas), lb (libras)
                   </li>
                   <li>
-                    • <strong>Volumen:</strong> L (litros), m³ (metros cúbicos),
-                    gal (galones)
+                    • <strong>Volumen:</strong> L (litros), m³ (metros cúbicos), gal (galones)
                   </li>
                   <li>
-                    • <strong>Contenedores:</strong> 20ft, 40ft, 40HC (high
-                    cube)
+                    • <strong>Contenedores:</strong> 20ft, 40ft, 40HC (high cube)
                   </li>
                   <li>
-                    • <strong>Cantidad:</strong> pcs (piezas), dz (docenas), ctn
-                    (cajas), plt (pallets)
+                    • <strong>Cantidad:</strong> pcs (piezas), dz (docenas), ctn (cajas), plt
+                    (pallets)
                   </li>
                 </ul>
               </div>
             )}
 
             {selectedProducts.map(product => {
-              const item = watch('items')?.find(
-                i => i.productId === product.id
-              );
+              const item = watch('items')?.find(i => i.productId === product.id);
               return (
                 <div
                   key={product.id}
@@ -943,9 +886,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                       <div className='text-sm opacity-75'>
                         {product.description || 'Sin descripción'}
                       </div>
-                      <div className='text-xs opacity-60'>
-                        SKU: {product.sku || 'N/A'}
-                      </div>
+                      <div className='text-xs opacity-60'>SKU: {product.sku || 'N/A'}</div>
                     </div>
                     <button
                       type='button'
@@ -958,45 +899,32 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
 
                   <div className='grid md:grid-cols-4 gap-3 items-end'>
                     <div>
-                      <label className='block text-xs text-white/70 mb-1'>
-                        Cantidad
-                      </label>
+                      <label className='block text-xs text-white/70 mb-1'>Cantidad</label>
                       <input
                         type='number'
                         min='1'
                         value={item?.quantity || 1}
-                        onChange={e =>
-                          updateQuantity(
-                            product.id,
-                            parseInt(e.target.value) || 1
-                          )
-                        }
+                        onChange={e => updateQuantity(product.id, parseInt(e.target.value) || 1)}
                         className='w-full px-3 py-2 rounded-md bg-white/30 border border-white/30 text-white text-center'
                       />
                     </div>
 
                     <div>
-                      <label className='block text-xs text-white/70 mb-1'>
-                        Unit of Measure
-                      </label>
+                      <label className='block text-xs text-white/70 mb-1'>Unit of Measure</label>
                       <select
                         value={item?.measureId || ''}
-                        onChange={e =>
-                          updateMeasure(product.id, parseInt(e.target.value))
-                        }
+                        onChange={e => updateMeasure(product.id, parseInt(e.target.value))}
                         className='w-full px-3 py-2 rounded-md bg-white/30 border border-white/30 text-white'
                         title={
                           item?.measureId
-                            ? measures.find(m => m.id === item.measureId)
-                                ?.description
+                            ? measures.find(m => m.id === item.measureId)?.description
                             : 'Select a unit of measure'
                         }
                       >
                         <option value=''>Select unit...</option>
                         {(() => {
                           // Get available measures for this product (same family only)
-                          const availableMeasures =
-                            getAvailableMeasuresForProduct(product);
+                          const availableMeasures = getAvailableMeasuresForProduct(product);
                           const measuresByType: {
                             [key: string]: typeof availableMeasures;
                           } = {};
@@ -1009,60 +937,46 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                             measuresByType[measure.type].push(measure);
                           });
 
-                          return Object.entries(measuresByType).map(
-                            ([type, typeMeasures]) => {
-                              if (typeMeasures.length === 0) return null;
+                          return Object.entries(measuresByType).map(([type, typeMeasures]) => {
+                            if (typeMeasures.length === 0) return null;
 
-                              const typeNames = {
-                                WEIGHT: 'Weight',
-                                VOLUME: 'Volume',
-                                CONTAINER: 'Containers',
-                                QUANTITY: 'Quantity',
-                                LENGTH: 'Length',
-                                COUNT: 'Count',
-                                AREA: 'Area',
-                              };
+                            const typeNames = {
+                              WEIGHT: 'Weight',
+                              VOLUME: 'Volume',
+                              CONTAINER: 'Containers',
+                              QUANTITY: 'Quantity',
+                              LENGTH: 'Length',
+                              COUNT: 'Count',
+                              AREA: 'Area',
+                            };
 
-                              return (
-                                <optgroup
-                                  key={type}
-                                  label={
-                                    typeNames[type as keyof typeof typeNames] ||
-                                    type
-                                  }
-                                  className='text-gray-900'
-                                >
-                                  {typeMeasures.map(measure => {
-                                    const unitPrice = getPriceForUnit(
-                                      product,
-                                      measure.id
-                                    );
-                                    const isAvailable = unitPrice !== null;
+                            return (
+                              <optgroup
+                                key={type}
+                                label={typeNames[type as keyof typeof typeNames] || type}
+                                className='text-gray-900'
+                              >
+                                {typeMeasures.map(measure => {
+                                  const unitPrice = getPriceForUnit(product, measure.id);
+                                  const isAvailable = unitPrice !== null;
 
-                                    return (
-                                      <option
-                                        key={measure.id}
-                                        value={measure.id}
-                                        disabled={!isAvailable}
-                                        className={
-                                          isAvailable
-                                            ? 'text-gray-900'
-                                            : 'text-gray-400'
-                                        }
-                                      >
-                                        {measure.name} ({measure.shortName})
-                                        {measure.symbol &&
-                                          ` - ${measure.symbol}`}
-                                        {isAvailable &&
-                                          ` - $${unitPrice.toFixed(2)}`}
-                                        {!isAvailable && ' - Not available'}
-                                      </option>
-                                    );
-                                  })}
-                                </optgroup>
-                              );
-                            }
-                          );
+                                  return (
+                                    <option
+                                      key={measure.id}
+                                      value={measure.id}
+                                      disabled={!isAvailable}
+                                      className={isAvailable ? 'text-gray-900' : 'text-gray-400'}
+                                    >
+                                      {measure.name} ({measure.shortName})
+                                      {measure.symbol && ` - ${measure.symbol}`}
+                                      {isAvailable && ` - $${unitPrice.toFixed(2)}`}
+                                      {!isAvailable && ' - Not available'}
+                                    </option>
+                                  );
+                                })}
+                              </optgroup>
+                            );
+                          });
                         })()}
                       </select>
                     </div>
@@ -1072,27 +986,17 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                         Precio Unitario
                         {item?.measureId && (
                           <span className='ml-1'>
-                            (por{' '}
-                            {
-                              measures.find(m => m.id === item.measureId)
-                                ?.shortName
-                            }
-                            )
+                            (por {measures.find(m => m.id === item.measureId)?.shortName})
                           </span>
                         )}
                       </label>
                       <div className='px-3 py-2 bg-white/10 rounded-md text-white text-center'>
-                        $
-                        {item?.unitPrice
-                          ? item.unitPrice.toFixed(2)
-                          : product.basePrice || 0}
+                        ${item?.unitPrice ? item.unitPrice.toFixed(2) : product.basePrice || 0}
                       </div>
                     </div>
 
                     <div>
-                      <label className='block text-xs text-white/70 mb-1'>
-                        Subtotal
-                      </label>
+                      <label className='block text-xs text-white/70 mb-1'>Subtotal</label>
                       <div className='px-3 py-2 bg-white/10 rounded-md text-white font-medium text-center'>
                         $
                         {(
@@ -1118,9 +1022,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
 
                   {conversionErrors[product.id] && (
                     <div className='mt-2 p-2 bg-red-500/20 border border-red-500/30 rounded-md'>
-                      <p className='text-sm text-red-300'>
-                        ⚠️ {conversionErrors[product.id]}
-                      </p>
+                      <p className='text-sm text-red-300'>⚠️ {conversionErrors[product.id]}</p>
                     </div>
                   )}
                 </div>
@@ -1132,8 +1034,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                 Total Estimado: ${calculateTotal().toFixed(2)} USD
               </div>
               <div className='text-xs text-white/70 mt-1'>
-                * Precio final puede variar según especificaciones y términos de
-                envío
+                * Precio final puede variar según especificaciones y términos de envío
               </div>
             </div>
           </div>
@@ -1141,9 +1042,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
 
         {/* Message */}
         <div>
-          <label className='block text-sm font-medium text-white mb-2'>
-            Mensaje Adicional
-          </label>
+          <label className='block text-sm font-medium text-white mb-2'>Mensaje Adicional</label>
           <textarea
             {...register('message')}
             rows={4}
@@ -1157,7 +1056,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
           <Button
             type='submit'
             disabled={isSubmitting || selectedProducts.length === 0}
-            className='bg-white text-green-600 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50'
+            className='bg-white text-accent font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50'
           >
             {isSubmitting
               ? 'Enviando...'
@@ -1167,14 +1066,14 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
 
         {/* Info Message */}
         <div className='text-center text-sm text-white/70'>
-          La cotización será enviada automáticamente por email con precios
-          actualizados y términos de envío.
+          La cotización será enviada automáticamente por email con precios actualizados y términos
+          de envío.
         </div>
 
         {/* Submit Message */}
         {submitMessage && (
           <div
-            className={`p-4 rounded-md ${submitMessage.type === 'success' ? 'bg-green-500/20 text-green-100' : 'bg-red-500/20 text-red-100'}`}
+            className={`p-4 rounded-md ${submitMessage.type === 'success' ? 'bg-accent/20 text-accent' : 'bg-red-500/20 text-red-100'}`}
           >
             {submitMessage.text}
           </div>

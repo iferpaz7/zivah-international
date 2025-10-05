@@ -1,15 +1,18 @@
-import './globals.css';
+import { Suspense } from 'react';
+
 import type { Metadata } from 'next';
 import { Inter, Montserrat } from 'next/font/google';
-import { Suspense } from 'react';
-import ClientThemeProvider from '@/components/ClientThemeProvider';
-import CookieConsent from '@/components/CookieConsent';
+
 import Analytics from '@/components/Analytics';
 import BusinessIntelligence from '@/components/BusinessIntelligence';
+import ClientThemeProvider from '@/components/ClientThemeProvider';
+import CookieConsent from '@/components/CookieConsent';
+import { ErrorBoundary, NetworkStatus } from '@/components/ErrorHandling';
+import SEOOptimization from '@/components/SEOOptimization';
 import ServiceWorkerRegistration from '@/components/ServiceWorker';
 import WebVitals from '@/components/WebVitals';
-import SEOOptimization from '@/components/SEOOptimization';
-import { ErrorBoundary, NetworkStatus } from '@/components/ErrorHandling';
+
+import './globals.css';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -53,8 +56,7 @@ export const metadata: Metadata = {
     alternateLocale: ['en_US'],
     url: 'https://zivahinternational.com/',
     siteName: 'ZIVAH International S.A.',
-    title:
-      'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
     description:
       'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas. Frutas tropicales, mariscos, café, camarón, larvas de acuicultura y cultivo de árboles frutales con certificación internacional.',
     images: [
@@ -70,21 +72,17 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@ZivahIntl',
     creator: '@ZivahIntl',
-    title:
-      'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
+    title: 'ZIVAH International S.A. - Exportadores de Productos Ecuatorianos Premium',
     description:
       'Exportadores líderes de productos ecuatorianos premium desde Ecuador hacia el mundo. Con sede principal en Samborondón, Guayas. Frutas tropicales, mariscos, café, camarón, larvas de acuicultura y cultivo de árboles frutales.',
-    images: [
-      'https://zivahinternational.com/assets/images/zivah-twitter-image.jpg',
-    ],
+    images: ['https://zivahinternational.com/assets/images/zivah-twitter-image.jpg'],
   },
   other: {
     'geo.region': 'EC-G',
     'geo.placename': 'Samborondón, Guayas, Ecuador',
     'geo.position': '-2.1057;-79.8890',
     ICBM: '-2.1057, -79.8890',
-    'business:contact_data:street_address':
-      'Casa Matriz Mz 10 S L 31, Samborondón',
+    'business:contact_data:street_address': 'Casa Matriz Mz 10 S L 31, Samborondón',
     'business:contact_data:locality': 'Samborondón',
     'business:contact_data:region': 'Guayas',
     'business:contact_data:postal_code': '092301',
@@ -182,11 +180,7 @@ export const metadata: Metadata = {
   applicationName: 'ZIVAH International S.A.',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang='es'
@@ -194,7 +188,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <meta name='msapplication-TileColor' content='#ff6347' />
+        <meta
+          name='msapplication-TileColor'
+          content='#ff6347'
+        />
         <meta
           name='msapplication-TileImage'
           content='/assets/images/icons/ms-icon-144x144.png'
@@ -213,16 +210,31 @@ export default function RootLayout({
           content='#0f1419'
           media='(prefers-color-scheme: dark)'
         />
-        <link rel='preconnect' href='https://fonts.googleapis.com' />
+        <link
+          rel='preconnect'
+          href='https://fonts.googleapis.com'
+        />
         <link
           rel='preconnect'
           href='https://fonts.gstatic.com'
           crossOrigin='anonymous'
         />
-        <link rel='preconnect' href='https://www.google-analytics.com' />
-        <link rel='preconnect' href='https://www.googletagmanager.com' />
-        <link rel='dns-prefetch' href='//fonts.googleapis.com' />
-        <link rel='dns-prefetch' href='//www.google-analytics.com' />
+        <link
+          rel='preconnect'
+          href='https://www.google-analytics.com'
+        />
+        <link
+          rel='preconnect'
+          href='https://www.googletagmanager.com'
+        />
+        <link
+          rel='dns-prefetch'
+          href='//fonts.googleapis.com'
+        />
+        <link
+          rel='dns-prefetch'
+          href='//www.google-analytics.com'
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `

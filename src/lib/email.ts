@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+
 import { logger } from './logger';
 
 interface QuoteEmailData {
@@ -34,10 +35,7 @@ class EmailService {
     });
   }
 
-  async sendQuoteEmail(
-    quoteData: QuoteEmailData,
-    recipientEmail: string
-  ): Promise<boolean> {
+  async sendQuoteEmail(quoteData: QuoteEmailData, recipientEmail: string): Promise<boolean> {
     try {
       const htmlContent = this.generateQuoteHTML(quoteData);
 

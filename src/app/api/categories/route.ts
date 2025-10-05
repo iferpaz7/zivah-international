@@ -1,7 +1,9 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+import { z } from 'zod';
+
 import { prisma } from '@/lib/prisma';
 import { createCategorySchema } from '@/lib/validations';
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
 
 export async function GET(request: NextRequest) {
   try {

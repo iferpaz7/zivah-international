@@ -1,7 +1,8 @@
 'use client';
 
-import { useTheme } from './ThemeProvider';
 import { useEffect, useState } from 'react';
+
+import { useTheme } from './ThemeProvider';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
@@ -32,9 +33,7 @@ export default function ThemeToggle() {
         {/* Sun Icon */}
         <svg
           className={`absolute inset-0 w-6 h-6 text-yellow-500 transition-all duration-300 ${
-            theme === 'dark'
-              ? 'opacity-0 rotate-90 scale-0'
-              : 'opacity-100 rotate-0 scale-100'
+            theme === 'dark' ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'
           }`}
           fill='currentColor'
           viewBox='0 0 20 20'
@@ -48,10 +47,8 @@ export default function ThemeToggle() {
 
         {/* Moon Icon */}
         <svg
-          className={`absolute inset-0 w-6 h-6 text-blue-400 transition-all duration-300 ${
-            theme === 'light'
-              ? 'opacity-0 -rotate-90 scale-0'
-              : 'opacity-100 rotate-0 scale-100'
+          className={`absolute inset-0 w-6 h-6 text-secondary transition-all duration-300 ${
+            theme === 'light' ? 'opacity-0 -rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'
           }`}
           fill='currentColor'
           viewBox='0 0 20 20'

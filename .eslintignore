@@ -1,0 +1,77 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+.next/
+out/
+dist/
+build/
+
+# Environment files
+.env*
+
+# Generated files
+*.tsbuildinfo
+next-env.d.ts
+
+# Logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory
+coverage/
+*.lcov
+.nyc_output
+
+# Cache directories
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Prisma generated
+prisma/client/
+prisma/migrations/
+
+# Public assets that shouldn't be linted
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
+public/fallback-*.js
+public/robots.txt
+public/sitemap.xml
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Storybook
+.storybook-out/
+storybook-static/
+
+# Temporary directories
+tmp/
+temp/

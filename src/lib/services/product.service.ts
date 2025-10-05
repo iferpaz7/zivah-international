@@ -1,4 +1,7 @@
+import type { Prisma } from '@prisma/client';
+
 import { prisma } from '@/lib/prisma';
+
 import {
   CreateProductInput,
   PaginatedResponse,
@@ -6,13 +9,10 @@ import {
   ProductFilters,
   UpdateProductInput,
 } from '@/types';
-import type { Prisma } from '@prisma/client';
 
 export class ProductService {
   // Get paginated products with filters
-  static async getProducts(
-    filters: ProductFilters = {}
-  ): Promise<PaginatedResponse<Product>> {
+  static async getProducts(filters: ProductFilters = {}): Promise<PaginatedResponse<Product>> {
     const {
       categoryId,
       isActive,
@@ -145,10 +145,7 @@ export class ProductService {
   }
 
   // Get products by category
-  static async getProductsByCategory(
-    categorySlug: string,
-    limit?: number
-  ): Promise<Product[]> {
+  static async getProductsByCategory(categorySlug: string, limit?: number): Promise<Product[]> {
     const products = await prisma.product.findMany({
       where: {
         isActive: true,
@@ -188,10 +185,7 @@ export class ProductService {
   }
 
   // Update product
-  static async updateProduct(
-    id: number,
-    data: UpdateProductInput
-  ): Promise<Product> {
+  static async updateProduct(id: number, data: UpdateProductInput): Promise<Product> {
     // If name is being updated and no slug provided, regenerate slug
     if (data.name && !data.slug) {
       data.slug = this.generateSlug(data.name);
@@ -256,10 +250,7 @@ export class ProductService {
   }
 
   // Search products with full-text search
-  static async searchProducts(
-    query: string,
-    limit: number = 20
-  ): Promise<Product[]> {
+  static async searchProducts(query: string, limit: number = 20): Promise<Product[]> {
     const products = await prisma.product.findMany({
       where: {
         isActive: true,
@@ -343,10 +334,7 @@ export class ProductService {
       .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
   }
 
-  private static async ensureUniqueSlug(
-    slug: string,
-    excludeId?: number
-  ): Promise<string> {
+  private static async ensureUniqueSlug(slug: string, excludeId?: number): Promise<string> {
     let uniqueSlug = slug;
     let counter = 1;
 

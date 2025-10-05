@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import Link from 'next/link';
+
 import { updateConsent } from './Analytics';
 
 interface CookiePreferences {
@@ -33,9 +35,7 @@ export default function CookieConsent() {
       // Check if consent is older than 12 months (GDPR requirement)
       const consentDateTime = new Date(consentDate);
       const now = new Date();
-      const monthsDiff =
-        (now.getTime() - consentDateTime.getTime()) /
-        (1000 * 60 * 60 * 24 * 30);
+      const monthsDiff = (now.getTime() - consentDateTime.getTime()) / (1000 * 60 * 60 * 24 * 30);
 
       if (monthsDiff > 12) {
         // Consent expired, show banner again
@@ -137,12 +137,11 @@ export default function CookieConsent() {
                 </h3>
               </div>
               <p className='text-gray-700 dark:text-gray-300 text-sm leading-relaxed'>
-                Utilizamos cookies para mejorar su experiencia, analizar el
-                tráfico y personalizar el contenido. Al continuar navegando,
-                acepta nuestro uso de cookies según nuestra{' '}
+                Utilizamos cookies para mejorar su experiencia, analizar el tráfico y personalizar
+                el contenido. Al continuar navegando, acepta nuestro uso de cookies según nuestra{' '}
                 <Link
                   href='/legal/cookie-policy'
-                  className='text-green-600 dark:text-green-400 hover:underline'
+                  className='text-accent dark:text-accent hover:underline'
                 >
                   Política de Cookies
                 </Link>
@@ -165,7 +164,7 @@ export default function CookieConsent() {
               </button>
               <button
                 onClick={acceptAllCookies}
-                className='px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors'
+                className='px-4 py-2 text-sm font-medium text-white bg-accent hover:bg-accent/90 rounded-lg transition-colors'
               >
                 Aceptar Todas
               </button>
@@ -198,13 +197,13 @@ export default function CookieConsent() {
                     <h4 className='font-semibold text-gray-900 dark:text-white'>
                       Cookies Necesarias
                     </h4>
-                    <span className='text-xs bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 px-2 py-1 rounded'>
+                    <span className='text-xs bg-accent/10 dark:bg-accent/20 text-gray-800 dark:text-accent px-2 py-1 rounded'>
                       Siempre activas
                     </span>
                   </div>
                   <p className='text-sm text-gray-600 dark:text-gray-400 mb-3'>
-                    Estas cookies son esenciales para el funcionamiento del
-                    sitio web y no pueden ser desactivadas.
+                    Estas cookies son esenciales para el funcionamiento del sitio web y no pueden
+                    ser desactivadas.
                   </p>
                   <div className='flex items-center'>
                     <input
@@ -213,9 +212,7 @@ export default function CookieConsent() {
                       disabled
                       className='mr-3'
                     />
-                    <span className='text-sm text-gray-700 dark:text-gray-300'>
-                      Necesarias
-                    </span>
+                    <span className='text-sm text-gray-700 dark:text-gray-300'>Necesarias</span>
                   </div>
                 </div>
 
@@ -229,18 +226,15 @@ export default function CookieConsent() {
                       <input
                         type='checkbox'
                         checked={preferences.analytics}
-                        onChange={e =>
-                          updatePreference('analytics', e.target.checked)
-                        }
+                        onChange={e => updatePreference('analytics', e.target.checked)}
                         className='sr-only peer'
                       />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/30 dark:peer-focus:ring-accent/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-accent"></div>
                     </label>
                   </div>
                   <p className='text-sm text-gray-600 dark:text-gray-400'>
-                    Nos ayudan a entender cómo los visitantes interactúan con
-                    nuestro sitio web mediante la recopilación de información de
-                    forma anónima.
+                    Nos ayudan a entender cómo los visitantes interactúan con nuestro sitio web
+                    mediante la recopilación de información de forma anónima.
                   </p>
                 </div>
 
@@ -254,17 +248,15 @@ export default function CookieConsent() {
                       <input
                         type='checkbox'
                         checked={preferences.functional}
-                        onChange={e =>
-                          updatePreference('functional', e.target.checked)
-                        }
+                        onChange={e => updatePreference('functional', e.target.checked)}
                         className='sr-only peer'
                       />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/30 dark:peer-focus:ring-accent/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-accent"></div>
                     </label>
                   </div>
                   <p className='text-sm text-gray-600 dark:text-gray-400'>
-                    Permiten recordar sus preferencias y configuraciones para
-                    mejorar su experiencia de navegación.
+                    Permiten recordar sus preferencias y configuraciones para mejorar su experiencia
+                    de navegación.
                   </p>
                 </div>
 
@@ -278,17 +270,15 @@ export default function CookieConsent() {
                       <input
                         type='checkbox'
                         checked={preferences.marketing}
-                        onChange={e =>
-                          updatePreference('marketing', e.target.checked)
-                        }
+                        onChange={e => updatePreference('marketing', e.target.checked)}
                         className='sr-only peer'
                       />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/30 dark:peer-focus:ring-accent/50 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-accent"></div>
                     </label>
                   </div>
                   <p className='text-sm text-gray-600 dark:text-gray-400'>
-                    Se utilizan para mostrar anuncios relevantes y medir la
-                    efectividad de nuestras campañas publicitarias.
+                    Se utilizan para mostrar anuncios relevantes y medir la efectividad de nuestras
+                    campañas publicitarias.
                   </p>
                 </div>
               </div>
@@ -302,7 +292,7 @@ export default function CookieConsent() {
                 </button>
                 <button
                   onClick={saveCustomPreferences}
-                  className='flex-1 px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors'
+                  className='flex-1 px-4 py-2 text-sm font-medium text-white bg-accent hover:bg-accent/90 rounded-lg transition-colors'
                 >
                   Guardar Preferencias
                 </button>
@@ -312,7 +302,7 @@ export default function CookieConsent() {
                 Para más información, consulte nuestra{' '}
                 <Link
                   href='/legal/cookie-policy'
-                  className='text-green-600 dark:text-green-400 hover:underline'
+                  className='text-accent dark:text-accent hover:underline'
                 >
                   Política de Cookies
                 </Link>

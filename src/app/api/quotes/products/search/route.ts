@@ -1,15 +1,14 @@
+import { NextRequest } from 'next/server';
+
 import { createApiResponse, handleApiError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
-import { checkRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
-import { NextRequest } from 'next/server';
+import { RATE_LIMITS, checkRateLimit } from '@/lib/rate-limit';
 
 export async function GET(request: NextRequest) {
   try {
     // Rate limiting: 50 requests per minute
     const ip =
-      request.headers.get('x-forwarded-for') ||
-      request.headers.get('x-real-ip') ||
-      'unknown';
+      request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     const rateLimit = await checkRateLimit(
       `api:${ip}`,
       RATE_LIMITS.API_GENERAL.limit,
@@ -17,11 +16,7 @@ export async function GET(request: NextRequest) {
     );
 
     if (!rateLimit.success) {
-      return createApiResponse(
-        null,
-        'Demasiadas solicitudes. Intente nuevamente más tarde.',
-        429
-      );
+      return createApiResponse(null, 'Demasiadas solicitudes. Intente nuevamente más tarde.', 429);
     }
 
     const { searchParams } = new URL(request.url);

@@ -107,10 +107,7 @@ export const getSecurityHeaders = (environment: string = 'production') => {
 };
 
 // Validate request origin
-export function validateOrigin(
-  request: NextRequest,
-  allowedOrigins: string[]
-): boolean {
+export function validateOrigin(request: NextRequest, allowedOrigins: string[]): boolean {
   const origin = request.headers.get('origin');
   const referer = request.headers.get('referer');
 
@@ -123,9 +120,7 @@ export function validateOrigin(
         if (allowed.startsWith('*.')) {
           // Wildcard subdomain
           const domain = allowed.slice(2);
-          return (
-            urlObj.hostname === domain || urlObj.hostname.endsWith('.' + domain)
-          );
+          return urlObj.hostname === domain || urlObj.hostname.endsWith('.' + domain);
         }
         return urlObj.origin === allowed;
       });
@@ -141,19 +136,13 @@ export function validateOrigin(
 }
 
 // CORS headers
-export function getCORSHeaders(
-  request: NextRequest,
-  allowedOrigins: string[] = []
-) {
+export function getCORSHeaders(request: NextRequest, allowedOrigins: string[] = []) {
   const origin = request.headers.get('origin') || '';
 
   const corsHeaders: Record<string, string> = {
-    'Access-Control-Allow-Origin': allowedOrigins.includes(origin)
-      ? origin
-      : '',
+    'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : '',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers':
-      'Content-Type, Authorization, X-Requested-With',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
     'Access-Control-Max-Age': '86400', // 24 hours
   };
 
@@ -166,10 +155,7 @@ export function getCORSHeaders(
 }
 
 // API Key validation
-export function validateAPIKey(
-  request: NextRequest,
-  validKeys: string[]
-): boolean {
+export function validateAPIKey(request: NextRequest, validKeys: string[]): boolean {
   const apiKey =
     request.headers.get('x-api-key') ||
     request.headers.get('authorization')?.replace('Bearer ', '');

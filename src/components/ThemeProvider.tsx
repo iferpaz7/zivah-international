@@ -22,8 +22,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     // Get theme from localStorage or system preference
     const savedTheme = localStorage.getItem('theme') as Theme;
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-      .matches
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
       : 'light';
     const initialTheme = savedTheme || systemTheme;

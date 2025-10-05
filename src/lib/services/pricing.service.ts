@@ -1,6 +1,5 @@
 // Product Pricing Service
 // Database-driven pricing service using Prisma
-
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -8,15 +7,8 @@ const prisma = new PrismaClient();
 export interface ProductPricingService {
   getAvailableMeasuresForProduct(productId: number): Promise<any[]>;
   getPriceForUnit(productId: number, measureId: number): Promise<number | null>;
-  getTotalPrice(
-    productId: number,
-    measureId: number,
-    quantity: number
-  ): Promise<number | null>;
-  areMeasuresCompatible(
-    fromMeasureId: number,
-    toMeasureId: number
-  ): Promise<boolean>;
+  getTotalPrice(productId: number, measureId: number, quantity: number): Promise<number | null>;
+  areMeasuresCompatible(fromMeasureId: number, toMeasureId: number): Promise<boolean>;
 }
 
 class DatabasePricingService implements ProductPricingService {
@@ -59,10 +51,7 @@ class DatabasePricingService implements ProductPricingService {
     }
   }
 
-  async getPriceForUnit(
-    productId: number,
-    measureId: number
-  ): Promise<number | null> {
+  async getPriceForUnit(productId: number, measureId: number): Promise<number | null> {
     try {
       const productPrice = await prisma.productPrice.findUnique({
         where: {
@@ -129,10 +118,7 @@ class DatabasePricingService implements ProductPricingService {
     return unitPrice * quantity;
   }
 
-  async areMeasuresCompatible(
-    fromMeasureId: number,
-    toMeasureId: number
-  ): Promise<boolean> {
+  async areMeasuresCompatible(fromMeasureId: number, toMeasureId: number): Promise<boolean> {
     try {
       // Same measure is always compatible
       if (fromMeasureId === toMeasureId) {
@@ -159,11 +145,7 @@ class DatabasePricingService implements ProductPricingService {
         prisma.measure.findUnique({ where: { id: toMeasureId } }),
       ]);
 
-      if (
-        fromMeasure &&
-        toMeasure &&
-        fromMeasure.familyId === toMeasure.familyId
-      ) {
+      if (fromMeasure && toMeasure && fromMeasure.familyId === toMeasure.familyId) {
         return true;
       }
 
@@ -176,5 +158,4 @@ class DatabasePricingService implements ProductPricingService {
 }
 
 // Export the service instance
-export const pricingService: ProductPricingService =
-  new DatabasePricingService();
+export const pricingService: ProductPricingService = new DatabasePricingService();

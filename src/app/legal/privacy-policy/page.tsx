@@ -51,10 +51,9 @@ export default function PrivacyPolicyPage() {
               1. Introducción
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-              ZIVAH International S.A. (&quot;nosotros&quot;,
-              &quot;nuestro&quot; o &quot;ZIVAH&quot;) se compromete a proteger
-              su privacidad y sus datos personales. Esta Política de Privacidad
-              explica cómo recopilamos, usamos, divulgamos y protegemos su
+              ZIVAH International S.A. (&quot;nosotros&quot;, &quot;nuestro&quot; o
+              &quot;ZIVAH&quot;) se compromete a proteger su privacidad y sus datos personales. Esta
+              Política de Privacidad explica cómo recopilamos, usamos, divulgamos y protegemos su
               información cuando utiliza nuestro sitio web y nuestros servicios.
             </p>
           </section>
@@ -75,9 +74,7 @@ export default function PrivacyPolicyPage() {
               <li>Nombre de la empresa</li>
               <li>Dirección de envío y facturación</li>
               <li>Información de productos de interés</li>
-              <li>
-                Cualquier otra información que nos proporcione voluntariamente
-              </li>
+              <li>Cualquier otra información que nos proporcione voluntariamente</li>
             </ul>
 
             <h3 className='text-xl font-medium text-gray-900 dark:text-white mb-3'>
@@ -99,14 +96,11 @@ export default function PrivacyPolicyPage() {
               3. Cómo Utilizamos su Información
             </h2>
             <p className='text-gray-700 dark:text-gray-300 mb-4'>
-              Utilizamos la información recopilada para los siguientes
-              propósitos:
+              Utilizamos la información recopilada para los siguientes propósitos:
             </p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
               <li>Procesar y gestionar sus solicitudes de cotización</li>
-              <li>
-                Proporcionar información sobre nuestros productos y servicios
-              </li>
+              <li>Proporcionar información sobre nuestros productos y servicios</li>
               <li>Mejorar nuestro sitio web y servicios</li>
               <li>Cumplir con obligaciones legales y regulatorias</li>
               <li>Enviar comunicaciones comerciales (con su consentimiento)</li>
@@ -120,18 +114,16 @@ export default function PrivacyPolicyPage() {
               4. Compartir su Información
             </h2>
             <p className='text-gray-700 dark:text-gray-300 mb-4'>
-              No vendemos, alquilamos ni compartimos su información personal con
-              terceros, excepto en las siguientes situaciones:
+              No vendemos, alquilamos ni compartimos su información personal con terceros, excepto
+              en las siguientes situaciones:
             </p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
               <li>Con su consentimiento expreso</li>
               <li>
-                Con proveedores de servicios que nos ayudan a operar (bajo
-                acuerdos de confidencialidad)
+                Con proveedores de servicios que nos ayudan a operar (bajo acuerdos de
+                confidencialidad)
               </li>
-              <li>
-                Cuando sea requerido por ley o para proteger nuestros derechos
-              </li>
+              <li>Cuando sea requerido por ley o para proteger nuestros derechos</li>
               <li>En caso de fusión, adquisición o venta de activos</li>
             </ul>
           </section>
@@ -142,10 +134,9 @@ export default function PrivacyPolicyPage() {
               5. Seguridad de los Datos
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-              Implementamos medidas de seguridad técnicas, administrativas y
-              físicas apropiadas para proteger su información personal contra
-              acceso no autorizado, alteración, divulgación o destrucción. Estas
-              medidas incluyen:
+              Implementamos medidas de seguridad técnicas, administrativas y físicas apropiadas para
+              proteger su información personal contra acceso no autorizado, alteración, divulgación
+              o destrucción. Estas medidas incluyen:
             </p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 mt-4'>
               <li>Encriptación SSL/TLS para transmisiones de datos</li>
@@ -162,12 +153,11 @@ export default function PrivacyPolicyPage() {
               6. Cookies y Tecnologías Similares
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-              Utilizamos cookies y tecnologías similares para mejorar su
-              experiencia en nuestro sitio web. Para más información sobre cómo
-              utilizamos las cookies, consulte nuestra{' '}
+              Utilizamos cookies y tecnologías similares para mejorar su experiencia en nuestro
+              sitio web. Para más información sobre cómo utilizamos las cookies, consulte nuestra{' '}
               <a
                 href='/legal/cookie-policy'
-                className='text-green-600 dark:text-green-400 hover:underline'
+                className='text-accent hover:underline'
               >
                 Política de Cookies
               </a>
@@ -181,33 +171,28 @@ export default function PrivacyPolicyPage() {
               7. Sus Derechos
             </h2>
             <p className='text-gray-700 dark:text-gray-300 mb-4'>
-              De acuerdo con las leyes aplicables de protección de datos, usted
-              tiene los siguientes derechos:
+              De acuerdo con las leyes aplicables de protección de datos, usted tiene los siguientes
+              derechos:
             </p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
               <li>
-                <strong>Derecho de acceso:</strong> Solicitar una copia de sus
-                datos personales
+                <strong>Derecho de acceso:</strong> Solicitar una copia de sus datos personales
               </li>
               <li>
-                <strong>Derecho de rectificación:</strong> Corregir información
-                inexacta
+                <strong>Derecho de rectificación:</strong> Corregir información inexacta
               </li>
               <li>
-                <strong>Derecho de supresión:</strong> Solicitar la eliminación
-                de sus datos
+                <strong>Derecho de supresión:</strong> Solicitar la eliminación de sus datos
               </li>
               <li>
-                <strong>Derecho a la portabilidad:</strong> Obtener sus datos en
-                formato estructurado
+                <strong>Derecho a la portabilidad:</strong> Obtener sus datos en formato
+                estructurado
               </li>
               <li>
-                <strong>Derecho de oposición:</strong> Oponerse al procesamiento
-                de sus datos
+                <strong>Derecho de oposición:</strong> Oponerse al procesamiento de sus datos
               </li>
               <li>
-                <strong>Derecho a la limitación:</strong> Limitar el
-                procesamiento de sus datos
+                <strong>Derecho a la limitación:</strong> Limitar el procesamiento de sus datos
               </li>
             </ul>
           </section>
@@ -218,8 +203,8 @@ export default function PrivacyPolicyPage() {
               8. Contacto
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-              Si tiene preguntas sobre esta Política de Privacidad o desea
-              ejercer sus derechos, puede contactarnos a través de:
+              Si tiene preguntas sobre esta Política de Privacidad o desea ejercer sus derechos,
+              puede contactarnos a través de:
             </p>
             <div className='bg-gray-50 dark:bg-gray-700 p-6 rounded-lg'>
               <div className='grid md:grid-cols-2 gap-6'>
@@ -259,10 +244,9 @@ export default function PrivacyPolicyPage() {
               9. Actualizaciones de esta Política
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-              Podemos actualizar esta Política de Privacidad periódicamente. Le
-              notificaremos sobre cambios significativos mediante un aviso
-              destacado en nuestro sitio web o enviando un correo electrónico.
-              El uso continuado de nuestros servicios después de dichos cambios
+              Podemos actualizar esta Política de Privacidad periódicamente. Le notificaremos sobre
+              cambios significativos mediante un aviso destacado en nuestro sitio web o enviando un
+              correo electrónico. El uso continuado de nuestros servicios después de dichos cambios
               constituye su aceptación de la política actualizada.
             </p>
           </section>
@@ -272,7 +256,7 @@ export default function PrivacyPolicyPage() {
         <div className='text-center mt-8'>
           <Link
             href='/'
-            className='inline-flex items-center text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors'
+            className='inline-flex items-center text-accent hover:text-dark-accent transition-colors'
           >
             ← Volver al Inicio
           </Link>

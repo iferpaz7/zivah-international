@@ -5,8 +5,7 @@ export const metadata: Metadata = {
   title: 'Protección de Datos | ZIVAH International S.A.',
   description:
     'Información sobre protección de datos personales según RGPD y leyes aplicables - ZIVAH International S.A.',
-  keywords:
-    'protección datos, RGPD, GDPR, derechos datos, privacidad, ZIVAH International',
+  keywords: 'protección datos, RGPD, GDPR, derechos datos, privacidad, ZIVAH International',
   robots: {
     index: true,
     follow: true,
@@ -54,8 +53,7 @@ export default function DataProtectionPage() {
                 ZIVAH International S.A.
               </h3>
               <p className='text-gray-700 dark:text-gray-300 mb-2'>
-                <strong>Domicilio:</strong> Casa Matriz Mz 10 S L 31,
-                Samborondón, Guayas, Ecuador
+                <strong>Domicilio:</strong> Casa Matriz Mz 10 S L 31, Samborondón, Guayas, Ecuador
               </p>
               <p className='text-gray-700 dark:text-gray-300 mb-2'>
                 <strong>RUC:</strong> [Número de RUC]
@@ -64,8 +62,7 @@ export default function DataProtectionPage() {
                 <strong>Email:</strong> privacy@zivahinternational.com
               </p>
               <p className='text-gray-700 dark:text-gray-300'>
-                <strong>Delegado de Protección de Datos:</strong>{' '}
-                dpo@zivahinternational.com
+                <strong>Delegado de Protección de Datos:</strong> dpo@zivahinternational.com
               </p>
             </div>
           </section>
@@ -76,27 +73,23 @@ export default function DataProtectionPage() {
               2. Marco Legal
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-              Esta política de protección de datos se basa en las siguientes
-              normativas:
+              Esta política de protección de datos se basa en las siguientes normativas:
             </p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
               <li>
-                <strong>Reglamento (UE) 2016/679 (RGPD):</strong> Para
-                residentes de la Unión Europea
+                <strong>Reglamento (UE) 2016/679 (RGPD):</strong> Para residentes de la Unión
+                Europea
               </li>
               <li>
-                <strong>
-                  Ley Orgánica de Protección de Datos Personales (LOPD):
-                </strong>{' '}
-                Ecuador
+                <strong>Ley Orgánica de Protección de Datos Personales (LOPD):</strong> Ecuador
               </li>
               <li>
-                <strong>California Consumer Privacy Act (CCPA):</strong> Para
-                residentes de California
+                <strong>California Consumer Privacy Act (CCPA):</strong> Para residentes de
+                California
               </li>
               <li>
-                <strong>Normativas sectoriales:</strong> Aplicables al comercio
-                internacional de alimentos
+                <strong>Normativas sectoriales:</strong> Aplicables al comercio internacional de
+                alimentos
               </li>
             </ul>
           </section>
@@ -107,15 +100,12 @@ export default function DataProtectionPage() {
               3. Principios de Tratamiento de Datos
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-              Tratamos sus datos personales de acuerdo con los siguientes
-              principios:
+              Tratamos sus datos personales de acuerdo con los siguientes principios:
             </p>
             <div className='grid md:grid-cols-2 gap-6'>
-              <div className='bg-green-50 dark:bg-green-900/20 p-4 rounded-lg'>
-                <h4 className='font-semibold text-green-900 dark:text-green-100 mb-2'>
-                  Licitud, Lealtad y Transparencia
-                </h4>
-                <p className='text-green-800 dark:text-green-200 text-sm'>
+              <div className='bg-accent/10 p-4 rounded-lg'>
+                <h4 className='font-semibold text-dark-accent mb-2'>Transparencia Total</h4>
+                <p className='text-accent text-sm'>
                   Tratamos sus datos de forma legal, leal y transparente
                 </p>
               </div>
@@ -204,25 +194,23 @@ export default function DataProtectionPage() {
               5. Base Legal para el Tratamiento
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-              Tratamos sus datos personales basándonos en las siguientes bases
-              legales:
+              Tratamos sus datos personales basándonos en las siguientes bases legales:
             </p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
               <li>
-                <strong>Consentimiento:</strong> Para comunicaciones comerciales
-                y cookies no esenciales
+                <strong>Consentimiento:</strong> Para comunicaciones comerciales y cookies no
+                esenciales
               </li>
               <li>
-                <strong>Ejecución de contrato:</strong> Para procesar pedidos y
-                cotizaciones
+                <strong>Ejecución de contrato:</strong> Para procesar pedidos y cotizaciones
               </li>
               <li>
-                <strong>Interés legítimo:</strong> Para mejorar nuestros
-                servicios y prevenir fraudes
+                <strong>Interés legítimo:</strong> Para mejorar nuestros servicios y prevenir
+                fraudes
               </li>
               <li>
-                <strong>Cumplimiento de obligaciones legales:</strong> Para
-                cumplir con regulaciones aplicables
+                <strong>Cumplimiento de obligaciones legales:</strong> Para cumplir con regulaciones
+                aplicables
               </li>
             </ul>
           </section>
@@ -237,20 +225,17 @@ export default function DataProtectionPage() {
             </p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
               <li>
-                <strong>Datos de clientes activos:</strong> Durante la relación
-                comercial y 5 años después
+                <strong>Datos de clientes activos:</strong> Durante la relación comercial y 5 años
+                después
               </li>
               <li>
-                <strong>Datos de cotizaciones:</strong> 3 años desde la última
-                actividad
+                <strong>Datos de cotizaciones:</strong> 3 años desde la última actividad
               </li>
               <li>
-                <strong>Datos de marketing:</strong> Hasta que retire su
-                consentimiento
+                <strong>Datos de marketing:</strong> Hasta que retire su consentimiento
               </li>
               <li>
-                <strong>Datos de navegación:</strong> 2 años para análisis
-                estadísticos
+                <strong>Datos de navegación:</strong> 2 años para análisis estadísticos
               </li>
             </ul>
           </section>
@@ -286,8 +271,7 @@ export default function DataProtectionPage() {
                     🗑️ Derecho de Supresión
                   </h4>
                   <p className='text-gray-700 dark:text-gray-300 text-sm'>
-                    Solicitar eliminación de sus datos (&quot;Derecho al
-                    olvido&quot;)
+                    Solicitar eliminación de sus datos (&quot;Derecho al olvido&quot;)
                   </p>
                 </div>
               </div>
@@ -329,8 +313,7 @@ export default function DataProtectionPage() {
               8. Cómo Ejercer sus Derechos
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-              Para ejercer cualquiera de sus derechos, puede contactarnos a
-              través de:
+              Para ejercer cualquiera de sus derechos, puede contactarnos a través de:
             </p>
 
             <div className='bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800'>
@@ -339,9 +322,7 @@ export default function DataProtectionPage() {
               </h4>
               <div className='grid md:grid-cols-2 gap-6'>
                 <div>
-                  <h5 className='font-medium text-blue-900 dark:text-blue-100 mb-2'>
-                    Por Email
-                  </h5>
+                  <h5 className='font-medium text-blue-900 dark:text-blue-100 mb-2'>Por Email</h5>
                   <p className='text-blue-800 dark:text-blue-200 text-sm mb-2'>
                     privacy@zivahinternational.com
                   </p>
@@ -365,9 +346,9 @@ export default function DataProtectionPage() {
             </div>
 
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mt-4'>
-              Para verificar su identidad, podremos solicitarle información
-              adicional. Todos los derechos se ejercen de forma gratuita, salvo
-              que las solicitudes sean manifiestamente infundadas o excesivas.
+              Para verificar su identidad, podremos solicitarle información adicional. Todos los
+              derechos se ejercen de forma gratuita, salvo que las solicitudes sean manifiestamente
+              infundadas o excesivas.
             </p>
           </section>
 
@@ -377,27 +358,23 @@ export default function DataProtectionPage() {
               9. Medidas de Seguridad
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-              Implementamos medidas técnicas y organizativas apropiadas para
-              proteger sus datos:
+              Implementamos medidas técnicas y organizativas apropiadas para proteger sus datos:
             </p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
               <li>
                 <strong>Encriptación:</strong> Datos en tránsito y en reposo
               </li>
               <li>
-                <strong>Control de acceso:</strong> Principio de mínimo
-                privilegio
+                <strong>Control de acceso:</strong> Principio de mínimo privilegio
               </li>
               <li>
-                <strong>Monitoreo continuo:</strong> Detección de amenazas y
-                vulnerabilidades
+                <strong>Monitoreo continuo:</strong> Detección de amenazas y vulnerabilidades
               </li>
               <li>
                 <strong>Copias de seguridad:</strong> Regulares y seguras
               </li>
               <li>
-                <strong>Capacitación:</strong> Personal formado en protección de
-                datos
+                <strong>Capacitación:</strong> Personal formado en protección de datos
               </li>
             </ul>
           </section>
@@ -408,10 +385,9 @@ export default function DataProtectionPage() {
               10. Transferencias Internacionales
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-              Sus datos pueden transferirse a países fuera del Espacio Económico
-              Europeo (EEE). En estos casos, garantizamos que las transferencias
-              cumplan con las garantías adecuadas establecidas por la
-              legislación aplicable, incluyendo cláusulas contractuales tipo o
+              Sus datos pueden transferirse a países fuera del Espacio Económico Europeo (EEE). En
+              estos casos, garantizamos que las transferencias cumplan con las garantías adecuadas
+              establecidas por la legislación aplicable, incluyendo cláusulas contractuales tipo o
               decisiones de adecuación de la Comisión Europea.
             </p>
           </section>
@@ -422,22 +398,20 @@ export default function DataProtectionPage() {
               11. Reclamaciones
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-              Si considera que el tratamiento de sus datos personales no cumple
-              con la normativa aplicable, tiene derecho a presentar una
-              reclamación ante la autoridad de control competente:
+              Si considera que el tratamiento de sus datos personales no cumple con la normativa
+              aplicable, tiene derecho a presentar una reclamación ante la autoridad de control
+              competente:
             </p>
             <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
               <li>
-                <strong>En Ecuador:</strong> Agencia de Regulación y Control de
-                las Telecomunicaciones (ARCOTEL)
+                <strong>En Ecuador:</strong> Agencia de Regulación y Control de las
+                Telecomunicaciones (ARCOTEL)
               </li>
               <li>
-                <strong>En la UE:</strong> Autoridad de Protección de Datos de
-                su país de residencia
+                <strong>En la UE:</strong> Autoridad de Protección de Datos de su país de residencia
               </li>
               <li>
-                <strong>En España:</strong> Agencia Española de Protección de
-                Datos (AEPD)
+                <strong>En España:</strong> Agencia Española de Protección de Datos (AEPD)
               </li>
             </ul>
           </section>
@@ -448,10 +422,9 @@ export default function DataProtectionPage() {
               12. Actualizaciones
             </h2>
             <p className='text-gray-700 dark:text-gray-300 leading-relaxed'>
-              Esta política puede actualizarse para reflejar cambios en nuestras
-              prácticas o en la legislación aplicable. Le informaremos sobre
-              cambios significativos mediante un aviso destacado en nuestro
-              sitio web o enviando una comunicación directa.
+              Esta política puede actualizarse para reflejar cambios en nuestras prácticas o en la
+              legislación aplicable. Le informaremos sobre cambios significativos mediante un aviso
+              destacado en nuestro sitio web o enviando una comunicación directa.
             </p>
           </section>
         </div>
@@ -460,7 +433,7 @@ export default function DataProtectionPage() {
         <div className='text-center mt-8'>
           <Link
             href='/'
-            className='inline-flex items-center text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors'
+            className='inline-flex items-center text-accent dark:text-accent hover:text-accent/90 dark:hover:text-accent/90 transition-colors'
           >
             ← Volver al Inicio
           </Link>

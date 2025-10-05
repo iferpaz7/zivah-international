@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import Head from 'next/head';
 
 interface SEOProps {
@@ -81,12 +82,10 @@ export default function SEO({
         // Article specific
         if (type === 'article' && publishedTime) {
           updateMetaTag('article:published_time', publishedTime, 'property');
-          if (modifiedTime)
-            updateMetaTag('article:modified_time', modifiedTime, 'property');
+          if (modifiedTime) updateMetaTag('article:modified_time', modifiedTime, 'property');
           if (author) updateMetaTag('article:author', author, 'property');
           if (section) updateMetaTag('article:section', section, 'property');
-          if (tags)
-            tags.forEach(tag => updateMetaTag('article:tag', tag, 'property'));
+          if (tags) tags.forEach(tag => updateMetaTag('article:tag', tag, 'property'));
         }
 
         // Canonical URL
@@ -111,16 +110,10 @@ export default function SEO({
     noindex,
   ]);
 
-  const updateMetaTag = (
-    name: string,
-    content: string,
-    attribute: string = 'name'
-  ) => {
+  const updateMetaTag = (name: string, content: string, attribute: string = 'name') => {
     if (typeof document === 'undefined') return;
 
-    let element = document.querySelector(
-      `meta[${attribute}="${name}"]`
-    ) as HTMLMetaElement;
+    let element = document.querySelector(`meta[${attribute}="${name}"]`) as HTMLMetaElement;
     if (element) {
       element.content = content;
     } else {
@@ -134,9 +127,7 @@ export default function SEO({
   const updateCanonicalUrl = (canonicalUrl: string) => {
     if (typeof document === 'undefined') return;
 
-    let canonical = document.querySelector(
-      'link[rel="canonical"]'
-    ) as HTMLLinkElement;
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
     if (canonical) {
       canonical.href = canonicalUrl;
     } else {
@@ -188,8 +179,7 @@ export default function SEO({
             itemOffered: {
               '@type': 'Product',
               name: 'Frutas Tropicales',
-              description:
-                'Mango, piña, banano, papaya y frutas exóticas ecuatorianas',
+              description: 'Mango, piña, banano, papaya y frutas exóticas ecuatorianas',
             },
           },
           {
@@ -197,8 +187,7 @@ export default function SEO({
             itemOffered: {
               '@type': 'Product',
               name: 'Camarón',
-              description:
-                'Camarón vannamei premium con certificación internacional',
+              description: 'Camarón vannamei premium con certificación internacional',
             },
           },
           {
@@ -279,9 +268,18 @@ export default function SEO({
   return (
     <Head>
       <title>{title}</title>
-      <meta name='description' content={description} />
-      <meta name='keywords' content={keywords.join(', ')} />
-      <meta name='author' content={author} />
+      <meta
+        name='description'
+        content={description}
+      />
+      <meta
+        name='keywords'
+        content={keywords.join(', ')}
+      />
+      <meta
+        name='author'
+        content={author}
+      />
       <meta
         name='robots'
         content={
@@ -292,39 +290,98 @@ export default function SEO({
       />
 
       {/* Open Graph */}
-      <meta property='og:title' content={title} />
-      <meta property='og:description' content={description} />
-      <meta property='og:image' content={image} />
-      <meta property='og:url' content={url} />
-      <meta property='og:type' content={type} />
-      <meta property='og:site_name' content='ZIVAH International S.A.' />
+      <meta
+        property='og:title'
+        content={title}
+      />
+      <meta
+        property='og:description'
+        content={description}
+      />
+      <meta
+        property='og:image'
+        content={image}
+      />
+      <meta
+        property='og:url'
+        content={url}
+      />
+      <meta
+        property='og:type'
+        content={type}
+      />
+      <meta
+        property='og:site_name'
+        content='ZIVAH International S.A.'
+      />
 
       {/* Twitter Card */}
-      <meta name='twitter:card' content='summary_large_image' />
-      <meta name='twitter:title' content={title} />
-      <meta name='twitter:description' content={description} />
-      <meta name='twitter:image' content={image} />
-      <meta name='twitter:site' content='@ZivahIntl' />
-      <meta name='twitter:creator' content='@ZivahIntl' />
+      <meta
+        name='twitter:card'
+        content='summary_large_image'
+      />
+      <meta
+        name='twitter:title'
+        content={title}
+      />
+      <meta
+        name='twitter:description'
+        content={description}
+      />
+      <meta
+        name='twitter:image'
+        content={image}
+      />
+      <meta
+        name='twitter:site'
+        content='@ZivahIntl'
+      />
+      <meta
+        name='twitter:creator'
+        content='@ZivahIntl'
+      />
 
       {/* Article specific */}
       {type === 'article' && publishedTime && (
         <>
-          <meta property='article:published_time' content={publishedTime} />
+          <meta
+            property='article:published_time'
+            content={publishedTime}
+          />
           {modifiedTime && (
-            <meta property='article:modified_time' content={modifiedTime} />
+            <meta
+              property='article:modified_time'
+              content={modifiedTime}
+            />
           )}
-          {author && <meta property='article:author' content={author} />}
-          {section && <meta property='article:section' content={section} />}
+          {author && (
+            <meta
+              property='article:author'
+              content={author}
+            />
+          )}
+          {section && (
+            <meta
+              property='article:section'
+              content={section}
+            />
+          )}
           {tags &&
             tags.map((tag, index) => (
-              <meta key={index} property='article:tag' content={tag} />
+              <meta
+                key={index}
+                property='article:tag'
+                content={tag}
+              />
             ))}
         </>
       )}
 
       {/* Canonical URL */}
-      <link rel='canonical' href={canonical || url} />
+      <link
+        rel='canonical'
+        href={canonical || url}
+      />
 
       {/* Structured Data */}
       <script
@@ -340,10 +397,7 @@ export default function SEO({
 // SEO utilities
 export const seoUtils = {
   // Generate meta description from content
-  generateMetaDescription: (
-    content: string,
-    maxLength: number = 160
-  ): string => {
+  generateMetaDescription: (content: string, maxLength: number = 160): string => {
     const cleanContent = content
       .replace(/<[^>]*>/g, '')
       .replace(/\s+/g, ' ')
@@ -352,9 +406,7 @@ export const seoUtils = {
 
     const truncated = cleanContent.substring(0, maxLength - 3);
     const lastSpace = truncated.lastIndexOf(' ');
-    return lastSpace > 0
-      ? truncated.substring(0, lastSpace) + '...'
-      : truncated + '...';
+    return lastSpace > 0 ? truncated.substring(0, lastSpace) + '...' : truncated + '...';
   },
 
   // Generate keywords from content
@@ -430,11 +482,7 @@ export const seoUtils = {
       errors.push('Title should be between 30-60 characters');
     }
 
-    if (
-      !props.description ||
-      props.description.length < 120 ||
-      props.description.length > 160
-    ) {
+    if (!props.description || props.description.length < 120 || props.description.length > 160) {
       errors.push('Description should be between 120-160 characters');
     }
 
@@ -462,17 +510,13 @@ export function useSEO(seoProps: SEOProps) {
     }
 
     // Update meta description
-    const metaDescription = document.querySelector(
-      'meta[name="description"]'
-    ) as HTMLMetaElement;
+    const metaDescription = document.querySelector('meta[name="description"]') as HTMLMetaElement;
     if (metaDescription && seoProps.description) {
       metaDescription.content = seoProps.description;
     }
 
     // Update canonical URL
-    const canonical = document.querySelector(
-      'link[rel="canonical"]'
-    ) as HTMLLinkElement;
+    const canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
     if (canonical && seoProps.canonical) {
       canonical.href = seoProps.canonical;
     }
