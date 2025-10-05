@@ -1,10 +1,192 @@
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Starting comprehensive database seed...');
+
+  // Create currencies first
+  console.log('💰 Creating currencies...');
+  const usd = await prisma.currency.upsert({
+    where: { code: 'USD' },
+    update: {},
+    create: {
+      code: 'USD',
+      name: 'US Dollar',
+      symbol: '$',
+      isActive: true,
+      sortOrder: 1,
+    },
+  });
+
+  const cop = await prisma.currency.upsert({
+    where: { code: 'COP' },
+    update: {},
+    create: {
+      code: 'COP',
+      name: 'Colombian Peso',
+      symbol: '$',
+      isActive: true,
+      sortOrder: 2,
+    },
+  });
+
+  const pen = await prisma.currency.upsert({
+    where: { code: 'PEN' },
+    update: {},
+    create: {
+      code: 'PEN',
+      name: 'Peruvian Sol',
+      symbol: 'S/',
+      isActive: true,
+      sortOrder: 3,
+    },
+  });
+
+  const clp = await prisma.currency.upsert({
+    where: { code: 'CLP' },
+    update: {},
+    create: {
+      code: 'CLP',
+      name: 'Chilean Peso',
+      symbol: '$',
+      isActive: true,
+      sortOrder: 4,
+    },
+  });
+
+  const mxn = await prisma.currency.upsert({
+    where: { code: 'MXN' },
+    update: {},
+    create: {
+      code: 'MXN',
+      name: 'Mexican Peso',
+      symbol: '$',
+      isActive: true,
+      sortOrder: 5,
+    },
+  });
+
+  const eur = await prisma.currency.upsert({
+    where: { code: 'EUR' },
+    update: {},
+    create: {
+      code: 'EUR',
+      name: 'Euro',
+      symbol: '€',
+      isActive: true,
+      sortOrder: 6,
+    },
+  });
+
+  const cny = await prisma.currency.upsert({
+    where: { code: 'CNY' },
+    update: {},
+    create: {
+      code: 'CNY',
+      name: 'Chinese Yuan',
+      symbol: '¥',
+      isActive: true,
+      sortOrder: 7,
+    },
+  });
+
+  const jpy = await prisma.currency.upsert({
+    where: { code: 'JPY' },
+    update: {},
+    create: {
+      code: 'JPY',
+      name: 'Japanese Yen',
+      symbol: '¥',
+      isActive: true,
+      sortOrder: 8,
+    },
+  });
+
+  const gbp = await prisma.currency.upsert({
+    where: { code: 'GBP' },
+    update: {},
+    create: {
+      code: 'GBP',
+      name: 'British Pound',
+      symbol: '£',
+      isActive: true,
+      sortOrder: 9,
+    },
+  });
+
+  const cad = await prisma.currency.upsert({
+    where: { code: 'CAD' },
+    update: {},
+    create: {
+      code: 'CAD',
+      name: 'Canadian Dollar',
+      symbol: 'C$',
+      isActive: true,
+      sortOrder: 10,
+    },
+  });
+
+  const brl = await prisma.currency.upsert({
+    where: { code: 'BRL' },
+    update: {},
+    create: {
+      code: 'BRL',
+      name: 'Brazilian Real',
+      symbol: 'R$',
+      isActive: true,
+      sortOrder: 11,
+    },
+  });
+
+  const ars = await prisma.currency.upsert({
+    where: { code: 'ARS' },
+    update: {},
+    create: {
+      code: 'ARS',
+      name: 'Argentine Peso',
+      symbol: '$',
+      isActive: true,
+      sortOrder: 12,
+    },
+  });
+
+  const krw = await prisma.currency.upsert({
+    where: { code: 'KRW' },
+    update: {},
+    create: {
+      code: 'KRW',
+      name: 'South Korean Won',
+      symbol: '₩',
+      isActive: true,
+      sortOrder: 13,
+    },
+  });
+
+  const aud = await prisma.currency.upsert({
+    where: { code: 'AUD' },
+    update: {},
+    create: {
+      code: 'AUD',
+      name: 'Australian Dollar',
+      symbol: 'A$',
+      isActive: true,
+      sortOrder: 14,
+    },
+  });
+
+  const chf = await prisma.currency.upsert({
+    where: { code: 'CHF' },
+    update: {},
+    create: {
+      code: 'CHF',
+      name: 'Swiss Franc',
+      symbol: 'CHF',
+      isActive: true,
+      sortOrder: 15,
+    },
+  });
 
   // Create countries for international operations
   console.log('🌍 Creating countries...');
@@ -16,7 +198,7 @@ async function main() {
       code: 'EC',
       icon: '🇪🇨',
       continent: 'South America',
-      currency: 'USD',
+      currencyId: usd.id,
       callingCode: '+593',
       phoneFormat: '+593 XX XXX XXXX',
       isActive: true,
@@ -31,7 +213,7 @@ async function main() {
       code: 'US',
       icon: '🇺🇸',
       continent: 'North America',
-      currency: 'USD',
+      currencyId: usd.id,
       callingCode: '+1',
       phoneFormat: '+1 (XXX) XXX-XXXX',
       isActive: true,
@@ -46,7 +228,7 @@ async function main() {
       code: 'CO',
       icon: '🇨🇴',
       continent: 'South America',
-      currency: 'COP',
+      currencyId: cop.id,
       callingCode: '+57',
       phoneFormat: '+57 XXX XXX XXXX',
       isActive: true,
@@ -61,7 +243,7 @@ async function main() {
       code: 'PE',
       icon: '🇵🇪',
       continent: 'South America',
-      currency: 'PEN',
+      currencyId: pen.id,
       callingCode: '+51',
       phoneFormat: '+51 XXX XXX XXX',
       isActive: true,
@@ -76,7 +258,7 @@ async function main() {
       code: 'CL',
       icon: '🇨🇱',
       continent: 'South America',
-      currency: 'CLP',
+      currencyId: clp.id,
       callingCode: '+56',
       phoneFormat: '+56 X XXXX XXXX',
       isActive: true,
@@ -91,7 +273,7 @@ async function main() {
       code: 'MX',
       icon: '🇲🇽',
       continent: 'North America',
-      currency: 'MXN',
+      currencyId: mxn.id,
       callingCode: '+52',
       phoneFormat: '+52 XX XXXX XXXX',
       isActive: true,
@@ -106,7 +288,7 @@ async function main() {
       code: 'ES',
       icon: '🇪🇸',
       continent: 'Europe',
-      currency: 'EUR',
+      currencyId: eur.id,
       callingCode: '+34',
       phoneFormat: '+34 XXX XXX XXX',
       isActive: true,
@@ -121,7 +303,7 @@ async function main() {
       code: 'CN',
       icon: '🇨🇳',
       continent: 'Asia',
-      currency: 'CNY',
+      currencyId: cny.id,
       callingCode: '+86',
       phoneFormat: '+86 XXX XXXX XXXX',
       isActive: true,
@@ -136,7 +318,7 @@ async function main() {
       code: 'JP',
       icon: '🇯🇵',
       continent: 'Asia',
-      currency: 'JPY',
+      currencyId: jpy.id,
       callingCode: '+81',
       phoneFormat: '+81 XX XXXX XXXX',
       isActive: true,
@@ -151,7 +333,7 @@ async function main() {
       code: 'DE',
       icon: '🇩🇪',
       continent: 'Europe',
-      currency: 'EUR',
+      currencyId: eur.id,
       callingCode: '+49',
       phoneFormat: '+49 XXX XXXXXXX',
       isActive: true,
@@ -167,7 +349,7 @@ async function main() {
       code: 'IT',
       icon: '🇮🇹',
       continent: 'Europe',
-      currency: 'EUR',
+      currency: { connect: { id: eur.id } },
       callingCode: '+39',
       phoneFormat: '+39 XXX XXX XXXX',
       isActive: true,
@@ -182,7 +364,7 @@ async function main() {
       code: 'FR',
       icon: '🇫🇷',
       continent: 'Europe',
-      currency: 'EUR',
+      currencyId: eur.id,
       callingCode: '+33',
       phoneFormat: '+33 X XX XX XX XX',
       isActive: true,
@@ -197,7 +379,7 @@ async function main() {
       code: 'GB',
       icon: '🇬🇧',
       continent: 'Europe',
-      currency: 'GBP',
+      currencyId: gbp.id,
       callingCode: '+44',
       phoneFormat: '+44 XXXX XXX XXX',
       isActive: true,
@@ -212,7 +394,7 @@ async function main() {
       code: 'CA',
       icon: '🇨🇦',
       continent: 'North America',
-      currency: 'CAD',
+      currencyId: cad.id,
       callingCode: '+1',
       phoneFormat: '+1 (XXX) XXX-XXXX',
       isActive: true,
@@ -227,7 +409,7 @@ async function main() {
       code: 'BR',
       icon: '🇧🇷',
       continent: 'South America',
-      currency: 'BRL',
+      currencyId: brl.id,
       callingCode: '+55',
       phoneFormat: '+55 XX XXXXX-XXXX',
       isActive: true,
@@ -242,7 +424,7 @@ async function main() {
       code: 'AR',
       icon: '🇦🇷',
       continent: 'South America',
-      currency: 'ARS',
+      currencyId: ars.id,
       callingCode: '+54',
       phoneFormat: '+54 XX XXXX-XXXX',
       isActive: true,
@@ -257,7 +439,7 @@ async function main() {
       code: 'KR',
       icon: '🇰🇷',
       continent: 'Asia',
-      currency: 'KRW',
+      currencyId: krw.id,
       callingCode: '+82',
       phoneFormat: '+82 XX XXXX XXXX',
       isActive: true,
@@ -272,7 +454,7 @@ async function main() {
       code: 'AU',
       icon: '🇦🇺',
       continent: 'Oceania',
-      currency: 'AUD',
+      currencyId: aud.id,
       callingCode: '+61',
       phoneFormat: '+61 XXX XXX XXX',
       isActive: true,
@@ -287,7 +469,7 @@ async function main() {
       code: 'NL',
       icon: '🇳🇱',
       continent: 'Europe',
-      currency: 'EUR',
+      currencyId: eur.id,
       callingCode: '+31',
       phoneFormat: '+31 XX XXX XXXX',
       isActive: true,
@@ -302,7 +484,7 @@ async function main() {
       code: 'BE',
       icon: '🇧🇪',
       continent: 'Europe',
-      currency: 'EUR',
+      currencyId: eur.id,
       callingCode: '+32',
       phoneFormat: '+32 XXX XX XX XX',
       isActive: true,
@@ -317,10 +499,60 @@ async function main() {
       code: 'CH',
       icon: '🇨🇭',
       continent: 'Europe',
-      currency: 'CHF',
+      currencyId: chf.id,
       callingCode: '+41',
       phoneFormat: '+41 XX XXX XX XX',
       isActive: true,
+    },
+  });
+
+  // Create measure families first
+  console.log('📏 Creating measure families...');
+  const weightFamily = await prisma.measureFamily.upsert({
+    where: { name: 'Weight' },
+    update: {},
+    create: {
+      name: 'Weight',
+      code: 'WEIGHT',
+      description: 'Units for measuring weight/mass',
+      isActive: true,
+      sortOrder: 1,
+    },
+  });
+
+  const volumeFamily = await prisma.measureFamily.upsert({
+    where: { name: 'Volume' },
+    update: {},
+    create: {
+      name: 'Volume',
+      code: 'VOLUME',
+      description: 'Units for measuring volume/capacity',
+      isActive: true,
+      sortOrder: 2,
+    },
+  });
+
+  const countFamily = await prisma.measureFamily.upsert({
+    where: { name: 'Count' },
+    update: {},
+    create: {
+      name: 'Count',
+      code: 'COUNT',
+      description: 'Units for counting items',
+      isActive: true,
+      sortOrder: 3,
+    },
+  });
+
+  const areaFamily = await prisma.measureFamily.upsert({
+    where: { name: 'Area' },
+    update: {},
+    create: {
+      name: 'Area',
+      code: 'AREA',
+      description: 'Units for measuring area/surface',
+      isActive: true,
+      sortOrder: 4,
     },
   });
 
@@ -336,6 +568,7 @@ async function main() {
       shortName: 'kg',
       symbol: 'kg',
       type: 'WEIGHT',
+      familyId: weightFamily.id,
       baseUnit: 'kg',
       conversionFactor: 1.0,
       isActive: true,
@@ -352,6 +585,7 @@ async function main() {
       shortName: 'MT',
       symbol: 't',
       type: 'WEIGHT',
+      familyId: weightFamily.id,
       baseUnit: 'kg',
       conversionFactor: 1000.0,
       isActive: true,
@@ -368,6 +602,7 @@ async function main() {
       shortName: 'lb',
       symbol: 'lb',
       type: 'WEIGHT',
+      familyId: weightFamily.id,
       baseUnit: 'kg',
       conversionFactor: 0.453592,
       isActive: true,
@@ -385,6 +620,7 @@ async function main() {
       shortName: 'L',
       symbol: 'L',
       type: 'VOLUME',
+      familyId: volumeFamily.id,
       baseUnit: 'L',
       conversionFactor: 1.0,
       isActive: true,
@@ -401,6 +637,7 @@ async function main() {
       shortName: 'm³',
       symbol: 'm³',
       type: 'VOLUME',
+      familyId: volumeFamily.id,
       baseUnit: 'L',
       conversionFactor: 1000.0,
       isActive: true,
@@ -690,8 +927,6 @@ async function main() {
           'Capacidad: ~20,000kg por contenedor 40ft',
         ],
       },
-      basePrice: 17000.0, // $17,000 per 40ft container (~20 tons at $0.85/kg)
-      priceUnit: 'container',
       stockQuantity: 150, // containers available
       minOrderQty: 1, // minimum 1 container
       imageUrl: '/assets/images/products/banano-cavendish.jpg',
@@ -748,8 +983,6 @@ async function main() {
           'Capacidad: ~15,000kg por contenedor 40ft',
         ],
       },
-      basePrice: 63000.0, // $63,000 per 40ft container (~15 tons at $4.20/kg)
-      priceUnit: 'container',
       stockQuantity: 50, // containers available
       minOrderQty: 1, // minimum 1 container
       imageUrl: '/assets/images/products/cacao-nacional.jpg',
@@ -800,8 +1033,6 @@ async function main() {
           'Trazabilidad completa',
         ],
       },
-      basePrice: 8.5,
-      priceUnit: 'kg',
       stockQuantity: 5000,
       minOrderQty: 100,
       imageUrl: '/assets/images/products/camaron-blanco.jpg',
@@ -850,8 +1081,6 @@ async function main() {
           'Vida en florero: 12-15 días',
         ],
       },
-      basePrice: 16250, // $0.65/stem * 25,000 stems per container
-      priceUnit: 'container',
       stockQuantity: 50000,
       minOrderQty: 500,
       imageUrl: '/assets/images/products/rosas-rojas.jpg',
@@ -891,8 +1120,6 @@ async function main() {
           'Asesoría técnica incluida',
         ],
       },
-      basePrice: 0.008,
-      priceUnit: 'unit',
       stockQuantity: 1000000,
       minOrderQty: 100000,
       imageUrl: '/assets/images/products/larvas-camaron.jpg',
@@ -932,8 +1159,6 @@ async function main() {
           'Certificación orgánica disponible',
         ],
       },
-      basePrice: 70000, // $3.50/kg * 20,000 kg per container
-      priceUnit: 'container',
       stockQuantity: 4000,
       minOrderQty: 500,
       imageUrl: '/assets/images/products/aguacate-hass.jpg',
@@ -981,8 +1206,6 @@ async function main() {
           'Resistente al transporte',
         ],
       },
-      basePrice: 54000, // $2.80/kg * 19,000 kg per container (avg for mangos)
-      priceUnit: 'container',
       stockQuantity: 6000,
       minOrderQty: 1000,
       imageUrl: '/assets/images/products/mango-tommy.jpg',
@@ -1030,8 +1253,6 @@ async function main() {
           'Comercio justo certificado',
         ],
       },
-      basePrice: 108360, // $6.20/kg * 17,480 kg per container (coffee standard)
-      priceUnit: 'container',
       stockQuantity: 2000,
       minOrderQty: 100,
       imageUrl: '/assets/images/products/cafe-arabica.jpg',
@@ -1076,8 +1297,6 @@ async function main() {
           'Trazabilidad completa',
         ],
       },
-      basePrice: 12.5,
-      priceUnit: 'kg',
       stockQuantity: 1500,
       minOrderQty: 50,
       imageUrl: '/assets/images/products/atun-fresco.jpg',
@@ -1120,8 +1339,6 @@ async function main() {
           'Vida útil extendida',
         ],
       },
-      basePrice: 1.2,
-      priceUnit: 'kg',
       stockQuantity: 2000,
       minOrderQty: 200,
       imageUrl: '/assets/images/products/calabaza-premium.jpg',
@@ -1157,8 +1374,6 @@ async function main() {
           'Fibra alta',
         ],
       },
-      basePrice: 0.9,
-      priceUnit: 'kg',
       stockQuantity: 3000,
       minOrderQty: 300,
       imageUrl: '/assets/images/products/camote-dulce.jpg',
@@ -1194,8 +1409,6 @@ async function main() {
           'Fibra aprovechable',
         ],
       },
-      basePrice: 0.35,
-      priceUnit: 'kg',
       stockQuantity: 5000,
       minOrderQty: 1000,
       imageUrl: '/assets/images/products/cana-azucar.jpg',
@@ -1231,8 +1444,6 @@ async function main() {
           'Larga conservación',
         ],
       },
-      basePrice: 0.75,
-      priceUnit: 'kg',
       stockQuantity: 4000,
       minOrderQty: 500,
       imageUrl: '/assets/images/products/cebolla-premium.jpg',
@@ -1268,8 +1479,6 @@ async function main() {
           'Rico en vitamina C',
         ],
       },
-      basePrice: 1.1,
-      priceUnit: 'kg',
       stockQuantity: 2500,
       minOrderQty: 250,
       imageUrl: '/assets/images/products/chayote-organico.jpg',
@@ -1301,8 +1510,6 @@ async function main() {
         packaging: 'Cajas de 15 unidades',
         features: ['Agua natural', 'Pulpa fresca', 'Rico en electrolitos'],
       },
-      basePrice: 0.85,
-      priceUnit: 'unit',
       stockQuantity: 3000,
       minOrderQty: 100,
       imageUrl: '/assets/images/products/coco-tropical.jpg',
@@ -1338,8 +1545,6 @@ async function main() {
           'Antioxidante natural',
         ],
       },
-      basePrice: 4.5,
-      priceUnit: 'kg',
       stockQuantity: 1000,
       minOrderQty: 50,
       imageUrl: '/assets/images/products/curcuma.jpg',
@@ -1375,8 +1580,6 @@ async function main() {
           'Antiinflamatorio natural',
         ],
       },
-      basePrice: 3.2,
-      priceUnit: 'kg',
       stockQuantity: 1500,
       minOrderQty: 100,
       imageUrl: '/assets/images/products/jengibre-fresco.jpg',
@@ -1414,8 +1617,6 @@ async function main() {
           'Versátil en cocina',
         ],
       },
-      basePrice: 1.4,
-      priceUnit: 'kg',
       stockQuantity: 2000,
       minOrderQty: 200,
       imageUrl: '/assets/images/products/name-tropical.jpg',
@@ -1451,8 +1652,6 @@ async function main() {
           'Tradicional ecuatoriano',
         ],
       },
-      basePrice: 1.6,
-      priceUnit: 'kg',
       stockQuantity: 1500,
       minOrderQty: 150,
       imageUrl: '/assets/images/products/nampi.jpg',
@@ -1488,8 +1687,6 @@ async function main() {
           'Cosecha responsable',
         ],
       },
-      basePrice: 8.5,
-      priceUnit: 'kg',
       stockQuantity: 800,
       minOrderQty: 50,
       imageUrl: '/assets/images/products/palmito-organico.jpg',
@@ -1521,8 +1718,6 @@ async function main() {
         packaging: 'Cajas de 12kg',
         features: ['Dulzura natural', 'Rica en papaína', 'Enzimas digestivas'],
       },
-      basePrice: 1.8,
-      priceUnit: 'kg',
       stockQuantity: 3000,
       minOrderQty: 300,
       imageUrl: '/assets/images/products/papaya-hawaiana.jpg',
@@ -1559,8 +1754,6 @@ async function main() {
           'Bajo contenido ácido',
         ],
       },
-      basePrice: 2.2,
-      priceUnit: 'kg',
       stockQuantity: 4000,
       minOrderQty: 400,
       imageUrl: '/assets/images/products/pina-golden.jpg',
@@ -1596,8 +1789,6 @@ async function main() {
           'Rico en almidón',
         ],
       },
-      basePrice: 0.7,
-      priceUnit: 'kg',
       stockQuantity: 8000,
       minOrderQty: 1000,
       imageUrl: '/assets/images/products/platano-verde.jpg',
@@ -1633,8 +1824,6 @@ async function main() {
           'Versátil uso',
         ],
       },
-      basePrice: 0.6,
-      priceUnit: 'kg',
       stockQuantity: 6000,
       minOrderQty: 1000,
       imageUrl: '/assets/images/products/yuca-premium.jpg',
@@ -1670,8 +1859,6 @@ async function main() {
           'Adaptadas al clima',
         ],
       },
-      basePrice: 15.0,
-      priceUnit: 'unit',
       stockQuantity: 500,
       minOrderQty: 50,
       imageUrl: '/assets/images/products/arboles-mango.jpg',
@@ -1707,8 +1894,6 @@ async function main() {
           'Variedades comerciales',
         ],
       },
-      basePrice: 18.0,
-      priceUnit: 'unit',
       stockQuantity: 400,
       minOrderQty: 25,
       imageUrl: '/assets/images/products/arboles-aguacate.jpg',
@@ -1744,8 +1929,6 @@ async function main() {
           'Certificación sanitaria',
         ],
       },
-      basePrice: 12.0,
-      priceUnit: 'unit',
       stockQuantity: 600,
       minOrderQty: 50,
       imageUrl: '/assets/images/products/arboles-citricos.jpg',
@@ -1781,8 +1964,6 @@ async function main() {
           'Procesamiento artesanal',
         ],
       },
-      basePrice: 25.0,
-      priceUnit: 'kg',
       stockQuantity: 300,
       minOrderQty: 20,
       imageUrl: '/assets/images/products/nueces-macadamia.jpg',
@@ -1818,8 +1999,6 @@ async function main() {
           'Técnicas especializadas',
         ],
       },
-      basePrice: 22.0,
-      priceUnit: 'kg',
       stockQuantity: 200,
       minOrderQty: 15,
       imageUrl: '/assets/images/products/nueces-pecanas.jpg',
@@ -1855,8 +2034,6 @@ async function main() {
           'Métodos modernos',
         ],
       },
-      basePrice: 18.0,
-      priceUnit: 'kg',
       stockQuantity: 400,
       minOrderQty: 25,
       imageUrl: '/assets/images/products/almendras-tropicales.jpg',
@@ -1889,6 +2066,176 @@ async function main() {
     '  - Larvas de Camarón correctly categorized under Marinos y de la Pesca'
   );
   console.log('  - All products from static page now available in database');
+
+  // Create product prices for different measures
+  console.log('💰 Creating product prices...');
+
+  // Get some sample products for pricing
+  const products = await prisma.product.findMany({ take: 5 });
+  const measures = await prisma.measure.findMany();
+
+  if (products.length > 0 && measures.length > 0) {
+    // Create pricing for the first product (Banano)
+    const bananoProduct = products[0];
+    const kgMeasure = measures.find((m: any) => m.shortName === 'kg');
+    const lbMeasure = measures.find((m: any) => m.shortName === 'lb');
+    const tonMeasure = measures.find((m: any) => m.shortName === 'MT');
+
+    if (kgMeasure && lbMeasure && tonMeasure) {
+      await prisma.productPrice.upsert({
+        where: {
+          productId_measureId: {
+            productId: bananoProduct.id,
+            measureId: kgMeasure.id,
+          },
+        },
+        update: {},
+        create: {
+          productId: bananoProduct.id,
+          measureId: kgMeasure.id,
+          price: 1.5,
+          isActive: true,
+          effectiveDate: new Date(),
+        },
+      });
+
+      await prisma.productPrice.upsert({
+        where: {
+          productId_measureId: {
+            productId: bananoProduct.id,
+            measureId: lbMeasure.id,
+          },
+        },
+        update: {},
+        create: {
+          productId: bananoProduct.id,
+          measureId: lbMeasure.id,
+          price: 0.68,
+          isActive: true,
+          effectiveDate: new Date(),
+        },
+      });
+
+      await prisma.productPrice.upsert({
+        where: {
+          productId_measureId: {
+            productId: bananoProduct.id,
+            measureId: tonMeasure.id,
+          },
+        },
+        update: {},
+        create: {
+          productId: bananoProduct.id,
+          measureId: tonMeasure.id,
+          price: 1500.0,
+          isActive: true,
+          effectiveDate: new Date(),
+        },
+      });
+    }
+
+    // Create pricing for second product if available
+    if (products.length > 1) {
+      const secondProduct = products[1];
+      if (kgMeasure) {
+        await prisma.productPrice.upsert({
+          where: {
+            productId_measureId: {
+              productId: secondProduct.id,
+              measureId: kgMeasure.id,
+            },
+          },
+          update: {},
+          create: {
+            productId: secondProduct.id,
+            measureId: kgMeasure.id,
+            price: 2.25,
+            isActive: true,
+            effectiveDate: new Date(),
+          },
+        });
+      }
+    }
+  }
+
+  // Create measure compatibility data
+  console.log('🔄 Creating measure compatibility...');
+
+  if (measures.length > 0) {
+    const kgMeasure = measures.find((m: any) => m.shortName === 'kg');
+    const lbMeasure = measures.find((m: any) => m.shortName === 'lb');
+    const tonMeasure = measures.find((m: any) => m.shortName === 'MT');
+
+    if (kgMeasure && lbMeasure) {
+      await prisma.measureCompatibility.upsert({
+        where: {
+          fromMeasureId_toMeasureId: {
+            fromMeasureId: kgMeasure.id,
+            toMeasureId: lbMeasure.id,
+          },
+        },
+        update: {},
+        create: {
+          fromMeasureId: kgMeasure.id,
+          toMeasureId: lbMeasure.id,
+          conversionFactor: 2.20462,
+          isActive: true,
+        },
+      });
+
+      await prisma.measureCompatibility.upsert({
+        where: {
+          fromMeasureId_toMeasureId: {
+            fromMeasureId: lbMeasure.id,
+            toMeasureId: kgMeasure.id,
+          },
+        },
+        update: {},
+        create: {
+          fromMeasureId: lbMeasure.id,
+          toMeasureId: kgMeasure.id,
+          conversionFactor: 0.453592,
+          isActive: true,
+        },
+      });
+    }
+
+    if (kgMeasure && tonMeasure) {
+      await prisma.measureCompatibility.upsert({
+        where: {
+          fromMeasureId_toMeasureId: {
+            fromMeasureId: kgMeasure.id,
+            toMeasureId: tonMeasure.id,
+          },
+        },
+        update: {},
+        create: {
+          fromMeasureId: kgMeasure.id,
+          toMeasureId: tonMeasure.id,
+          conversionFactor: 0.001,
+          isActive: true,
+        },
+      });
+
+      await prisma.measureCompatibility.upsert({
+        where: {
+          fromMeasureId_toMeasureId: {
+            fromMeasureId: tonMeasure.id,
+            toMeasureId: kgMeasure.id,
+          },
+        },
+        update: {},
+        create: {
+          fromMeasureId: tonMeasure.id,
+          toMeasureId: kgMeasure.id,
+          conversionFactor: 1000.0,
+          isActive: true,
+        },
+      });
+    }
+  }
+
+  console.log('✅ Database seeding completed successfully!');
 }
 
 main()

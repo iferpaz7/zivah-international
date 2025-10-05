@@ -1,20 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Select from 'react-select';
-import { createQuoteSchema } from '@/lib/validations';
-import { Button } from '@/components/Button';
-import { Card, CardHeader, CardContent } from '@/components/Card';
 import { useBusinessTracking } from '@/components/BusinessIntelligence';
+import { Button } from '@/components/Button';
+import { createQuoteSchema } from '@/lib/validations';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import Select from 'react-select';
 
-interface Product {
+interface QuoteProduct {
   id: number;
   name: string;
-  basePrice: number;
-  description: string;
-  sku: string;
+  basePrice?: number | undefined;
+  description?: string;
+  sku?: string;
+  priceUnit?: string; // Base unit of the product (optional)
+  // TODO: Replace with database-driven pricing after migration
+  // This is a temporary solution until we implement the product_prices table
+  priceMatrix?: {
+    [unitId: number]: number; // measureId -> price per unit
+  };
 }
 
 interface Country {
@@ -32,10 +37,11 @@ interface Measure {
   name: string;
   shortName: string;
   symbol?: string;
-  type: string;
+  type: string; // 'WEIGHT', 'VOLUME', 'LENGTH', 'AREA', 'COUNT', etc.
   baseUnit?: string;
   conversionFactor?: number;
   description?: string;
+  family?: string; // Group related measures (e.g., 'weight', 'volume')
 }
 
 interface QuoteItem {
@@ -66,11 +72,17 @@ interface QuoteFormData {
   items: QuoteItem[];
 }
 
-export default function QuoteForm() {
-  const [products, setProducts] = useState<Product[]>([]);
+interface QuoteFormProps {
+  initialProducts?: QuoteProduct[];
+}
+
+export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
+  const [products, setProducts] = useState<QuoteProduct[]>(
+    initialProducts || []
+  );
   const [countries, setCountries] = useState<Country[]>([]);
   const [measures, setMeasures] = useState<Measure[]>([]);
-  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<QuoteProduct[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showProductList, setShowProductList] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,12 +95,21 @@ export default function QuoteForm() {
   const [measuresLoading, setMeasuresLoading] = useState(true);
   const [productsSearching, setProductsSearching] = useState(false);
 
+  // State for price conversion
+  const [conversionErrors, setConversionErrors] = useState<{
+    [productId: number]: string;
+  }>({});
+  const [calculatedPrices, setCalculatedPrices] = useState<{
+    [productId: number]: number;
+  }>({});
+
   const {
     register,
     handleSubmit,
     control,
     watch,
     setValue,
+    trigger,
     formState: { errors },
   } = useForm<QuoteFormData>({
     resolver: zodResolver(createQuoteSchema),
@@ -168,8 +189,52 @@ export default function QuoteForm() {
       });
   }, []);
 
+  const watchedItems = watch('items');
+
+  // Recalculate prices when items, measures, or products change
+  useEffect(() => {
+    const items = watchedItems || [];
+    const newCalculatedPrices: { [productId: number]: number } = {};
+    const newErrors: { [productId: number]: string } = {};
+
+    items.forEach(item => {
+      const product = selectedProducts.find(p => p.id === item.productId);
+
+      if (product && item.measureId) {
+        // Calculate total price using new system
+        const totalPrice = convertPrice(
+          product,
+          item.measureId,
+          item.quantity || 1
+        );
+
+        if (totalPrice !== null) {
+          newCalculatedPrices[item.productId] = totalPrice;
+        } else {
+          const measure = measures.find(m => m.id === item.measureId);
+          newErrors[item.productId] =
+            `Conversion not available from ${product.priceUnit || 'unit'} to ${
+              measure?.shortName || measure?.name || 'unknown unit'
+            }`;
+        }
+      }
+    });
+
+    setCalculatedPrices(newCalculatedPrices);
+    setConversionErrors(newErrors);
+  }, [selectedProducts, measures, watchedItems]);
+
   // Search products from API only
   const searchProducts = async (query: string) => {
+    setSearchQuery(query);
+
+    if (query.length < 2) {
+      setProducts([]);
+      setShowProductList(false);
+      return;
+    }
+
+    setProductsSearching(true);
     setSearchQuery(query);
 
     if (query.length < 2) {
@@ -203,23 +268,152 @@ export default function QuoteForm() {
     }
   };
 
+  // Function to get available measures for a product (same family only)
+  const getAvailableMeasuresForProduct = (product: QuoteProduct): Measure[] => {
+    if (!product.priceUnit) {
+      return measures; // If no price unit specified, allow all measures
+    }
+
+    // Find the base measure for this product
+    const baseMeasure = measures.find(
+      m => m.shortName === product.priceUnit || m.name === product.priceUnit
+    );
+
+    if (!baseMeasure) {
+      return measures; // Fallback to all measures
+    }
+
+    // Return only measures from the same family/type
+    return measures.filter(
+      m =>
+        m.type === baseMeasure.type ||
+        m.family === baseMeasure.family ||
+        m.id === baseMeasure.id
+    );
+  };
+
+  // Function to get price for a specific unit
+  const getPriceForUnit = (
+    product: QuoteProduct,
+    measureId: number
+  ): number | null => {
+    // Check if product has a price matrix
+    if (product.priceMatrix && product.priceMatrix[measureId]) {
+      return product.priceMatrix[measureId];
+    }
+
+    // Find the measure
+    const measure = measures.find(m => m.id === measureId);
+    if (!measure) return null;
+
+    // Check if this is the base unit
+    if (
+      measure.shortName === product.priceUnit ||
+      measure.name === product.priceUnit
+    ) {
+      return product.basePrice || 0;
+    }
+
+    // For same family conversions, use mathematical conversion as fallback
+    const baseMeasure = measures.find(
+      m => m.shortName === product.priceUnit || m.name === product.priceUnit
+    );
+
+    if (
+      baseMeasure &&
+      measure.type === baseMeasure.type &&
+      baseMeasure.baseUnit === measure.baseUnit
+    ) {
+      const factor = measure.conversionFactor || 1;
+      const fromFactor = baseMeasure.conversionFactor || 1;
+      const basePrice = product.basePrice || 0;
+
+      // Convert price per unit (inverse of quantity conversion)
+      return (basePrice * fromFactor) / factor;
+    }
+
+    // No conversion available
+    return null;
+  };
+
+  // Simplified conversion function that uses price matrix
+  const convertPrice = (
+    product: QuoteProduct,
+    measureId: number,
+    quantity: number
+  ): number | null => {
+    const unitPrice = getPriceForUnit(product, measureId);
+
+    if (unitPrice === null) {
+      return null;
+    }
+
+    return unitPrice * quantity;
+  };
+
   // Add product to quote with multiple selection support
-  const addProduct = (product: Product) => {
+  const addProduct = (product: QuoteProduct) => {
     if (!selectedProducts.find(p => p.id === product.id)) {
       const newSelectedProducts = [...selectedProducts, product];
       setSelectedProducts(newSelectedProducts);
 
       const currentItems = watch('items') || [];
+      // Auto-select the product's base unit
+      const defaultMeasureId =
+        measures.find(
+          m =>
+            m.shortName === (product.priceUnit || 'unit') ||
+            m.name === (product.priceUnit || 'unit')
+        )?.id ||
+        measures.find(m => m.type === 'WEIGHT')?.id ||
+        measures[0]?.id;
+
       setValue('items', [
         ...currentItems,
         {
           productId: product.id,
-          measureId:
-            measures.find(m => m.type === 'WEIGHT')?.id || measures[0]?.id, // Default to first weight measure or first available
+          measureId: defaultMeasureId,
           quantity: 1,
           unitPrice: product.basePrice,
         },
       ]);
+
+      // Calculate initial price if conversion is available
+      const selectedMeasure = measures.find(m => m.id === defaultMeasureId);
+      if (selectedMeasure && defaultMeasureId) {
+        const initialUnitPrice = getPriceForUnit(product, defaultMeasureId);
+        const initialTotalPrice = convertPrice(product, defaultMeasureId, 1);
+
+        if (initialUnitPrice !== null && initialTotalPrice !== null) {
+          // Update the unitPrice in the item
+          setValue('items', [
+            ...currentItems,
+            {
+              productId: product.id,
+              measureId: defaultMeasureId,
+              quantity: 1,
+              unitPrice: initialUnitPrice,
+            },
+          ]);
+          // Calculate initial subtotal
+          setCalculatedPrices(prev => ({
+            ...prev,
+            [product.id]: initialTotalPrice,
+          }));
+        } else {
+          // Without conversion, use base price
+          setCalculatedPrices(prev => ({
+            ...prev,
+            [product.id]: product.basePrice || 0,
+          }));
+        }
+      } else {
+        // Without measure or priceUnit, use base price
+        setCalculatedPrices(prev => ({
+          ...prev,
+          [product.id]: product.basePrice || 0,
+        }));
+      }
     }
     // Don't hide the list to allow multiple selections
   };
@@ -237,23 +431,78 @@ export default function QuoteForm() {
   // Update item quantity
   const updateQuantity = (productId: number, quantity: number) => {
     const currentItems = watch('items') || [];
+    const currentItem = currentItems.find(item => item.productId === productId);
+
     setValue(
       'items',
       currentItems.map(item =>
         item.productId === productId ? { ...item, quantity } : item
       )
     );
+
+    // Recalcular el subtotal con la nueva cantidad
+    if (currentItem?.unitPrice) {
+      const newTotalPrice = currentItem.unitPrice * quantity;
+      setCalculatedPrices(prev => ({
+        ...prev,
+        [productId]: newTotalPrice,
+      }));
+    }
   };
 
   // Update item measure
   const updateMeasure = (productId: number, measureId: number) => {
     const currentItems = watch('items') || [];
-    setValue(
-      'items',
-      currentItems.map(item =>
-        item.productId === productId ? { ...item, measureId } : item
-      )
+    const product = selectedProducts.find(p => p.id === productId);
+    const newMeasure = measures.find(m => m.id === measureId);
+
+    if (!product || !newMeasure) return;
+
+    // Calculate the new converted price using new system
+    const quantity =
+      currentItems.find(item => item.productId === productId)?.quantity || 1;
+    const unitPrice = getPriceForUnit(product, measureId);
+    const totalPrice = convertPrice(product, measureId, quantity);
+
+    // Update form state with new measure and unit price
+    const updatedItems = currentItems.map(item =>
+      item.productId === productId
+        ? {
+            ...item,
+            measureId,
+            unitPrice: unitPrice || product.basePrice, // Fallback to base price if conversion fails
+          }
+        : item
     );
+
+    setValue('items', updatedItems, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
+
+    // Force re-render by triggering form validation
+    trigger('items');
+
+    // Update the calculated price (subtotal) immediately
+    setCalculatedPrices(prev => ({
+      ...prev,
+      [productId]: totalPrice || (product.basePrice || 0) * quantity,
+    }));
+
+    // Update conversion errors
+    if (unitPrice === null) {
+      setConversionErrors(prev => ({
+        ...prev,
+        [productId]: `Cannot convert from ${product.priceUnit || 'unit'} to ${newMeasure.shortName || newMeasure.name}`,
+      }));
+    } else {
+      setConversionErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[productId];
+        return newErrors;
+      });
+    }
   };
 
   // Update item notes
@@ -299,7 +548,9 @@ export default function QuoteForm() {
   const calculateTotal = () => {
     const items = watch('items') || [];
     return items.reduce((total, item) => {
-      return total + (item.unitPrice || 0) * (item.quantity || 0);
+      // Usar precio calculado si existe, sino usar unitPrice
+      const price = calculatedPrices[item.productId] || item.unitPrice || 0;
+      return total + price;
     }, 0);
   };
 
@@ -597,11 +848,11 @@ export default function QuoteForm() {
                               )}
                             </div>
                             <div className='text-sm text-gray-600'>
-                              ${product.basePrice} por unidad -{' '}
-                              {product.description}
+                              ${product.basePrice || 0} por unidad -{' '}
+                              {product.description || 'Sin descripción'}
                             </div>
                             <div className='text-xs text-gray-400'>
-                              SKU: {product.sku}
+                              SKU: {product.sku || 'N/A'}
                             </div>
                           </div>
                         </div>
@@ -690,10 +941,10 @@ export default function QuoteForm() {
                     <div className='flex-1 text-white'>
                       <div className='font-medium'>{product.name}</div>
                       <div className='text-sm opacity-75'>
-                        {product.description}
+                        {product.description || 'Sin descripción'}
                       </div>
                       <div className='text-xs opacity-60'>
-                        SKU: {product.sku}
+                        SKU: {product.sku || 'N/A'}
                       </div>
                     </div>
                     <button
@@ -726,7 +977,7 @@ export default function QuoteForm() {
 
                     <div>
                       <label className='block text-xs text-white/70 mb-1'>
-                        Unidad de Medida
+                        Unit of Measure
                       </label>
                       <select
                         value={item?.measureId || ''}
@@ -738,49 +989,81 @@ export default function QuoteForm() {
                           item?.measureId
                             ? measures.find(m => m.id === item.measureId)
                                 ?.description
-                            : 'Seleccione una unidad de medida'
+                            : 'Select a unit of measure'
                         }
                       >
-                        <option value=''>Seleccionar unidad...</option>
-                        {[
-                          'WEIGHT',
-                          'VOLUME',
-                          'CONTAINER',
-                          'QUANTITY',
-                          'LENGTH',
-                        ].map(type => {
-                          const typeMeasures = measures.filter(
-                            m => m.type === type
-                          );
-                          if (typeMeasures.length === 0) return null;
+                        <option value=''>Select unit...</option>
+                        {(() => {
+                          // Get available measures for this product (same family only)
+                          const availableMeasures =
+                            getAvailableMeasuresForProduct(product);
+                          const measuresByType: {
+                            [key: string]: typeof availableMeasures;
+                          } = {};
 
-                          const typeNames = {
-                            WEIGHT: 'Peso',
-                            VOLUME: 'Volumen',
-                            CONTAINER: 'Contenedores',
-                            QUANTITY: 'Cantidad',
-                            LENGTH: 'Longitud',
-                          };
+                          // Group measures by type
+                          availableMeasures.forEach(measure => {
+                            if (!measuresByType[measure.type]) {
+                              measuresByType[measure.type] = [];
+                            }
+                            measuresByType[measure.type].push(measure);
+                          });
 
-                          return (
-                            <optgroup
-                              key={type}
-                              label={typeNames[type as keyof typeof typeNames]}
-                              className='text-gray-900'
-                            >
-                              {typeMeasures.map(measure => (
-                                <option
-                                  key={measure.id}
-                                  value={measure.id}
+                          return Object.entries(measuresByType).map(
+                            ([type, typeMeasures]) => {
+                              if (typeMeasures.length === 0) return null;
+
+                              const typeNames = {
+                                WEIGHT: 'Weight',
+                                VOLUME: 'Volume',
+                                CONTAINER: 'Containers',
+                                QUANTITY: 'Quantity',
+                                LENGTH: 'Length',
+                                COUNT: 'Count',
+                                AREA: 'Area',
+                              };
+
+                              return (
+                                <optgroup
+                                  key={type}
+                                  label={
+                                    typeNames[type as keyof typeof typeNames] ||
+                                    type
+                                  }
                                   className='text-gray-900'
                                 >
-                                  {measure.name} ({measure.shortName}){' '}
-                                  {measure.symbol && `- ${measure.symbol}`}
-                                </option>
-                              ))}
-                            </optgroup>
+                                  {typeMeasures.map(measure => {
+                                    const unitPrice = getPriceForUnit(
+                                      product,
+                                      measure.id
+                                    );
+                                    const isAvailable = unitPrice !== null;
+
+                                    return (
+                                      <option
+                                        key={measure.id}
+                                        value={measure.id}
+                                        disabled={!isAvailable}
+                                        className={
+                                          isAvailable
+                                            ? 'text-gray-900'
+                                            : 'text-gray-400'
+                                        }
+                                      >
+                                        {measure.name} ({measure.shortName})
+                                        {measure.symbol &&
+                                          ` - ${measure.symbol}`}
+                                        {isAvailable &&
+                                          ` - $${unitPrice.toFixed(2)}`}
+                                        {!isAvailable && ' - Not available'}
+                                      </option>
+                                    );
+                                  })}
+                                </optgroup>
+                              );
+                            }
                           );
-                        })}
+                        })()}
                       </select>
                     </div>
 
@@ -799,7 +1082,10 @@ export default function QuoteForm() {
                         )}
                       </label>
                       <div className='px-3 py-2 bg-white/10 rounded-md text-white text-center'>
-                        ${product.basePrice}
+                        $
+                        {item?.unitPrice
+                          ? item.unitPrice.toFixed(2)
+                          : product.basePrice || 0}
                       </div>
                     </div>
 
@@ -809,7 +1095,10 @@ export default function QuoteForm() {
                       </label>
                       <div className='px-3 py-2 bg-white/10 rounded-md text-white font-medium text-center'>
                         $
-                        {((item?.quantity || 1) * product.basePrice).toFixed(2)}
+                        {(
+                          calculatedPrices[product.id] ||
+                          (item?.quantity || 1) * (product.basePrice || 0)
+                        ).toFixed(2)}
                       </div>
                     </div>
                   </div>
@@ -826,6 +1115,14 @@ export default function QuoteForm() {
                       rows={2}
                     />
                   </div>
+
+                  {conversionErrors[product.id] && (
+                    <div className='mt-2 p-2 bg-red-500/20 border border-red-500/30 rounded-md'>
+                      <p className='text-sm text-red-300'>
+                        ⚠️ {conversionErrors[product.id]}
+                      </p>
+                    </div>
+                  )}
                 </div>
               );
             })}

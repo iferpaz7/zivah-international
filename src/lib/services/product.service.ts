@@ -1,11 +1,10 @@
 import { prisma } from '@/lib/prisma';
 import {
-  Product,
-  Category,
-  ProductFilters,
   CreateProductInput,
-  UpdateProductInput,
   PaginatedResponse,
+  Product,
+  ProductFilters,
+  UpdateProductInput,
 } from '@/types';
 import type { Prisma } from '@prisma/client';
 
@@ -36,11 +35,8 @@ export class ProductService {
     if (typeof isFeatured === 'boolean') where.isFeatured = isFeatured;
     if (origin) where.origin = { contains: origin, mode: 'insensitive' };
     if (inStock) where.stockQuantity = { gt: 0 };
-    if (minPrice || maxPrice) {
-      where.basePrice = {};
-      if (minPrice) where.basePrice.gte = minPrice;
-      if (maxPrice) where.basePrice.lte = maxPrice;
-    }
+    // Price filtering removed - basePrice no longer exists
+    // TODO: Implement price filtering using ProductPrice table
 
     // Search functionality
     if (search) {
@@ -316,9 +312,9 @@ export class ProductService {
     ]);
 
     const totalValue = await prisma.product.aggregate({
-      where: { isActive: true, basePrice: { not: null } },
-      _sum: {
-        basePrice: true,
+      where: { isActive: true },
+      _count: {
+        id: true,
       },
     });
 
@@ -327,7 +323,7 @@ export class ProductService {
       activeProducts,
       featuredProducts,
       categoriesCount,
-      totalValue: totalValue._sum.basePrice || 0,
+      totalValue: 0, // TODO: Calculate from ProductPrice table
       lowStockProducts: lowStockCount,
       topSellingProducts: topSellingProducts.map((product: any) => ({
         productId: product.id,

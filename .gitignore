@@ -92,3 +92,4 @@ temp/
 *.sln
 *.sw?
 /generated/prisma
+tsconfig.tsbuildinfo

@@ -1,7 +1,7 @@
-import { NextRequest } from 'next/server';
+import { createApiResponse, handleApiError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
-import { handleApiError, createApiResponse } from '@/lib/errors';
 import { checkRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
+import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
   try {
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       select: {
         id: true,
         name: true,
-        basePrice: true,
+
         description: true,
         sku: true,
       },

@@ -33,8 +33,6 @@ model Product {
   shortDescription String?          @map("short_description") @db.VarChar(500)
   sku              String?          @unique @db.VarChar(100)
   specifications   Json?
-  basePrice        Decimal?         @map("base_price") @db.Decimal(10, 2)
-  priceUnit        String?          @map("price_unit") @db.VarChar(20)
   stockQuantity    Int              @default(0) @map("stock_quantity")
   minOrderQty      Int?             @default(1) @map("min_order_qty")
   imageUrl         String?          @map("image_url") @db.VarChar(500)
@@ -55,6 +53,7 @@ model Product {
   category         Category?        @relation(fields: [categoryId], references: [id])
   defaultMeasure   Measure?         @relation(fields: [measureId], references: [id])
   quoteItems       QuoteItem[]
+  productPrices    ProductPrice[]
 
   @@index([categoryId])
   @@index([measureId])
@@ -81,23 +80,66 @@ model ProductVariant {
   @@map("product_variants")
 }
 
+model MeasureFamily {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(50)
+  code        String    @unique @db.VarChar(20)
+  description String?
+  sortOrder   Int       @default(0) @map("sort_order")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  measures Measure[]
+
+  @@index([isActive, sortOrder])
+  @@map("measure_families")
+}
+
+model Currency {
+  id          Int       @id @default(autoincrement())
+  code        String    @unique @db.VarChar(3)
+  name        String    @db.VarChar(100)
+  symbol      String?   @db.VarChar(5)
+  isActive    Boolean   @default(true) @map("is_active")
+  sortOrder   Int       @default(0) @map("sort_order")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  countries   Country[]
+  quotes      Quote[]
+
+  @@index([isActive, sortOrder])
+  @@map("currencies")
+}
+
 model Measure {
-  id               Int         @id @default(autoincrement())
-  name             String      @unique @db.VarChar(100)
-  shortName        String      @db.VarChar(20)
-  symbol           String?     @db.VarChar(10)
-  type             MeasureType
-  baseUnit         String?     @db.VarChar(20)
-  conversionFactor Decimal?    @db.Decimal(15, 6)
-  isActive         Boolean     @default(true) @map("is_active")
-  sortOrder        Int         @default(0) @map("sort_order")
-  description      String?
-  createdAt        DateTime    @default(now()) @map("created_at")
-  updatedAt        DateTime    @updatedAt @map("updated_at")
-  products         Product[]
-  quoteItems       QuoteItem[]
+  id                  Int                    @id @default(autoincrement())
+  name                String                 @unique @db.VarChar(100)
+  shortName           String                 @db.VarChar(20)
+  symbol              String?                @db.VarChar(10)
+  type                MeasureType
+  familyId            Int?                   @map("family_id")
+  baseUnit            String?                @db.VarChar(20)
+  conversionFactor    Decimal?               @db.Decimal(15, 6)
+  isActive            Boolean                @default(true) @map("is_active")
+  sortOrder           Int                    @default(0) @map("sort_order")
+  description         String?
+  createdAt           DateTime               @default(now()) @map("created_at")
+  updatedAt           DateTime               @updatedAt @map("updated_at")
+
+  // Relations
+  family              MeasureFamily?         @relation(fields: [familyId], references: [id])
+  products            Product[]
+  quoteItems          QuoteItem[]
+  productPrices       ProductPrice[]
+  fromCompatibilities MeasureCompatibility[] @relation("FromMeasure")
+  toCompatibilities   MeasureCompatibility[] @relation("ToMeasure")
 
   @@index([type])
+  @@index([familyId])
   @@index([isActive, sortOrder])
   @@map("measures")
 }
@@ -110,13 +152,12 @@ model Quote {
   customerPhone   String?              @map("customer_phone") @db.VarChar(50)
   company         String?              @db.VarChar(255)
   countryId       Int?                 @map("country_id")
-  country         String?              @db.VarChar(100)
   shippingAddress Json?                @map("shipping_address")
   message         String?
   status          QuoteStatus          @default(PENDING)
   priority        QuotePriority        @default(NORMAL)
   totalAmount     Decimal?             @map("total_amount") @db.Decimal(12, 2)
-  currency        String               @default("USD") @db.VarChar(3)
+  currencyId      Int?                 @map("currency_id")
   validUntil      DateTime?            @map("valid_until")
   emailStatus     String?              @default("pending") @map("email_status")
   emailSentAt     DateTime?            @map("email_sent_at")
@@ -129,13 +170,15 @@ model Quote {
   communications  QuoteCommunication[]
   items           QuoteItem[]
   assignedTo      User?                @relation("QuoteAssignee", fields: [assignedToId], references: [id])
-  countryRef      Country?             @relation(fields: [countryId], references: [id])
+  country         Country?             @relation(fields: [countryId], references: [id])
+  currency        Currency?            @relation(fields: [currencyId], references: [id])
   user            User?                @relation("QuoteUser", fields: [userId], references: [id])
 
   @@index([status, priority])
   @@index([customerEmail])
   @@index([createdAt])
   @@index([countryId])
+  @@index([currencyId])
   @@index([emailStatus])
   @@map("quotes")
 }
@@ -218,7 +261,7 @@ model Country {
   code               String              @unique @db.VarChar(3)
   icon               String?             @db.VarChar(10)
   continent          String              @db.VarChar(50)
-  currency           String?             @db.VarChar(3)
+  currencyId         Int?                @map("currency_id")
   callingCode        String?             @db.VarChar(10)
   phoneFormat        String?             @db.VarChar(50)
   isActive           Boolean             @default(true) @map("is_active")
@@ -227,10 +270,12 @@ model Country {
   contactSubmissions ContactSubmission[]
   quotes             Quote[]
   users              User[]
+  currency           Currency?           @relation(fields: [currencyId], references: [id])
 
   @@index([code])
   @@index([name])
   @@index([isActive])
+  @@index([currencyId])
   @@map("countries")
 }
 
@@ -302,20 +347,19 @@ model ContactSubmission {
   phone      String?  @db.VarChar(50)
   company    String?  @db.VarChar(255)
   countryId  Int?     @map("country_id")
-  country    String?  @db.VarChar(100)
   subject    String?  @db.VarChar(255)
   message    String
-  type       String   @default("general") @db.VarChar(50)
+  type       ContactType @default(GENERAL)
   source     String?  @db.VarChar(50)
-  status     String   @default("new") @db.VarChar(20)
-  priority   String   @default("normal") @db.VarChar(10)
+  status     ContactStatus @default(NEW)
+  priority   ContactPriority @default(NORMAL)
   assignedTo Int?     @map("assigned_to")
   notes      String?
   ipAddress  String?  @map("ip_address") @db.VarChar(45)
   userAgent  String?  @map("user_agent")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
-  countryRef Country? @relation(fields: [countryId], references: [id])
+  country    Country? @relation(fields: [countryId], references: [id])
 
   @@index([email])
   @@index([status])
@@ -383,6 +427,45 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
+model ProductPrice {
+  id            Int      @id @default(autoincrement())
+  productId     Int      @map("product_id")
+  measureId     Int      @map("measure_id")
+  price         Decimal  @db.Decimal(10, 2)
+  isActive      Boolean  @default(true) @map("is_active")
+  effectiveDate DateTime @default(now()) @map("effective_date") @db.Date
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  measure Measure @relation(fields: [measureId], references: [id], onDelete: Cascade)
+
+  // Constraints
+  @@unique([productId, measureId])
+  @@index([productId, measureId])
+  @@index([isActive])
+  @@map("product_prices")
+}
+
+model MeasureCompatibility {
+  id               Int      @id @default(autoincrement())
+  fromMeasureId    Int      @map("from_measure_id")
+  toMeasureId      Int      @map("to_measure_id")
+  conversionFactor Decimal? @map("conversion_factor") @db.Decimal(15, 6)
+  isActive         Boolean  @default(true) @map("is_active")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  // Relations
+  fromMeasure Measure @relation("FromMeasure", fields: [fromMeasureId], references: [id], onDelete: Cascade)
+  toMeasure   Measure @relation("ToMeasure", fields: [toMeasureId], references: [id], onDelete: Cascade)
+
+  // Constraints
+  @@unique([fromMeasureId, toMeasureId])
+  @@index([fromMeasureId, toMeasureId])
+  @@map("measure_compatibility")
+}
+
 enum MeasureType {
   WEIGHT
   VOLUME
@@ -430,4 +513,26 @@ enum SettingType {
   BOOLEAN
   JSON
   FILE
+}
+
+enum ContactType {
+  GENERAL
+  SALES
+  SUPPORT
+  PARTNERSHIP
+  COMPLAINT
+}
+
+enum ContactStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum ContactPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
 }

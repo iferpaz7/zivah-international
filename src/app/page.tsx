@@ -556,7 +556,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <QuoteForm />
+              <QuoteForm initialProducts={products} />
             </div>
           </div>
         </div>

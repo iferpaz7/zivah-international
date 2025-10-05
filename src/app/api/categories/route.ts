@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createCategorySchema, updateCategorySchema } from '@/lib/validations';
+import { createCategorySchema } from '@/lib/validations';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 export async function GET(request: NextRequest) {
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
               id: true,
               name: true,
               slug: true,
-              basePrice: true,
+
               isFeatured: true,
             },
             take: 5,

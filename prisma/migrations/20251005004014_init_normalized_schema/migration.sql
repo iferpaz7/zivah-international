@@ -16,6 +16,15 @@ CREATE TYPE "public"."UserRole" AS ENUM ('ADMIN', 'SALES_MANAGER', 'SALES_REP', 
 -- CreateEnum
 CREATE TYPE "public"."SettingType" AS ENUM ('TEXT', 'NUMBER', 'BOOLEAN', 'JSON', 'FILE');
 
+-- CreateEnum
+CREATE TYPE "public"."ContactType" AS ENUM ('GENERAL', 'SALES', 'SUPPORT', 'PARTNERSHIP', 'COMPLAINT');
+
+-- CreateEnum
+CREATE TYPE "public"."ContactStatus" AS ENUM ('NEW', 'IN_PROGRESS', 'RESOLVED', 'CLOSED');
+
+-- CreateEnum
+CREATE TYPE "public"."ContactPriority" AS ENUM ('LOW', 'NORMAL', 'HIGH', 'URGENT');
+
 -- CreateTable
 CREATE TABLE "public"."categories" (
     "id" SERIAL NOT NULL,
@@ -42,8 +51,6 @@ CREATE TABLE "public"."products" (
     "short_description" VARCHAR(500),
     "sku" VARCHAR(100),
     "specifications" JSONB,
-    "base_price" DECIMAL(10,2),
-    "price_unit" VARCHAR(20),
     "stock_quantity" INTEGER NOT NULL DEFAULT 0,
     "min_order_qty" INTEGER DEFAULT 1,
     "image_url" VARCHAR(500),
@@ -81,12 +88,41 @@ CREATE TABLE "public"."product_variants" (
 );
 
 -- CreateTable
+CREATE TABLE "public"."measure_families" (
+    "id" SERIAL NOT NULL,
+    "name" VARCHAR(50) NOT NULL,
+    "code" VARCHAR(20) NOT NULL,
+    "description" TEXT,
+    "sort_order" INTEGER NOT NULL DEFAULT 0,
+    "is_active" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "measure_families_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."currencies" (
+    "id" SERIAL NOT NULL,
+    "code" VARCHAR(3) NOT NULL,
+    "name" VARCHAR(100) NOT NULL,
+    "symbol" VARCHAR(5),
+    "is_active" BOOLEAN NOT NULL DEFAULT true,
+    "sort_order" INTEGER NOT NULL DEFAULT 0,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "currencies_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "public"."measures" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "shortName" VARCHAR(20) NOT NULL,
     "symbol" VARCHAR(10),
     "type" "public"."MeasureType" NOT NULL,
+    "family_id" INTEGER,
     "baseUnit" VARCHAR(20),
     "conversionFactor" DECIMAL(15,6),
     "is_active" BOOLEAN NOT NULL DEFAULT true,
@@ -107,13 +143,12 @@ CREATE TABLE "public"."quotes" (
     "customer_phone" VARCHAR(50),
     "company" VARCHAR(255),
     "country_id" INTEGER,
-    "country" VARCHAR(100),
     "shipping_address" JSONB,
     "message" TEXT,
     "status" "public"."QuoteStatus" NOT NULL DEFAULT 'PENDING',
     "priority" "public"."QuotePriority" NOT NULL DEFAULT 'NORMAL',
     "total_amount" DECIMAL(12,2),
-    "currency" VARCHAR(3) NOT NULL DEFAULT 'USD',
+    "currency_id" INTEGER,
     "valid_until" TIMESTAMP(3),
     "email_status" TEXT DEFAULT 'pending',
     "email_sent_at" TIMESTAMP(3),
@@ -188,7 +223,7 @@ CREATE TABLE "public"."countries" (
     "code" VARCHAR(3) NOT NULL,
     "icon" VARCHAR(10),
     "continent" VARCHAR(50) NOT NULL,
-    "currency" VARCHAR(3),
+    "currency_id" INTEGER,
     "callingCode" VARCHAR(10),
     "phoneFormat" VARCHAR(50),
     "is_active" BOOLEAN NOT NULL DEFAULT true,
@@ -261,13 +296,12 @@ CREATE TABLE "public"."contact_submissions" (
     "phone" VARCHAR(50),
     "company" VARCHAR(255),
     "country_id" INTEGER,
-    "country" VARCHAR(100),
     "subject" VARCHAR(255),
     "message" TEXT NOT NULL,
-    "type" VARCHAR(50) NOT NULL DEFAULT 'general',
+    "type" "public"."ContactType" NOT NULL DEFAULT 'GENERAL',
     "source" VARCHAR(50),
-    "status" VARCHAR(20) NOT NULL DEFAULT 'new',
-    "priority" VARCHAR(10) NOT NULL DEFAULT 'normal',
+    "status" "public"."ContactStatus" NOT NULL DEFAULT 'NEW',
+    "priority" "public"."ContactPriority" NOT NULL DEFAULT 'NORMAL',
     "assigned_to" INTEGER,
     "notes" TEXT,
     "ip_address" VARCHAR(45),
@@ -332,6 +366,32 @@ CREATE TABLE "public"."verification_tokens" (
     "expires" TIMESTAMP(3) NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "public"."product_prices" (
+    "id" SERIAL NOT NULL,
+    "product_id" INTEGER NOT NULL,
+    "measure_id" INTEGER NOT NULL,
+    "price" DECIMAL(10,2) NOT NULL,
+    "is_active" BOOLEAN NOT NULL DEFAULT true,
+    "effective_date" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "product_prices_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."measure_compatibility" (
+    "id" SERIAL NOT NULL,
+    "from_measure_id" INTEGER NOT NULL,
+    "to_measure_id" INTEGER NOT NULL,
+    "conversion_factor" DECIMAL(15,6),
+    "is_active" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "measure_compatibility_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "categories_slug_key" ON "public"."categories"("slug");
 
@@ -369,10 +429,28 @@ CREATE UNIQUE INDEX "product_variants_sku_key" ON "public"."product_variants"("s
 CREATE INDEX "product_variants_product_id_idx" ON "public"."product_variants"("product_id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "measure_families_name_key" ON "public"."measure_families"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "measure_families_code_key" ON "public"."measure_families"("code");
+
+-- CreateIndex
+CREATE INDEX "measure_families_is_active_sort_order_idx" ON "public"."measure_families"("is_active", "sort_order");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "currencies_code_key" ON "public"."currencies"("code");
+
+-- CreateIndex
+CREATE INDEX "currencies_is_active_sort_order_idx" ON "public"."currencies"("is_active", "sort_order");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "measures_name_key" ON "public"."measures"("name");
 
 -- CreateIndex
 CREATE INDEX "measures_type_idx" ON "public"."measures"("type");
+
+-- CreateIndex
+CREATE INDEX "measures_family_id_idx" ON "public"."measures"("family_id");
 
 -- CreateIndex
 CREATE INDEX "measures_is_active_sort_order_idx" ON "public"."measures"("is_active", "sort_order");
@@ -391,6 +469,9 @@ CREATE INDEX "quotes_created_at_idx" ON "public"."quotes"("created_at");
 
 -- CreateIndex
 CREATE INDEX "quotes_country_id_idx" ON "public"."quotes"("country_id");
+
+-- CreateIndex
+CREATE INDEX "quotes_currency_id_idx" ON "public"."quotes"("currency_id");
 
 -- CreateIndex
 CREATE INDEX "quotes_email_status_idx" ON "public"."quotes"("email_status");
@@ -442,6 +523,9 @@ CREATE INDEX "countries_name_idx" ON "public"."countries"("name");
 
 -- CreateIndex
 CREATE INDEX "countries_is_active_idx" ON "public"."countries"("is_active");
+
+-- CreateIndex
+CREATE INDEX "countries_currency_id_idx" ON "public"."countries"("currency_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "site_settings_setting_key_key" ON "public"."site_settings"("setting_key");
@@ -509,6 +593,21 @@ CREATE UNIQUE INDEX "verification_tokens_token_key" ON "public"."verification_to
 -- CreateIndex
 CREATE UNIQUE INDEX "verification_tokens_identifier_token_key" ON "public"."verification_tokens"("identifier", "token");
 
+-- CreateIndex
+CREATE INDEX "product_prices_product_id_measure_id_idx" ON "public"."product_prices"("product_id", "measure_id");
+
+-- CreateIndex
+CREATE INDEX "product_prices_is_active_idx" ON "public"."product_prices"("is_active");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "product_prices_product_id_measure_id_key" ON "public"."product_prices"("product_id", "measure_id");
+
+-- CreateIndex
+CREATE INDEX "measure_compatibility_from_measure_id_to_measure_id_idx" ON "public"."measure_compatibility"("from_measure_id", "to_measure_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "measure_compatibility_from_measure_id_to_measure_id_key" ON "public"."measure_compatibility"("from_measure_id", "to_measure_id");
+
 -- AddForeignKey
 ALTER TABLE "public"."products" ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "public"."categories"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -519,10 +618,16 @@ ALTER TABLE "public"."products" ADD CONSTRAINT "products_measure_id_fkey" FOREIG
 ALTER TABLE "public"."product_variants" ADD CONSTRAINT "product_variants_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "public"."measures" ADD CONSTRAINT "measures_family_id_fkey" FOREIGN KEY ("family_id") REFERENCES "public"."measure_families"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "public"."quotes" ADD CONSTRAINT "quotes_assigned_to_id_fkey" FOREIGN KEY ("assigned_to_id") REFERENCES "public"."users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."quotes" ADD CONSTRAINT "quotes_country_id_fkey" FOREIGN KEY ("country_id") REFERENCES "public"."countries"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."quotes" ADD CONSTRAINT "quotes_currency_id_fkey" FOREIGN KEY ("currency_id") REFERENCES "public"."currencies"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."quotes" ADD CONSTRAINT "quotes_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -546,6 +651,9 @@ ALTER TABLE "public"."quote_communications" ADD CONSTRAINT "quote_communications
 ALTER TABLE "public"."users" ADD CONSTRAINT "users_country_id_fkey" FOREIGN KEY ("country_id") REFERENCES "public"."countries"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "public"."countries" ADD CONSTRAINT "countries_currency_id_fkey" FOREIGN KEY ("currency_id") REFERENCES "public"."currencies"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "public"."activity_logs" ADD CONSTRAINT "activity_logs_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -556,3 +664,15 @@ ALTER TABLE "public"."accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "public"."sessions" ADD CONSTRAINT "sessions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."product_prices" ADD CONSTRAINT "product_prices_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."product_prices" ADD CONSTRAINT "product_prices_measure_id_fkey" FOREIGN KEY ("measure_id") REFERENCES "public"."measures"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."measure_compatibility" ADD CONSTRAINT "measure_compatibility_from_measure_id_fkey" FOREIGN KEY ("from_measure_id") REFERENCES "public"."measures"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."measure_compatibility" ADD CONSTRAINT "measure_compatibility_to_measure_id_fkey" FOREIGN KEY ("to_measure_id") REFERENCES "public"."measures"("id") ON DELETE CASCADE ON UPDATE CASCADE;
