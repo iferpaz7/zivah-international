@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { Button } from '@/components/ui/button';
+
 // This would typically come from your database/API
 const getProduct = async (slug: string) => {
   // Mock data - replace with actual API call
@@ -222,12 +224,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
               {/* Quick Actions */}
               <div className='flex gap-4'>
-                <button className='flex-1 bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-lg font-medium transition-colors'>
+                <Button
+                  variant='cta-primary'
+                  size='full-lg'
+                  className='flex-1'
+                >
                   Solicitar Cotización
-                </button>
-                <button className='px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'>
+                </Button>
+                <Button
+                  variant='cta-secondary'
+                  size='lg'
+                >
                   Contactar
-                </button>
+                </Button>
               </div>
 
               {/* Origin & Season */}
@@ -334,12 +343,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <option>Otros</option>
                   </select>
                 </div>
-                <button
+                <Button
                   type='submit'
-                  className='w-full bg-accent hover:bg-accent/90 text-white px-4 py-2 rounded-lg font-medium transition-colors'
+                  variant='cta-primary'
+                  size='full'
                 >
                   Solicitar Cotización
-                </button>
+                </Button>
               </form>
             </div>
 

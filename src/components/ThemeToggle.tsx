@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { useTheme } from './ThemeProvider';
+import { Button } from './ui/button';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
@@ -15,19 +16,25 @@ export default function ThemeToggle() {
   // Prevent hydration mismatch by not rendering until mounted
   if (!mounted) {
     return (
-      <button className='relative p-2 rounded-lg bg-white/20 dark:bg-gray-800/30 backdrop-blur-md border border-white/30 dark:border-gray-700/30 transition-all duration-300'>
+      <Button
+        variant='glass'
+        size='icon'
+        disabled
+      >
         <div className='relative w-6 h-6'>
-          <div className='w-6 h-6 bg-gray-300 rounded animate-pulse'></div>
+          <div className='w-6 h-6 bg-gray-300 rounded animate-pulse' />
         </div>
-      </button>
+      </Button>
     );
   }
 
   return (
-    <button
+    <Button
+      variant='glass'
+      size='icon'
       onClick={toggleTheme}
-      className='relative p-2 rounded-lg bg-white/20 dark:bg-gray-800/30 backdrop-blur-md border border-white/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-700/40 transition-all duration-300 group'
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      className='group'
     >
       <div className='relative w-6 h-6'>
         {/* Sun Icon */}
@@ -56,6 +63,6 @@ export default function ThemeToggle() {
           <path d='M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z' />
         </svg>
       </div>
-    </button>
+    </Button>
   );
 }

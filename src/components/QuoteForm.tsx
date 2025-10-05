@@ -7,7 +7,7 @@ import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 
 import { useBusinessTracking } from '@/components/BusinessIntelligence';
-import { Button } from '@/components/Button';
+import { Button } from '@/components/ui/button';
 
 import { createQuoteSchema } from '@/lib/validations';
 
@@ -617,7 +617,6 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
               <p className='mt-1 text-sm text-red-300'>{errors.customerName.message}</p>
             )}
           </div>
-
           <div>
             <label className='block text-sm font-medium text-white mb-2'>Email *</label>
             <input
@@ -629,8 +628,7 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
             {errors.customerEmail && (
               <p className='mt-1 text-sm text-red-300'>{errors.customerEmail.message}</p>
             )}
-          </div>
-
+          </div>{' '}
           <div>
             <label className='block text-sm font-medium text-white mb-2'>País de Destino *</label>
             {countriesLoading ? (
@@ -683,7 +681,6 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
             )}
             {errors.countryId && <p className='mt-1 text-sm text-red-300'>Seleccione un país</p>}
           </div>
-
           <div>
             <label className='block text-sm font-medium text-white mb-2'>Teléfono</label>
             <div className='relative'>
@@ -718,7 +715,6 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
               <p className='mt-1 text-sm text-red-300'>{errors.customerPhone.message}</p>
             )}
           </div>
-
           <div className='md:col-span-2'>
             <label className='block text-sm font-medium text-white mb-2'>Empresa</label>
             <input
@@ -760,12 +756,12 @@ export default function QuoteForm({ initialProducts }: QuoteFormProps = {}) {
                     r='10'
                     stroke='currentColor'
                     strokeWidth='4'
-                  ></circle>
+                  />
                   <path
                     className='opacity-75'
                     fill='currentColor'
                     d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
-                  ></path>
+                  />
                 </svg>
                 Buscando productos...
               </div>

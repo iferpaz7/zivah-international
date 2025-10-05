@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import ThemeToggle from './ThemeToggle';
+import { Button } from './ui/button';
 
 interface NavigationProps {
   onScrollToSection?: (sectionId: string) => void;
@@ -100,21 +101,19 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
           {/* Desktop Navigation */}
           <div className='hidden lg:flex items-center space-x-1'>
             {navigationItems.map(item => (
-              <button
+              <Button
                 key={item.id}
+                variant={activeSection === item.id ? 'nav-active' : 'nav'}
+                size='nav'
                 onClick={() => scrollToSection(item.id)}
-                className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                  activeSection === item.id
-                    ? 'text-accent bg-accent/10 dark:bg-accent/20'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-800'
-                }`}
+                className='relative font-medium'
               >
                 <span className='mr-2'>{item.icon}</span>
                 {item.label}
                 {activeSection === item.id && (
-                  <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-accent rounded-full'></div>
+                  <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-accent rounded-full' />
                 )}
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -141,9 +140,11 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
             </button>
 
             {/* Mobile Menu Button */}
-            <button
+            <Button
+              variant='icon'
+              size='icon'
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className='lg:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-accent transition-colors'
+              className='lg:hidden'
               aria-label='Toggle mobile menu'
             >
               <div className='w-6 h-6 flex flex-col justify-center items-center'>
@@ -151,19 +152,19 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
                   className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
                     isMobileMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-1'
                   }`}
-                ></span>
+                />
                 <span
                   className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
                     isMobileMenuOpen ? 'opacity-0' : 'opacity-100'
                   }`}
-                ></span>
+                />
                 <span
                   className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
                     isMobileMenuOpen ? '-rotate-45 -translate-y-1' : 'translate-y-1'
                   }`}
-                ></span>
+                />
               </div>
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -177,18 +178,16 @@ export default function Navigation({ onScrollToSection }: NavigationProps) {
             {/* Mobile Navigation Items */}
             <div className='space-y-2'>
               {navigationItems.map(item => (
-                <button
+                <Button
                   key={item.id}
+                  variant={activeSection === item.id ? 'nav-active' : 'nav-mobile'}
+                  size='nav-mobile'
                   onClick={() => scrollToSection(item.id)}
-                  className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${
-                    activeSection === item.id
-                      ? 'text-accent bg-accent/10'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-accent hover:bg-gray-50 dark:hover:bg-gray-700'
-                  }`}
+                  className='font-medium'
                 >
                   <span className='mr-3'>{item.icon}</span>
                   {item.label}
-                </button>
+                </Button>
               ))}
             </div>
 
