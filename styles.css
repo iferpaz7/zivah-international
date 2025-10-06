@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+
+/* Make dark: utilities respond to a `.dark` class on any ancestor (Tailwind v4) */
+@custom-variant dark (&:where(.dark, .dark *));

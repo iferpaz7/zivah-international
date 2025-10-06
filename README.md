@@ -1,453 +1,772 @@
-# 🌊 ZIVAH International S.A. - Website v1.0.3
+# 🌊 ZIVAH International S.A. - Website
 
-Sitio web corporativo optimizado para **ZIVAH International S.A.**, exportadores premium de productos ecuatorianos desde Miami, Florida.
+Modern Next.js website for **ZIVAH International S.A.**, premium Ecuadorian product exporters with headquarters in Samborondón, Guayas and distribution office in Miami, Florida.
 
-## ✅ **Estado del Proyecto: LISTO PARA PRODUCCIÓN**
+## ✅ **Project Status: PRODUCTION READY**
 
-### **� Métricas de Performance**
-```
-Lighthouse Performance: 94/100
-PageSpeed Móvil: 89/100  
-PageSpeed Desktop: 96/100
-Core Web Vitals: Todos en verde ✅- 📋 **Historial**: [CHANGELOG.md](CHANGELOG.md) - Historial completo consolidado
-- 📊 **Consolidación**: [CONSOLIDATION-REPORT.md](docs/CONSOLIDATION-REPORT.md) - Reporte detallado
-SEO Score: 100/100 (preservado)
-```
+**Current Version**: 1.0.0
+**Last Updated**: October 2025
+**Next.js Version**: 15.5.3
+**Database**: PostgreSQL with Prisma ORM 6.16.1
 
-### **🚀 Características v2.0.0 (Consolidación Completa)**
-- ✅ **Sistema de loading inteligente** - Adaptativo según dispositivo/conexión
-- ✅ **65+ países** en formulario de cotización con banderas
-- ✅ **Logo SVG profesional** - Escalable y responsive  
-- ✅ **Optimización de caché** - Cambios instantáneos
-- ✅ **SEO-friendly** - Detección de bots, contenido inmediato
-- ✅ **Performance optimizada** - Core Web Vitals en verde
-- ✅ **Responsive design** - Mobile-first approach
-- ✅ **Documentación consolidada** - 15+ archivos → 7 archivos organizados
-- ✅ **CSS consolidado** - 5 archivos → 1 archivo único (80% reducción)
-- ✅ **JS optimizado** - Utilidades centralizadas, duplicados eliminados
-- ✅ **Paleta unificada** - Colores oficiales basados en logo ZIVAH
+### 🌟 **Key Features Implemented**
 
-## �🏗️ **Estructura del Proyecto**
+- ✅ **Multi-page Website**: Home, Products, Quality, Markets, Quote, Contact pages
+- ✅ **Dynamic Product Catalog**: 30+ products across 3 categories with filtering
+- ✅ **Advanced Quote System**: Multi-product quotes with measurements and specifications
+- ✅ **Admin Dashboard**: User management, quote processing, analytics
+- ✅ **Internationalization Ready**: Spanish content with English route structure
+- ✅ **PWA Features**: Service worker, offline functionality, web manifest
+- ✅ **SEO Optimized**: Meta tags, structured data, sitemap generation
+- ✅ **Performance Monitoring**: Core Web Vitals, analytics integration
+- ✅ **Security**: Rate limiting, input validation, GDPR compliance
+
+### 🚀 **Tech Stack**
+
+- **Framework**: Next.js 15.5.3 with App Router
+- **Database**: PostgreSQL with Prisma ORM 6.16.1
+- **Authentication**: NextAuth.js 4.24.11
+- **Styling**: Tailwind CSS 4.1.13 with custom theme
+- **Language**: TypeScript 5.9.2 with strict mode
+- **State Management**: React hooks with context
+- **Forms**: React Hook Form with Zod validation
+- **UI Components**: Radix UI primitives with custom styling
+- **Email**: Nodemailer for contact forms
+- **Analytics**: Google Analytics 4 with custom events
+- **Performance**: Web Vitals monitoring
+- **Security**: Rate limiting, input validation, HTTPS
+- **PWA**: Service worker with offline functionality
+- **Deployment**: cPanel Node.js hosting compatible
+
+### 🏗️ **Project Structure**
 
 ```
 zivah-international/
-├── 📄 index.html (v1.0.3)           # Página principal optimizada
-├── 📄 .htaccess                     # Configuración caché y seguridad
-├── � CHANGELOG.md                  # Historial completo de mejoras
-├── �📁 css/
-│   ├── styles.css (v1.0.3)         # Estilos principales + logo
-│   ├── responsive.css (v1.0.3)     # Responsive design
-│   └── loading.css (v1.0.3)        # Sistema de loading (NUEVO)
-├── 📁 js/
-│   ├── main.js (v1.0.3)            # JavaScript principal mejorado
-│   ├── smooth-loading-lite.js       # Sistema loading lite (NUEVO)
-│   ├── performance-config.js        # Configuración adaptativa (NUEVO)
-│   ├── seo-utils.js (v1.0.3)       # Utilidades SEO (carga diferida)
-│   ├── enhanced-dropdown.js         # Dropdown mejorado (opcional)
-│   ├── form-enhancements.js         # Mejoras formularios (opcional)
-│   └── countries-data.js            # Base datos países (opcional)
-├── 📁 assets/
-│   ├── 📁 images/
-│   │   ├── zivah-logo.svg          # Logo SVG profesional (NUEVO)
-│   │   └── 📁 icons/               # Iconos PWA
-│   └── 📁 fonts/                   # Fuentes (si aplicable)
-├── 📁 docs/                        # Documentación técnica consolidada
-│   ├── DEPLOYMENT.md            # Guía completa de despliegue
-│   ├── COLOR-PALETTE.md         # Documentación de colores
-│   ├── PERFORMANCE.md           # Análisis de rendimiento
-│   ├── LOADING-SYSTEM.md        # Sistema de loading (ex SMOOTH-LOADING-GUIDE)
-│   └── CONSOLIDATION-REPORT.md  # Reporte de consolidación completa
-│   ├── DEPLOYMENT.md               # Guía completa de despliegue
-│   └── PERFORMANCE.md              # Análisis performance y caché
-└── 📁 scripts/                     # Automatización (opcional)
-    ├── update-versions.ps1         # Actualización automática versiones
-    ├── verify-loading-system.ps1   # Verificación sistema loading
-    └── prepare-deployment.js       # Preparación para despliegue
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── globals.css        # Global styles with theme variables
+│   │   ├── layout.tsx         # Root layout with theme provider
+│   │   ├── page.tsx           # Homepage with dynamic content
+│   │   ├── sitemap.ts         # Dynamic sitemap generation
+│   │   ├── contact/           # Contact page
+│   │   ├── legal/             # Legal pages (privacy, terms, etc.)
+│   │   ├── markets/           # Markets page
+│   │   ├── products/          # Products pages (individual product pages)
+│   │   ├── quality/           # Quality certifications page
+│   │   ├── quote/             # Quote request page
+│   │   └── api/               # API routes
+│   │       ├── auth/          # NextAuth authentication
+│   │       ├── categories/    # Product categories endpoint
+│   │       ├── contact/       # Contact form endpoint
+│   │       ├── products/      # Products endpoint
+│   │       └── quotes/        # Quote requests endpoint
+│   ├── components/            # React components
+│   │   ├── Analytics.tsx      # Google Analytics integration
+│   │   ├── BusinessIntelligence.tsx # Business tracking
+│   │   ├── ClientThemeProvider.tsx # Client-side theme provider
+│   │   ├── CookieConsent.tsx  # GDPR cookie consent
+│   │   ├── ErrorHandling.tsx  # Error boundaries and loading states
+│   │   ├── LazyLoad.tsx       # Lazy loading utilities
+│   │   ├── Navigation.tsx     # Navigation component
+│   │   ├── OptimizedImage.tsx # Image optimization
+│   │   ├── QuoteForm.tsx      # Quote request form
+│   │   ├── SEO.tsx           # SEO optimization
+│   │   ├── SEOOptimization.tsx # Comprehensive SEO suite
+│   │   ├── ServiceWorker.tsx  # PWA service worker
+│   │   ├── ThemeProvider.tsx  # Theme context provider
+│   │   ├── ThemeToggle.tsx    # Dark/light mode toggle
+│   │   ├── WebVitals.tsx      # Core Web Vitals monitoring
+│   │   ├── ui/               # Reusable UI components
+│   │   └── index.ts          # Component exports
+│   ├── lib/                   # Utilities and services
+│   │   ├── auth.ts           # Authentication utilities
+│   │   ├── email.ts          # Email service
+│   │   ├── errors.ts         # Error handling utilities
+│   │   ├── hooks/            # Custom React hooks
+│   │   ├── https.ts          # HTTPS and security utilities
+│   │   ├── logger.ts         # Logging utilities
+│   │   ├── prisma.ts         # Database client
+│   │   ├── rate-limit.ts     # Rate limiting
+│   │   ├── security-config.ts # Security configuration
+│   │   ├── security.ts       # Security middleware
+│   │   ├── services/         # Business logic services
+│   │   ├── utils.ts          # Helper functions
+│   │   ├── validation.ts     # Input validation
+│   │   └── validations/      # Validation schemas
+│   ├── middleware.ts         # Next.js middleware
+│   └── types/                # TypeScript definitions
+├── prisma/                   # Database layer
+│   ├── schema.prisma        # Database schema
+│   ├── seed.ts             # Database seeding
+│   └── migrations/         # Database migrations
+├── public/                  # Static assets
+│   ├── assets/images/      # Images and icons
+│   ├── robots.txt         # SEO configuration
+│   ├── sitemap.xml        # Site structure
+│   └── site.webmanifest   # PWA manifest
+└── Configuration files
+    ├── next.config.ts      # Next.js configuration
+    ├── tailwind.config.ts  # Tailwind CSS setup
+    ├── tsconfig.json      # TypeScript config
+    ├── package.json       # Dependencies and scripts
+    └── .env.example       # Environment variables template
 ```
 
-## 🎯 **Características Avanzadas**
+## 🎯 **Features**
 
-### **🤖 Sistema de Loading Inteligente**
-- **Detección de bots SEO**: Sin loading para crawlers
-- **Adaptativo por dispositivo**: Móviles optimizados  
-- **Conexión lenta**: Loading mínimo/deshabilitado
-- **Accesibilidad**: Respeta `prefers-reduced-motion`
-- **Performance**: Solo 9KB versión lite (-65% vs completa)
+### 🌙 **Dark/Light Mode**
 
-### **� Formulario Internacional** 
-- **65+ países** organizados por regiones con banderas 🇺🇸🇧🇷🇪🇸🇯🇵
-- **40+ productos** categorizados con emojis 🥭🦐☕
-- **Búsqueda en tiempo real** (con JavaScript opcional)
-- **Validación avanzada** con feedback inmediato
+- System preference detection
+- localStorage persistence
+- Smooth transitions with CSS variables
+- Glass morphism effects adaptation
+- Theme toggle with animated icons
 
-### **🎨 Branding Profesional**
-- **Logo SVG escalable** con colores de marca
-- **Paleta coherente**: Coral, Emerald, Blue, Aqua
-- **Responsive logo**: 40px desktop, 32px móvil
-- **Efectos hover** optimizados para GPU
+### 📱 **Dynamic Content**
 
-### **⚡ Optimización Performance**
-- **Core Web Vitals**: LCP 1.8s, FID 45ms, CLS 0.05
-- **Lazy loading** inteligente con Intersection Observer
-- **Caché automático** con versionado dinámico
-- **Compresión GZIP** y headers de seguridad
+- PostgreSQL database with 3 categories, 30+ products
+- API-driven product catalog with filtering
+- Real-time category and product search
+- Interactive quote request system
+- Multi-page structure (Home, Products, Quality, Markets, Quote, Contact)
 
-## 📊 **Evolución del Proyecto**
+### 🎨 **Modern UI/UX**
 
-### **Fases Completadas**
-```
-🔹 Fase 1: Correcciones básicas (fixes aplicados)
-🔸 Fase 2: Mejoras UX y branding (logo SVG, colores)  
-🔹 Fase 3: Formularios optimizados (65+ países)
-🔸 Fase 4: Sistema loading v1.0.3 (performance)
-🔹 Fase 5: Caché y SEO (optimización completa)
-```
+- Responsive design (mobile-first approach)
+- Smooth scrolling navigation with section detection
+- Glass morphism effects and modern aesthetics
+- Professional ZIVAH branding with Ecuadorian theme
+- Interactive hover states and animations
+- Dark/light mode toggle with system preference detection
 
-### **Mejoras Métricas**
-```
-Lighthouse Performance: 60 → 94 (+34 puntos)
-PageSpeed Móvil: 65 → 89 (+24 puntos)  
-PageSpeed Desktop: 80 → 96 (+16 puntos)
-Países en formulario: 10 → 65+
-Funcionalidades: 15 → 45+ características
-```
+### ⚡ **Performance & SEO**
 
-## � **Despliegue Rápido**
+- Next.js 15 App Router with optimized routing
+- Core Web Vitals monitoring and reporting
+- Image optimization with lazy loading
+- Comprehensive SEO suite with structured data
+- Google Analytics 4 integration with custom events
+- Service worker for PWA functionality
+- Dynamic sitemap generation
+- Cookie consent with GDPR compliance
+- Meta tags and Open Graph optimization
 
-### **📦 Listo para Subir**
-El proyecto está **100% listo** para despliegue en cualquier hosting con cPanel:
+### 🔒 **Security & Compliance**
+
+- Rate limiting and DDoS protection (Upstash)
+- Input validation with Zod schemas
+- HTTPS enforcement and security headers
+- CSRF protection and authentication
+- GDPR cookie compliance
+- Security middleware and error handling
+
+### 📊 **Business Intelligence**
+
+- Conversion tracking and analytics
+- User engagement metrics
+- Performance monitoring dashboard
+- Business metrics and reporting
+- Automated email notifications
+
+## 🛠️ **Development**
+
+### Prerequisites
+
+- Node.js 18.18.0 or higher
+- PostgreSQL database
+- npm or yarn package manager
+- Git
+
+### Installation
 
 ```bash
-# 1. Descargar archivos desde GitHub
-# 2. Subir a public_html/ vía cPanel File Manager  
-# 3. Configurar SSL/HTTPS
-# 4. ¡Listo! - Sitio funcionando optimizado
-```
-
-### **📚 Documentación Completa**
-- **📄 [DEPLOYMENT.md](docs/DEPLOYMENT.md)** - Guía paso a paso de despliegue
-- **📊 [PERFORMANCE.md](docs/PERFORMANCE.md)** - Análisis performance y caché  
-- **📋 [CHANGELOG.md](CHANGELOG.md)** - Historial completo de mejoras
-
-#### **🎯 Guía Rápida de Documentación**
-```
-📄 docs/DEPLOYMENT.md  → Para subir el sitio a producción
-📊 docs/PERFORMANCE.md → Para optimizar velocidad y caché
-📋 CHANGELOG.md        → Para ver historial de mejoras (RAÍZ)
-```
-
-#### **🔧 Scripts de Automatización Incluidos**
-```powershell
-# Actualizar versiones de archivos
-.\update-versions.ps1 -Version "1.0.4"
-
-# Verificar sistema de loading
-.\verify-loading-system.ps1
-
-# Preparar archivos para deployment
-.\prepare-deployment.js
-```
-
-### **🔧 Scripts de Automatización**
-```powershell
-# Actualizar versiones automáticamente
-.\update-versions.ps1 -Version "1.0.4"
-
-# Verificar sistema de loading
-.\verify-loading-system.ps1
-
-# Preparar archivos para deployment
-.\prepare-deployment.js
-```
-
-## 🎨 **Tecnologías y Optimizaciones**
-
-### **Frontend Moderno**
-- **HTML5**: Estructura semántica con Schema.org
-- **CSS3**: Grid, Flexbox, Custom Properties, Animaciones GPU
-- **JavaScript ES6+**: Modules, Async/Await, Intersection Observer
-- **SVG**: Gráficos escalables optimizados
-
-### **Performance Optimizations**
-- **Lazy Loading**: Imágenes y scripts no críticos
-- **Code Splitting**: Versión lite vs completa
-- **Cache Headers**: .htaccess optimizado para actualizaciones
-- **Critical CSS**: Estilos inline para first paint
-- **Resource Hints**: Preload de recursos críticos
-
-### **SEO & Accessibility**
-- **Structured Data**: 5 bloques JSON-LD completos
-- **Meta Tags**: Open Graph, Twitter Cards, canónicos
-- **Sitemap XML**: Generado automáticamente
-- **A11y**: ARIA labels, keyboard navigation, screen readers
-- **Core Web Vitals**: Todos optimizados
-
-## 📱 **Secciones del Sitio**
-
-### **🏠 Hero Section**
-- Logo SVG profesional escalable
-- Estadísticas empresariales dinámicas  
-- Call-to-action optimizado para conversión
-- Botón de tema claro/oscuro
-
-### **� Productos** 
-- Catálogo visual con categorías
-- 40+ productos ecuatorianos premium
-- Lazy loading de imágenes optimizado
-- Enlaces directos a cotización
-
-### **🌍 Formulario de Cotización**
-- 65+ países con banderas por regiones
-- Productos categorizados con emojis  
-- Validación en tiempo real
-- Estados de carga y confirmación
-
-### **🏆 Calidad & Certificaciones**
-- Estándares internacionales  
-- Certificaciones destacadas
-- Proceso de calidad documentado
-- Garantías y compromisos
-
-### **🌎 Alcance Global**
-- Estadísticas de exportación
-- Mapa de mercados objetivo
-- Cobertura internacional
-- Testimonios y casos de éxito
-
-### **📞 Contacto**
-- Información completa de contacto
-- Ubicaciones (Miami, Ecuador)
-- Redes sociales integradas
-- Formulario de contacto directo
-
-## 🔧 **Instalación y Desarrollo**
-
-### **Desarrollo Local**
-```bash
-# 1. Clonar repositorio
+# Clone repository
 git clone https://github.com/iferpaz7/zivah-international.git
+cd zivah-international
 
-# 2. Servidor local (elegir uno)
-python -m http.server 8000
-npx http-server
-php -S localhost:8000
+# Install dependencies
+npm install
 
-# 3. Abrir en navegador
-http://localhost:8000
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials and configuration
+
+# Generate Prisma client
+npm run db:generate
+
+# Run database migrations
+npm run db:migrate
+
+# Seed database with sample data
+npm run db:seed
+
+# Start development server
+npm run dev
 ```
 
-### **Actualización de Versiones**
-```powershell
-# PowerShell (Windows)
-.\update-versions.ps1 -Version "1.0.4"
+### Environment Variables
 
-# Manual - buscar y reemplazar
-# css/styles.css?v=1.0.3 → css/styles.css?v=1.0.4
-# js/main.js?v=1.0.3 → js/main.js?v=1.0.4
+Create a `.env` file with the following variables:
+
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/zivah_db"
+
+# NextAuth.js
+NEXTAUTH_SECRET="your-secret-key-here"
+NEXTAUTH_URL="http://localhost:3000"
+
+# Google Analytics (optional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
+
+# Email service (optional)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-app-password"
+
+# Production
+NODE_ENV="development"
 ```
 
-### **Configuración Personalizada**
-```javascript
-// Modificar en js/performance-config.js
-window.ZIVAH_PERFORMANCE_CONFIG = {
-    loading: {
-        pageLoader: { enabled: true, maxTime: 1500 },
-        animations: { enabled: false, duration: 200 },
-        lazyLoading: { enabled: true, rootMargin: '50px' }
-    },
-    seo: {
-        enableForBots: false,
-        detectSlowConnection: true
-    }
-};
-```
+### Available Scripts
 
-## 🌐 **Preparación para Frameworks**
-
-### **Migración a Next.js**
 ```bash
-npx create-next-app@latest zivah-nextjs
-# Convertir a componentes React
-# Usar next/image para optimización
-# Implementar SSG/SSR para SEO
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run lint:fix     # Run ESLint with auto-fix
+npm run format       # Format code with Prettier
+npm run format:check # Check if code is formatted correctly
+npm run type-check   # Run TypeScript type checking
+npm run db:generate  # Generate Prisma client
+npm run db:push      # Push schema changes to database
+npm run db:migrate   # Run database migrations
+npm run db:studio    # Open Prisma Studio (database GUI)
+npm run db:seed      # Seed database with sample data
+npm run db:reset     # Reset database and reseed
 ```
 
-### **Migración a Astro**  
+## 🎯 **Code Quality & Formatting**
+
+This project uses a comprehensive code formatting and linting setup to ensure consistent code quality across the team.
+
+### Prettier Configuration
+
+- **Single quotes** for strings
+- **Semicolons** always required
+- **Trailing commas** in multi-line structures
+- **Print width** of 80 characters
+- **Tab width** of 2 spaces
+- **JSX single quotes** enabled
+- Optimized for **Next.js**, **TypeScript**, **React**, and **Tailwind CSS**
+
+### ESLint Configuration
+
+- **Next.js** core web vitals rules
+- **TypeScript** recommended rules
+- **React** and **React Hooks** best practices
+- **JSX accessibility** (jsx-a11y) rules
+- **Import** organization and validation
+- **Prettier** integration to avoid conflicts
+- Custom rules for the project's specific needs
+
+### Available Commands
+
 ```bash
-npm create astro@latest zivah-astro
-# Aprovechar componentes estáticos
-# Mantener JavaScript mínimo
-# Optimización automática de assets
+# Linting
+npm run lint         # Check for linting errors
+npm run lint:fix     # Auto-fix linting errors where possible
+
+# Formatting
+npm run format       # Format all code files
+npm run format:check # Check if code is properly formatted
+
+# Type Checking
+npm run type-check   # Run TypeScript type checking
 ```
 
-### **Migración a Tailwind**
-```bash
-npm install -D tailwindcss
-# Convertir CSS custom a utilidades
-# Mantener sistema de colores
-# Optimizar para production
-```
+### Pre-commit Hooks
 
-## 🎨 **Sistema de Colores y Branding**
+The project uses **Husky** and **lint-staged** to automatically:
 
-### **Paleta Principal**
-```css
-:root {
-  --zivah-coral: #ff6347;      /* Energía, comercio internacional */
-  --zivah-emerald: #16a085;    /* Crecimiento, sostenibilidad */
-  --zivah-blue: #3182ce;       /* Confianza, profesionalismo */
-  --zivah-aqua: #26d0ce;       /* Océano, conexiones globales */
-  --zivah-navy: #1a202c;       /* Elegancia, premium */
-  --zivah-forest: #1e4d30;     /* Naturaleza, Ecuador */
+- Run ESLint on staged TypeScript/JavaScript files
+- Format staged files with Prettier
+- Prevent commits with linting or formatting errors
+
+### Editor Integration
+
+VS Code settings are configured for:
+
+- **Format on save** enabled
+- **ESLint** auto-fix on save
+- **Prettier** as default formatter
+- **Import organization** on save
+- Consistent **tab size** and **rulers**
+
+### File Exclusions
+
+The following files are excluded from formatting:
+
+- `node_modules/` - Dependencies
+- `.next/` - Next.js build output
+- `prisma/migrations/` - Database migrations
+- Environment files (`.env*`)
+- Lock files (`package-lock.json`, `yarn.lock`)
+- Generated files and logs
+
+### Best Practices
+
+1. **Always run `npm run lint:fix`** before committing
+2. **Use `npm run format`** to ensure consistent formatting
+3. **Enable format on save** in your editor
+4. **Review pre-commit hook output** for any issues
+5. **Run `npm run type-check`** regularly during development
+
+## 🗄️ **Database Schema**
+
+### Core Tables
+
+#### Categories Table
+
+- `id`, `name`, `slug`, `description`
+- `icon`, `color`, `sort_order`, `is_active`
+- `created_at`, `updated_at`
+
+#### Products Table
+
+- `id`, `name`, `slug`, `category_id`
+- `description`, `short_description`, `sku`, `code`
+- `specifications`, `stock_quantity`, `min_order_qty`
+- `image_url`, `image_gallery`, `origin`, `harvest_season`
+- `certifications`, `nutritional_info`
+- `is_active`, `is_featured`, `seo_title`, `seo_description`
+- `measure_id`, `created_at`, `updated_at`
+
+#### Product Variants Table
+
+- `id`, `product_id`, `name`, `sku`, `price`, `stock_qty`
+- `is_active`, `attributes`, `created_at`, `updated_at`
+
+#### Quotes System
+
+- **Quotes Table**: `id`, `quote_number`, customer info, status, totals, dates
+- **Quote Items Table**: `quote_id`, `product_id`, quantity, pricing, specifications
+- **Quote Communications Table**: Communication history and notes
+
+### Supporting Tables
+
+#### Measures & Currencies
+
+- **Measure Families**: Weight, volume, count units
+- **Measures**: Individual measurement units with conversions
+- **Currencies**: Supported currencies for pricing
+
+#### Users & Authentication
+
+- **Users Table**: Admin/user accounts with roles and permissions
+- **Accounts/Sessions**: NextAuth.js authentication tables
+
+#### Countries & Localization
+
+- **Countries Table**: Shipping destinations with calling codes
+- **Activity Logs**: User action tracking
+
+### Key Relationships
+
+- **Products** → **Categories** (many-to-one)
+- **Products** → **Measures** (many-to-one)
+- **Quotes** → **Quote Items** (one-to-many)
+- **Quote Items** → **Products** (many-to-one)
+- **Users** → **Quotes** (one-to-many for assignments)
+
+## 🚀 **API Endpoints**
+
+### Authentication
+
+- `GET/POST /api/auth/[...nextauth]` - NextAuth.js authentication
+
+### Products
+
+- `GET /api/products` - Get all products with filtering and pagination
+- `GET /api/products?category=slug` - Filter products by category
+- `GET /api/products?search=term` - Search products by name/description
+
+### Categories
+
+- `GET /api/categories` - Get all product categories
+- `GET /api/categories/[slug]` - Get specific category details
+
+### Quotes
+
+- `POST /api/quotes` - Submit quote request
+- `GET /api/quotes/countries` - Get available countries for shipping
+- `GET /api/quotes/measures` - Get available measurement units
+- `GET /api/quotes/products/search` - Search products for quotes
+
+### Contact
+
+- `POST /api/contact` - Submit contact form with rate limiting
+
+### API Response Format
+
+```json
+{
+  "success": true,
+  "data": { ... },
+  "message": "Operation successful",
+  "timestamp": "2024-01-01T00:00:00.000Z"
 }
 ```
 
-### **Aplicación en Temas**
-- **Tema Claro**: Fondo blanco, texto navy, acentos coral
-- **Tema Oscuro**: Fondo navy, texto claro, acentos aqua  
-- **Estados Hover**: Escalado sutil + brightness
-- **Estados Focus**: Ring coral para accesibilidad
+### Error Response Format
 
-## � **Métricas y Monitoreo**
-
-### **Performance Monitoring**
-```javascript
-// Métricas automáticas incluidas
-window.ZIVAH_PERFORMANCE_UTILS.measureCoreWebVitals();
-
-// Envío a Google Analytics
-gtag('event', 'web_vitals', {
-    event_category: 'performance',
-    event_label: 'LCP',
-    value: Math.round(lcpValue)
-});
+```json
+{
+  "success": false,
+  "error": "Error message",
+  "code": "ERROR_CODE",
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}
 ```
 
-### **Herramientas de Verificación**
-- **🔧 PageSpeed Insights**: https://pagespeed.web.dev/
-- **🔧 Lighthouse**: Chrome DevTools → Audits
-- **🔧 GTmetrix**: https://gtmetrix.com/
-- **🔧 Web Vitals**: Chrome Extension oficial
+## 🚀 **Production Deployment**
 
-### **Métricas Objetivo**
+### Environment Variables for Production
+
+```env
+# Database
+DATABASE_URL="postgresql://user:pass@host:5432/dbname"
+
+# NextAuth.js
+NEXTAUTH_SECRET="your-production-secret-key"
+NEXTAUTH_URL="https://yourdomain.com"
+
+# Google Analytics
+NEXT_PUBLIC_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
+
+# Email service
+SMTP_HOST="smtp.yourprovider.com"
+SMTP_PORT="587"
+SMTP_USER="noreply@yourdomain.com"
+SMTP_PASS="your-smtp-password"
+
+# Production settings
+NODE_ENV="production"
 ```
-✅ Lighthouse Performance: 90+ puntos
-✅ LCP (Largest Contentful Paint): < 2.5s
-✅ FID (First Input Delay): < 100ms  
-✅ CLS (Cumulative Layout Shift): < 0.1
-✅ Speed Index: < 2.0s
-✅ SEO Score: 100/100 mantenido
-```
 
-## 🔄 **Próximos Pasos y Roadmap**
+### Build and Deploy
 
-### **Corto Plazo (1-3 meses)**
-- [ ] 📊 Monitoreo de métricas en producción
-- [ ] 🔍 A/B testing del formulario de cotización  
-- [ ] 📱 Progressive Web App (PWA) features
-- [ ] 🌐 Backend para procesamiento de formularios
-
-### **Mediano Plazo (3-6 meses)**
-- [ ] 🗣️ Versión en inglés (internacionalización)
-- [ ] 📦 Catálogo de productos interactivo
-- [ ] 💳 Sistema de cotización avanzado con precios
-- [ ] 📈 Analytics y tracking de conversiones avanzado
-
-### **Largo Plazo (6-12 meses)**  
-- [ ] 🛒 Portal de e-commerce completo
-- [ ] 👥 Área de clientes registrados
-- [ ] 📊 Dashboard de métricas de negocio
-- [ ] 🤖 Integración con CRM/ERP empresarial
-
-## 🤝 **Contribución y Desarrollo**
-
-### **Para Contribuir**
 ```bash
-# 1. Fork el repositorio
-# 2. Crear rama feature
-git checkout -b feature/nueva-funcionalidad
+# Build the application
+npm run build
 
-# 3. Commit cambios  
-git commit -m "feat: agregar nueva funcionalidad"
+# The .next folder contains the production build
+# Upload the entire project to your hosting provider
 
-# 4. Push y crear Pull Request
-git push origin feature/nueva-funcionalidad
+# For cPanel Node.js hosting:
+# 1. Upload all files to public_html or subdomain directory
+# 2. Set Node.js version to 18+
+# 3. Set application startup file to: npm start
+# 4. Configure environment variables in cPanel
 ```
 
-### **Estándares de Código**
-- **CSS**: BEM methodology, mobile-first
-- **JavaScript**: ES6+, JSDoc comments, async/await
-- **HTML**: Semantic HTML5, accessibility-first
-- **Performance**: Core Web Vitals priority
+### Database Setup for Production
 
-### **Testing**
-- **Manual**: Chrome DevTools, múltiples dispositivos
-- **Automated**: Lighthouse CI, PageSpeed monitoring
-- **Cross-browser**: Chrome, Firefox, Safari, Edge
-- **Accessibility**: Screen readers, keyboard navigation
+```bash
+# Generate Prisma client
+npx prisma generate
 
-## 📄 **Licencia y Copyright**
+# Run migrations
+npx prisma migrate deploy
 
-© 2024 **ZIVAH International S.A.** - Todos los derechos reservados.
-
-### **Uso del Código**
-- ✅ **Empresa**: Uso libre para ZIVAH International
-- ⚠️ **Terceros**: Contactar para licenciamiento
-- 📚 **Aprendizaje**: Libre para fines educativos  
-- 🚫 **Comercial**: Prohibido sin autorización
-
-## 📞 **Contacto y Soporte**
-
-### **📞 Contacto y Soporte**
-
-### **ZIVAH International S.A.**
-- 📧 **Email**: sales@zivahinternational.com
-- 📱 **WhatsApp**: +593 9X XXX XXXX  
-- 📞 **Teléfono**: +1 (305) XXX-XXXX
-- 🌍 **Ubicación**: Miami, Florida, USA
-
-### **Soporte Técnico**
-- 📚 **Documentación**: Ver carpeta `docs/` para guías completas
-- � **Deployment**: Consultar [DEPLOYMENT.md](docs/DEPLOYMENT.md)
-- 📊 **Performance**: Consultar [PERFORMANCE.md](docs/PERFORMANCE.md)  
-- � **Historial**: Consultar [CHANGELOG.md](docs/CHANGELOG.md)
-- 🐛 **Issues**: GitHub Issues del repositorio
-
-### **🔧 Resolución de Problemas Comunes**
+# Seed production database (optional)
+npx prisma db seed
 ```
-❓ Problemas de deployment → docs/DEPLOYMENT.md
-❓ Sitio lento o caché      → docs/PERFORMANCE.md  
-❓ Contexto de cambios     → CHANGELOG.md (raíz)
-❓ Configuración scripts   → Sección Scripts arriba
+
+### Performance Optimization
+
+- ✅ Automatic image optimization
+- ✅ Core Web Vitals monitoring
+- ✅ SEO optimization with structured data
+- ✅ Service worker for caching
+- ✅ Lazy loading for images and components
+- ✅ Bundle splitting and code optimization
+
+### Environment Configuration
+
+```env
+# Database
+DATABASE_URL="postgresql://user:pass@localhost:5432/dbname"
+
+# Next.js
+NEXTAUTH_SECRET="random-secret-string"
+NEXTAUTH_URL="https://yourdomain.com"
+NODE_ENV="production"
+
+# Google Analytics (optional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
+
+# Email service (optional)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-app-password"
 ```
+
+### Troubleshooting
+
+#### Common Issues
+
+1. **Database Connection**: Ensure DATABASE_URL is correct and PostgreSQL is running
+2. **Build Errors**: Check Node.js version (18.18.0+) and run `npm install`
+3. **Environment Variables**: Copy `.env.example` to `.env` and fill required values
+4. **Prisma Issues**: Run `npm run db:generate` after schema changes
+5. **Port Conflicts**: Default port is 3000, change with `PORT=3001 npm run dev`
+
+#### Development Tips
+
+- Use `npm run db:studio` to view/edit database
+- Check browser console for client-side errors
+- Use `npm run lint:fix` to auto-fix code quality issues
+- Run `npm run format` to format code consistently
+- Use `npm run type-check` for TypeScript validation
+- Enable "Format on Save" in your editor for automatic formatting
+
+## � **Usage Examples**
+
+### Product Display
+
+```tsx
+// Display products with filtering
+import { useEffect, useState } from 'react';
+
+function ProductCatalog() {
+  const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState('all');
+
+  useEffect(() => {
+    fetch(`/api/products${category !== 'all' ? `?category=${category}` : ''}`)
+      .then(res => res.json())
+      .then(data => setProducts(data.data));
+  }, [category]);
+
+  return (
+    <div>
+      <select
+        value={category}
+        onChange={e => setCategory(e.target.value)}
+      >
+        <option value='all'>All Categories</option>
+        <option value='fruits'>Fruits</option>
+        <option value='seafood'>Seafood</option>
+      </select>
+      {products.map(product => (
+        <div key={product.id}>
+          <h3>{product.name}</h3>
+          <p>{product.description}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### Quote Request Form
+
+```tsx
+// Submit quote request
+const handleQuoteSubmit = async formData => {
+  const response = await fetch('/api/quotes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData),
+  });
+
+  if (response.ok) {
+    // Handle success
+    console.log('Quote submitted successfully');
+  } else {
+    // Handle error
+    console.error('Quote submission failed');
+  }
+};
+```
+
+### Contact Form
+
+```tsx
+// Send contact message
+const handleContactSubmit = async formData => {
+  const response = await fetch('/api/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData),
+  });
+
+  const result = await response.json();
+  if (result.success) {
+    alert('Message sent successfully!');
+  } else {
+    alert(`Error: ${result.error}`);
+  }
+};
+```
+
+## 📊 **Database Management & Analytics**
+
+### Prisma Commands
+
+```bash
+# Generate client after schema changes
+npx prisma generate
+
+# Create and apply migration
+npx prisma migrate dev --name description
+
+# Deploy migrations to production
+npx prisma migrate deploy
+
+# Reset database (development only)
+npx prisma migrate reset
+
+# Open Prisma Studio (database GUI)
+npx prisma studio
+
+# Seed database with sample data
+npx prisma db seed
+```
+
+### Analytics & Monitoring
+
+- **Core Web Vitals**: Automatic monitoring of LCP, FID, CLS, FCP, TTFB
+- **Google Analytics 4**: Comprehensive event tracking and conversion monitoring
+- **Business Intelligence**: Custom conversion tracking and user engagement metrics
+- **Performance Monitoring**: Real-time performance metrics and error tracking
+- **SEO Monitoring**: Automated SEO validation and reporting
+
+### Backup Strategy
+
+```bash
+# Backup database
+pg_dump -h localhost -U username dbname > backup.sql
+
+# Restore database
+psql -h localhost -U username dbname < backup.sql
+
+# Backup application files
+tar -czf backup.tar.gz /path/to/application
+```
+
+## � **Security & Compliance**
+
+### Security Features
+
+- **Rate Limiting**: Redis-based rate limiting for API endpoints
+- **Input Validation**: Comprehensive Zod schema validation
+- **XSS Protection**: Input sanitization and HTML escaping
+- **SQL Injection Prevention**: Parameterized queries with Prisma
+- **CSRF Protection**: Security headers and token validation
+- **HTTPS Enforcement**: Automatic SSL redirection
+- **Security Headers**: Comprehensive security headers middleware
+
+### GDPR Compliance
+
+- **Cookie Consent**: Granular cookie preferences management
+- **Data Processing**: Transparent data collection and usage
+- **User Rights**: Data export, deletion, and access requests
+- **Analytics Compliance**: GDPR-compliant Google Analytics setup
+- **Privacy Policy**: Comprehensive privacy policy documentation
+
+### Performance Security
+
+- **DDoS Protection**: Rate limiting and request throttling
+- **Resource Protection**: API endpoint protection and monitoring
+- **Error Handling**: Secure error responses without data leakage
+- **Logging**: Comprehensive security event logging
+
+### Compliance Documentation
+
+- **Privacy Policy**: `/legal/privacy-policy`
+- **Terms of Service**: `/legal/terms-of-service`
+- **Cookie Policy**: `/legal/cookie-policy`
+- **Data Protection**: `/legal/data-protection`
+
+## 🔧 **Configuration**
+
+### Next.js Configuration
+
+- **Framework**: Next.js 15.5.3 with App Router
+- **TypeScript**: Strict mode enabled
+- **Image Optimization**: Built-in Next.js Image component
+- **API Routes**: RESTful endpoints with proper error handling
+- **Middleware**: Security, rate limiting, and HTTPS enforcement
+
+### Database Configuration
+
+- **ORM**: Prisma with PostgreSQL
+- **Connection**: Environment-based configuration
+- **Migrations**: Automated schema management
+- **Seeding**: Sample data for development
+
+### Security Features
+
+- **Rate Limiting**: Upstash Redis-based rate limiting
+- **Input Validation**: Zod schema validation
+- **Sanitization**: XSS and SQL injection protection
+- **HTTPS Enforcement**: Middleware-based SSL enforcement
+- **Security Headers**: Comprehensive security headers
+
+### SEO & Performance
+
+- **Core Web Vitals**: Automatic monitoring and reporting
+- **Structured Data**: JSON-LD schema markup
+- **Sitemap**: Dynamic XML sitemap generation
+- **Meta Tags**: Comprehensive SEO meta tags
+- **Analytics**: Google Analytics 4 integration
+
+### Styling Configuration
+
+- **CSS Framework**: Tailwind CSS 4.1.13
+- **Theme System**: Dark/light mode with system preference
+- **Glass Morphism**: Custom CSS utilities
+- **Responsive Design**: Mobile-first approach
+- **Performance**: Optimized CSS with purging
+
+## 📝 **License**
+
+Copyright © 2025 ZIVAH International S.A. All rights reserved.
+
+This project is proprietary software developed for ZIVAH International S.A.
+Unauthorized use, reproduction, or distribution is prohibited.
+
+## 📞 **Support & Contact**
+
+### Technical Support
+
+- **Email**: info@zivahinternational.com
+- **Repository**: https://github.com/iferpaz7/zivah-international
+- **Issues**: GitHub Issues for bug reports and feature requests
+
+### Business Contact
+
+- **Website**: [zivahinternational.com](https://zivahinternational.com)
+- **Headquarters**: Samborondón, Guayas, Ecuador
+- **Distribution**: Miami, Florida, USA
+- **Phone**: +593999002893
+
+### Development Team
+
+- **Lead Developer**: ZIVAH International S.A. Development Team
+- **Tech Stack**: Next.js, TypeScript, PostgreSQL, Tailwind CSS
+- **Status**: Production Ready with Comprehensive Features
 
 ---
 
-## 🎉 **¡Sitio Listo para Conquistar Mercados Globales!**
-
-**ZIVAH International S.A.** ahora cuenta con una **plataforma web de clase mundial** que refleja la calidad premium de los productos ecuatorianos exportados.
-
-### **🏆 Logros Alcanzados**
-- ✅ **Performance optimizada**: 94/100 Lighthouse
-- ✅ **SEO preservado**: 100/100 sin afectaciones  
-- ✅ **Alcance global**: 65+ países cubiertos
-- ✅ **Branding profesional**: Identidad visual completa
-- ✅ **UX moderna**: Loading inteligente y responsive
-- ✅ **Developer-friendly**: Documentado y automatizado
-
-### **🌍 Misión Cumplida**
-> *"Conectar Ecuador con el mundo a través de una experiencia web premium"*
-
-**Estado**: ✅ **LISTO PARA COMPETIR INTERNACIONALMENTE**
-
----
-
-**🇪🇨 Exportando Excelencia Ecuatoriana → 🌍 Mercados Globales**
-
-*Desarrollado con ❤️ para ZIVAH International S.A.*
-
----
-
-*Última actualización: Septiembre 6, 2025*  
-*Versión: 1.0.3*  
-*Estado: ✅ Producción Optimizada*
+**🌊 ZIVAH International S.A.**
+_Exportadores Premium de Productos Ecuatorianos_
+🏢 _Sede Principal_: Samborondón, Guayas, Ecuador
+🏢 _Oficina de Distribución_: Miami, Florida, USA
+🌐 _Website_: [zivahinternational.com](https://zivahinternational.com)
+📧 _Email_: info@zivahinternational.com

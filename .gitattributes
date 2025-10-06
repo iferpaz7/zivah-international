@@ -1,0 +1,186 @@
+# Set default behavior to automatically normalize line endings.
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.c text
+*.h text
+*.cpp text
+*.hpp text
+*.java text
+*.py text
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.xml text eol=lf
+*.html text eol=lf
+*.htm text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+*.less text eol=lf
+*.svg text eol=lf
+*.txt text eol=lf
+*.sql text eol=lf
+*.sh text eol=lf
+*.bash text eol=lf
+*.zsh text eol=lf
+*.fish text eol=lf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Configuration files
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf
+.eslintrc* text eol=lf
+.prettierrc* text eol=lf
+.babelrc* text eol=lf
+tsconfig*.json text eol=lf
+package*.json text eol=lf
+*.config.js text eol=lf
+*.config.ts text eol=lf
+*.config.mjs text eol=lf
+Dockerfile text eol=lf
+docker-compose*.yml text eol=lf
+Makefile text eol=lf
+Rakefile text eol=lf
+
+# Documentation
+README* text eol=lf
+CHANGELOG* text eol=lf
+CONTRIBUTING* text eol=lf
+LICENSE* text eol=lf
+COPYING* text eol=lf
+
+# Declare files that will always have CRLF line endings on checkout.
+*.sln text eol=crlf
+*.csproj text eol=crlf
+*.vbproj text eol=crlf
+*.vcxproj text eol=crlf
+*.vcproj text eol=crlf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.bmp binary
+*.tiff binary
+*.tif binary
+*.webp binary
+*.svg binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.rar binary
+*.7z binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.app binary
+*.deb binary
+*.rpm binary
+*.msi binary
+*.dmg binary
+*.iso binary
+*.jar binary
+*.war binary
+*.ear binary
+*.class binary
+*.pyc binary
+*.pyo binary
+*.pyd binary
+*.o binary
+*.a binary
+*.lib binary
+*.obj binary
+*.pdb binary
+
+# Font files
+*.ttf binary
+*.otf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+
+# Audio/Video files
+*.mp3 binary
+*.mp4 binary
+*.avi binary
+*.mov binary
+*.wav binary
+*.flac binary
+*.ogg binary
+*.mkv binary
+*.webm binary
+
+# Archive files
+*.tar.gz binary
+*.tar.bz2 binary
+*.tar.xz binary
+*.bz2 binary
+*.xz binary
+
+# Database files
+*.db binary
+*.sqlite binary
+*.sqlite3 binary
+
+# Certificate files
+*.p12 binary
+*.pfx binary
+*.cer binary
+*.crt binary
+*.der binary
+*.key binary
+*.pem binary
+
+# Keystore files
+*.jks binary
+*.keystore binary
+
+# Node.js specific
+node_modules/ export-ignore
+npm-debug.log* export-ignore
+yarn-debug.log* export-ignore
+yarn-error.log* export-ignore
+.npm export-ignore
+.yarn export-ignore
+
+# Build outputs
+dist/ export-ignore
+build/ export-ignore
+out/ export-ignore
+.next/ export-ignore
+coverage/ export-ignore
+.nyc_output/ export-ignore
+
+# Environment and temporary files
+.env* export-ignore
+.DS_Store export-ignore
+Thumbs.db export-ignore
+*.log export-ignore
+*.tmp export-ignore
+*.temp export-ignore
+
+# IDE and editor files
+.vscode/ export-ignore
+.idea/ export-ignore
+*.swp export-ignore
+*.swo export-ignore
+*~ export-ignore
+
+# Git LFS (Large File Storage) - uncomment if using LFS
+# *.psd filter=lfs diff=lfs merge=lfs -text
+# *.ai filter=lfs diff=lfs merge=lfs -text
+# *.sketch filter=lfs diff=lfs merge=lfs -text
