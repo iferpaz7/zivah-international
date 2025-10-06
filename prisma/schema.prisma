@@ -1,0 +1,538 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  slug        String    @unique @db.VarChar(100)
+  description String?
+  icon        String?   @db.VarChar(50)
+  color       String?   @db.VarChar(7)
+  sortOrder   Int       @default(0) @map("sort_order")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  products    Product[]
+
+  @@index([isActive, sortOrder])
+  @@map("categories")
+}
+
+model Product {
+  id               Int              @id @default(autoincrement())
+  name             String           @db.VarChar(255)
+  slug             String           @unique @db.VarChar(255)
+  categoryId       Int?             @map("category_id")
+  description      String?
+  shortDescription String?          @map("short_description") @db.VarChar(500)
+  sku              String?          @unique @db.VarChar(100)
+  specifications   Json?
+  stockQuantity    Int              @default(0) @map("stock_quantity")
+  minOrderQty      Int?             @default(1) @map("min_order_qty")
+  imageUrl         String?          @map("image_url") @db.VarChar(500)
+  imageGallery     Json?            @map("image_gallery")
+  origin           String           @default("Ecuador") @db.VarChar(100)
+  harvestSeason    String?          @map("harvest_season") @db.VarChar(100)
+  certifications   Json?
+  nutritionalInfo  Json?            @map("nutritional_info")
+  isActive         Boolean          @default(true) @map("is_active")
+  isFeatured       Boolean          @default(false) @map("is_featured")
+  seoTitle         String?          @map("seo_title") @db.VarChar(255)
+  seoDescription   String?          @map("seo_description") @db.VarChar(500)
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+  measureId        Int?             @map("measure_id")
+  code             String?          @unique @db.VarChar(50)
+  variants         ProductVariant[]
+  category         Category?        @relation(fields: [categoryId], references: [id])
+  defaultMeasure   Measure?         @relation(fields: [measureId], references: [id])
+  quoteItems       QuoteItem[]
+  productPrices    ProductPrice[]
+
+  @@index([categoryId])
+  @@index([measureId])
+  @@index([isActive, isFeatured])
+  @@index([slug])
+  @@index([code])
+  @@map("products")
+}
+
+model ProductVariant {
+  id         Int      @id @default(autoincrement())
+  productId  Int      @map("product_id")
+  name       String   @db.VarChar(255)
+  sku        String?  @unique @db.VarChar(50)
+  price      Decimal? @db.Decimal(10, 2)
+  stockQty   Int      @default(0) @map("stock_qty")
+  isActive   Boolean  @default(true) @map("is_active")
+  attributes Json?
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model MeasureFamily {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(50)
+  code        String    @unique @db.VarChar(20)
+  description String?
+  sortOrder   Int       @default(0) @map("sort_order")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  measures Measure[]
+
+  @@index([isActive, sortOrder])
+  @@map("measure_families")
+}
+
+model Currency {
+  id          Int       @id @default(autoincrement())
+  code        String    @unique @db.VarChar(3)
+  name        String    @db.VarChar(100)
+  symbol      String?   @db.VarChar(5)
+  isActive    Boolean   @default(true) @map("is_active")
+  sortOrder   Int       @default(0) @map("sort_order")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  countries   Country[]
+  quotes      Quote[]
+
+  @@index([isActive, sortOrder])
+  @@map("currencies")
+}
+
+model Measure {
+  id                  Int                    @id @default(autoincrement())
+  name                String                 @unique @db.VarChar(100)
+  shortName           String                 @db.VarChar(20)
+  symbol              String?                @db.VarChar(10)
+  type                MeasureType
+  familyId            Int?                   @map("family_id")
+  baseUnit            String?                @db.VarChar(20)
+  conversionFactor    Decimal?               @db.Decimal(15, 6)
+  isActive            Boolean                @default(true) @map("is_active")
+  sortOrder           Int                    @default(0) @map("sort_order")
+  description         String?
+  createdAt           DateTime               @default(now()) @map("created_at")
+  updatedAt           DateTime               @updatedAt @map("updated_at")
+
+  // Relations
+  family              MeasureFamily?         @relation(fields: [familyId], references: [id])
+  products            Product[]
+  quoteItems          QuoteItem[]
+  productPrices       ProductPrice[]
+  fromCompatibilities MeasureCompatibility[] @relation("FromMeasure")
+  toCompatibilities   MeasureCompatibility[] @relation("ToMeasure")
+
+  @@index([type])
+  @@index([familyId])
+  @@index([isActive, sortOrder])
+  @@map("measures")
+}
+
+model Quote {
+  id              Int                  @id @default(autoincrement())
+  quoteNumber     String               @unique @map("quote_number") @db.VarChar(20)
+  customerName    String               @map("customer_name") @db.VarChar(255)
+  customerEmail   String               @map("customer_email") @db.VarChar(255)
+  customerPhone   String?              @map("customer_phone") @db.VarChar(50)
+  company         String?              @db.VarChar(255)
+  countryId       Int?                 @map("country_id")
+  shippingAddress Json?                @map("shipping_address")
+  message         String?
+  status          QuoteStatus          @default(PENDING)
+  priority        QuotePriority        @default(NORMAL)
+  totalAmount     Decimal?             @map("total_amount") @db.Decimal(12, 2)
+  currencyId      Int?                 @map("currency_id")
+  validUntil      DateTime?            @map("valid_until")
+  emailStatus     String?              @default("pending") @map("email_status")
+  emailSentAt     DateTime?            @map("email_sent_at")
+  adminNotes      String?              @map("admin_notes")
+  internalNotes   String?              @map("internal_notes")
+  userId          Int?                 @map("user_id")
+  assignedToId    Int?                 @map("assigned_to_id")
+  createdAt       DateTime             @default(now()) @map("created_at")
+  updatedAt       DateTime             @updatedAt @map("updated_at")
+  communications  QuoteCommunication[]
+  items           QuoteItem[]
+  assignedTo      User?                @relation("QuoteAssignee", fields: [assignedToId], references: [id])
+  country         Country?             @relation(fields: [countryId], references: [id])
+  currency        Currency?            @relation(fields: [currencyId], references: [id])
+  user            User?                @relation("QuoteUser", fields: [userId], references: [id])
+
+  @@index([status, priority])
+  @@index([customerEmail])
+  @@index([createdAt])
+  @@index([countryId])
+  @@index([currencyId])
+  @@index([emailStatus])
+  @@map("quotes")
+}
+
+model QuoteItem {
+  id             Int      @id @default(autoincrement())
+  quoteId        Int      @map("quote_id")
+  productId      Int      @map("product_id")
+  quantity       Int
+  unitPrice      Decimal  @map("unit_price") @db.Decimal(10, 2)
+  totalPrice     Decimal  @map("total_price") @db.Decimal(12, 2)
+  notes          String?
+  specifications Json?
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  measureId      Int?     @map("measure_id")
+  measure        Measure? @relation(fields: [measureId], references: [id])
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quote          Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+
+  @@index([quoteId])
+  @@index([productId])
+  @@index([measureId])
+  @@map("quote_items")
+}
+
+model QuoteCommunication {
+  id          Int               @id @default(autoincrement())
+  quoteId     Int               @map("quote_id")
+  userId      Int?              @map("user_id")
+  type        CommunicationType @default(NOTE)
+  subject     String?           @db.VarChar(255)
+  message     String
+  attachments Json?
+  isInternal  Boolean           @default(false) @map("is_internal")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  quote       Quote             @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  user        User?             @relation(fields: [userId], references: [id])
+
+  @@index([quoteId])
+  @@index([createdAt])
+  @@map("quote_communications")
+}
+
+model User {
+  id             Int                  @id @default(autoincrement())
+  username       String               @unique @db.VarChar(50)
+  email          String               @unique @db.VarChar(255)
+  password       String               @db.VarChar(255)
+  name           String?              @map("full_name") @db.VarChar(255)
+  countryId      Int?                 @map("country_id")
+  role           UserRole             @default(VIEWER)
+  isActive       Boolean              @default(true) @map("is_active")
+  lastLogin      DateTime?            @map("last_login")
+  loginCount     Int                  @default(0) @map("login_count")
+  avatar         String?              @db.VarChar(500)
+  phone          String?              @db.VarChar(50)
+  department     String?              @db.VarChar(100)
+  company        String?              @db.VarChar(255)
+  createdAt      DateTime             @default(now()) @map("created_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
+  accounts       Account[]
+  activityLogs   ActivityLog[]
+  communications QuoteCommunication[]
+  quotesAssigned Quote[]              @relation("QuoteAssignee")
+  quotesCreated  Quote[]              @relation("QuoteUser")
+  sessions       Session[]
+  country        Country?             @relation(fields: [countryId], references: [id])
+
+  @@index([email])
+  @@index([role])
+  @@index([isActive])
+  @@index([countryId])
+  @@map("users")
+}
+
+model Country {
+  id                 Int                 @id @default(autoincrement())
+  name               String              @unique @db.VarChar(100)
+  code               String              @unique @db.VarChar(3)
+  icon               String?             @db.VarChar(10)
+  continent          String              @db.VarChar(50)
+  currencyId         Int?                @map("currency_id")
+  callingCode        String?             @db.VarChar(10)
+  phoneFormat        String?             @db.VarChar(50)
+  isActive           Boolean             @default(true) @map("is_active")
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  contactSubmissions ContactSubmission[]
+  quotes             Quote[]
+  users              User[]
+  currency           Currency?           @relation(fields: [currencyId], references: [id])
+
+  @@index([code])
+  @@index([name])
+  @@index([isActive])
+  @@index([currencyId])
+  @@map("countries")
+}
+
+model SiteSetting {
+  id              Int         @id @default(autoincrement())
+  key             String      @unique @map("setting_key") @db.VarChar(100)
+  value           String?     @map("setting_value")
+  type            SettingType @default(TEXT) @map("setting_type")
+  category        String?     @db.VarChar(50)
+  description     String?
+  isPublic        Boolean     @default(false) @map("is_public")
+  validationRules Json?       @map("validation_rules")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+  updatedBy       Int?        @map("updated_by")
+
+  @@index([category])
+  @@index([isPublic])
+  @@map("site_settings")
+}
+
+model Page {
+  id              Int       @id @default(autoincrement())
+  title           String    @db.VarChar(255)
+  slug            String    @unique @db.VarChar(255)
+  content         String
+  excerpt         String?   @db.VarChar(500)
+  metaTitle       String?   @map("meta_title") @db.VarChar(255)
+  metaDescription String?   @map("meta_description") @db.VarChar(500)
+  language        String    @default("es") @db.VarChar(2)
+  isPublished     Boolean   @default(false) @map("is_published")
+  publishedAt     DateTime? @map("published_at")
+  template        String?   @db.VarChar(50)
+  featuredImage   String?   @map("featured_image") @db.VarChar(500)
+  sortOrder       Int       @default(0) @map("sort_order")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  @@index([slug])
+  @@index([language])
+  @@index([isPublished])
+  @@map("pages")
+}
+
+model ActivityLog {
+  id         Int      @id @default(autoincrement())
+  userId     Int?     @map("user_id")
+  action     String   @db.VarChar(100)
+  entityType String?  @map("entity_type") @db.VarChar(50)
+  entityId   Int?     @map("entity_id")
+  details    Json?
+  oldValues  Json?    @map("old_values")
+  newValues  Json?    @map("new_values")
+  ipAddress  String?  @map("ip_address") @db.VarChar(45)
+  userAgent  String?  @map("user_agent")
+  createdAt  DateTime @default(now()) @map("created_at")
+  user       User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+model ContactSubmission {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(255)
+  email      String   @db.VarChar(255)
+  phone      String?  @db.VarChar(50)
+  company    String?  @db.VarChar(255)
+  countryId  Int?     @map("country_id")
+  subject    String?  @db.VarChar(255)
+  message    String
+  type       ContactType @default(GENERAL)
+  source     String?  @db.VarChar(50)
+  status     ContactStatus @default(NEW)
+  priority   ContactPriority @default(NORMAL)
+  assignedTo Int?     @map("assigned_to")
+  notes      String?
+  ipAddress  String?  @map("ip_address") @db.VarChar(45)
+  userAgent  String?  @map("user_agent")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  country    Country? @relation(fields: [countryId], references: [id])
+
+  @@index([email])
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
+  @@index([countryId])
+  @@map("contact_submissions")
+}
+
+model Newsletter {
+  id             Int       @id @default(autoincrement())
+  email          String    @unique @db.VarChar(255)
+  name           String?   @db.VarChar(255)
+  language       String    @default("es") @db.VarChar(2)
+  interests      Json?
+  isActive       Boolean   @default(true) @map("is_active")
+  confirmedAt    DateTime? @map("confirmed_at")
+  unsubscribedAt DateTime? @map("unsubscribed_at")
+  source         String?   @db.VarChar(50)
+  ipAddress      String?   @map("ip_address") @db.VarChar(45)
+  preferences    Json?
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([isActive])
+  @@index([language])
+  @@map("newsletter_subscriptions")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            Int     @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       Int      @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model ProductPrice {
+  id            Int      @id @default(autoincrement())
+  productId     Int      @map("product_id")
+  measureId     Int      @map("measure_id")
+  price         Decimal  @db.Decimal(10, 2)
+  isActive      Boolean  @default(true) @map("is_active")
+  effectiveDate DateTime @default(now()) @map("effective_date") @db.Date
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  measure Measure @relation(fields: [measureId], references: [id], onDelete: Cascade)
+
+  // Constraints
+  @@unique([productId, measureId])
+  @@index([productId, measureId])
+  @@index([isActive])
+  @@map("product_prices")
+}
+
+model MeasureCompatibility {
+  id               Int      @id @default(autoincrement())
+  fromMeasureId    Int      @map("from_measure_id")
+  toMeasureId      Int      @map("to_measure_id")
+  conversionFactor Decimal? @map("conversion_factor") @db.Decimal(15, 6)
+  isActive         Boolean  @default(true) @map("is_active")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  // Relations
+  fromMeasure Measure @relation("FromMeasure", fields: [fromMeasureId], references: [id], onDelete: Cascade)
+  toMeasure   Measure @relation("ToMeasure", fields: [toMeasureId], references: [id], onDelete: Cascade)
+
+  // Constraints
+  @@unique([fromMeasureId, toMeasureId])
+  @@index([fromMeasureId, toMeasureId])
+  @@map("measure_compatibility")
+}
+
+enum MeasureType {
+  WEIGHT
+  VOLUME
+  LENGTH
+  AREA
+  QUANTITY
+  CONTAINER
+}
+
+enum QuoteStatus {
+  PENDING
+  REVIEWED
+  QUOTED
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+
+enum QuotePriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum CommunicationType {
+  NOTE
+  EMAIL
+  PHONE_CALL
+  MEETING
+  DOCUMENT
+}
+
+enum UserRole {
+  ADMIN
+  SALES_MANAGER
+  SALES_REP
+  CUSTOMER_SERVICE
+  VIEWER
+}
+
+enum SettingType {
+  TEXT
+  NUMBER
+  BOOLEAN
+  JSON
+  FILE
+}
+
+enum ContactType {
+  GENERAL
+  SALES
+  SUPPORT
+  PARTNERSHIP
+  COMPLAINT
+}
+
+enum ContactStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum ContactPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
