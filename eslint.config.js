@@ -119,23 +119,28 @@ export default [
         },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
+      // React rules
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
+      'react/self-closing-comp': 'error',
+      'react/jsx-boolean-value': ['error', 'never'],
+      // General rules
+      'no-undef': 'off', // TypeScript handles this
+      'no-unused-vars': 'off', // Use @typescript-eslint/no-unused-vars
+      'no-useless-escape': 'off', // Allow escapes in regex
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'prefer-const': 'error',
+      'no-var': 'error',
+      'object-shorthand': 'error',
+      'prefer-destructuring': ['error', { object: true, array: false }],
       // Import rules
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       'unused-imports/no-unused-imports': 'error',
       'import/no-duplicates': 'error',
       'import/no-unresolved': 'off', // TypeScript handles this
-      // React rules
-      'react-hooks/exhaustive-deps': 'warn',
-      'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
-      'react/self-closing-comp': 'error',
-      'react/jsx-boolean-value': ['error', 'never'],
-      // General rules
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'prefer-const': 'error',
-      'no-var': 'error',
-      'object-shorthand': 'error',
-      'prefer-destructuring': ['error', { object: true, array: false }],
     },
     settings: {
       react: {

@@ -102,3 +102,4 @@ temp/
 *.sw?
 /generated/prisma
 tsconfig.tsbuildinfo
+zivah-deploy.zip

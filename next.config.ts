@@ -135,6 +135,9 @@ const nextConfig = {
   // Output configuration
   output: 'standalone',
 
+  // Fix for multiple lockfiles warning
+  outputFileTracingRoot: __dirname,
+
   // Webpack configuration
   webpack: (config: unknown) => {
     // Add custom webpack configurations if needed
