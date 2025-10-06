@@ -109,12 +109,12 @@ CREATE TABLE `currencies` (
 CREATE TABLE `measures` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
-    `shortName` VARCHAR(20) NOT NULL,
+    `short_name` VARCHAR(20) NOT NULL,
     `symbol` VARCHAR(10) NULL,
     `type` ENUM('WEIGHT', 'VOLUME', 'LENGTH', 'AREA', 'QUANTITY', 'CONTAINER') NOT NULL,
     `family_id` INTEGER NULL,
-    `baseUnit` VARCHAR(20) NULL,
-    `conversionFactor` DECIMAL(15, 6) NULL,
+    `base_unit` VARCHAR(20) NULL,
+    `conversion_factor` DECIMAL(15, 6) NULL,
     `is_active` BOOLEAN NOT NULL DEFAULT true,
     `sort_order` INTEGER NOT NULL DEFAULT 0,
     `description` TEXT NULL,
@@ -236,8 +236,8 @@ CREATE TABLE `countries` (
     `icon` VARCHAR(10) NULL,
     `continent` VARCHAR(50) NOT NULL,
     `currency_id` INTEGER NULL,
-    `callingCode` VARCHAR(10) NULL,
-    `phoneFormat` VARCHAR(50) NULL,
+    `calling_code` VARCHAR(10) NULL,
+    `phone_format` VARCHAR(50) NULL,
     `is_active` BOOLEAN NOT NULL DEFAULT true,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
@@ -440,69 +440,47 @@ CREATE TABLE `measure_compatibility` (
 
 -- AddForeignKey
 ALTER TABLE `products` ADD CONSTRAINT `products_category_id_fkey` FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `products` ADD CONSTRAINT `products_measure_id_fkey` FOREIGN KEY (`measure_id`) REFERENCES `measures`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `product_variants` ADD CONSTRAINT `product_variants_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `measures` ADD CONSTRAINT `measures_family_id_fkey` FOREIGN KEY (`family_id`) REFERENCES `measure_families`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `quotes` ADD CONSTRAINT `quotes_assigned_to_id_fkey` FOREIGN KEY (`assigned_to_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `quotes` ADD CONSTRAINT `quotes_country_id_fkey` FOREIGN KEY (`country_id`) REFERENCES `countries`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `quotes` ADD CONSTRAINT `quotes_currency_id_fkey` FOREIGN KEY (`currency_id`) REFERENCES `currencies`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `quotes` ADD CONSTRAINT `quotes_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `quote_items` ADD CONSTRAINT `quote_items_measure_id_fkey` FOREIGN KEY (`measure_id`) REFERENCES `measures`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `quote_items` ADD CONSTRAINT `quote_items_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `quote_items` ADD CONSTRAINT `quote_items_quote_id_fkey` FOREIGN KEY (`quote_id`) REFERENCES `quotes`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `quote_communications` ADD CONSTRAINT `quote_communications_quote_id_fkey` FOREIGN KEY (`quote_id`) REFERENCES `quotes`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `quote_communications` ADD CONSTRAINT `quote_communications_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `users` ADD CONSTRAINT `users_country_id_fkey` FOREIGN KEY (`country_id`) REFERENCES `countries`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `countries` ADD CONSTRAINT `countries_currency_id_fkey` FOREIGN KEY (`currency_id`) REFERENCES `currencies`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `activity_logs` ADD CONSTRAINT `activity_logs_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `contact_submissions` ADD CONSTRAINT `contact_submissions_country_id_fkey` FOREIGN KEY (`country_id`) REFERENCES `countries`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `accounts` ADD CONSTRAINT `accounts_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `sessions` ADD CONSTRAINT `sessions_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `product_prices` ADD CONSTRAINT `product_prices_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `product_prices` ADD CONSTRAINT `product_prices_measure_id_fkey` FOREIGN KEY (`measure_id`) REFERENCES `measures`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `measure_compatibility` ADD CONSTRAINT `measure_compatibility_from_measure_id_fkey` FOREIGN KEY (`from_measure_id`) REFERENCES `measures`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `measure_compatibility` ADD CONSTRAINT `measure_compatibility_to_measure_id_fkey` FOREIGN KEY (`to_measure_id`) REFERENCES `measures`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
