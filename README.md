@@ -466,7 +466,7 @@ npm run build
 # Upload the entire project to your hosting provider
 
 # For cPanel Node.js hosting:
-# 1. Upload all files to public_html/nextjs or subdomain directory
+# 1. Upload all files to public_html/app or subdomain directory
 # 2. Set Node.js version to 18+
 # 3. Set application startup file to: npm start
 # 4. Configure environment variables in cPanel

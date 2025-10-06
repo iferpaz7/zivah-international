@@ -58,14 +58,14 @@ else
     echo "FTP_HOST=ftp.zivahinternational.com"
     echo "FTP_USER=zivahint"
     echo "FTP_PASSWORD=your-password"
-    echo "FTP_PATH=/public_html/nextjs"
+    echo "FTP_PATH=/public_html/app"
     exit 1
 fi
 
 # Set FTP defaults if not defined
 FTP_HOST=${FTP_HOST:-"ftp.zivahinternational.com"}
 FTP_USER=${FTP_USER:-"zivahint"}
-FTP_PATH=${FTP_PATH:-"/public_html/nextjs"}
+FTP_PATH=${FTP_PATH:-"/public_html/app"}
 
 # Check if FTP password is available
 if [ -z "$FTP_PASSWORD" ]; then

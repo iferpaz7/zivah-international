@@ -1,3 +1,5 @@
+import type { Decimal } from '@prisma/client/runtime/library';
+
 // Base types for all database models
 export interface BaseEntity {
   id: number;
@@ -25,36 +27,48 @@ export interface Product extends BaseEntity {
   categoryId?: number;
   description?: string;
   shortDescription?: string;
-  features?: string[];
-  specifications?: Record<string, any>;
-  price?: number;
-  priceUnit?: string;
+  sku?: string;
+  specifications?: string;
   stockQuantity: number;
   minOrderQty?: number;
   imageUrl?: string;
-  imageGallery?: string[];
+  imageGallery?: string;
   origin: string;
   harvestSeason?: string;
-  certifications?: string[];
+  certifications?: string;
+  nutritionalInfo?: string;
   isActive: boolean;
   isFeatured: boolean;
   seoTitle?: string;
   seoDescription?: string;
+  measureId?: number;
+  code?: string;
   category?: Category;
+  variants?: ProductVariant[];
+  productPrices?: ProductPrice[];
+  defaultMeasure?: Measure;
   quoteItems?: QuoteItem[];
-  productVariants?: ProductVariant[];
 }
 
 export interface ProductVariant extends BaseEntity {
   productId: number;
   name: string;
-  sku?: string;
-  price?: number;
-  stockQuantity: number;
-  specifications?: Record<string, any>;
+  sku?: string | null;
+  price?: Decimal | null;
+  stockQty: number;
+  attributes?: string | null;
   isActive: boolean;
-  sortOrder: number;
-  product: Product;
+  product?: Product;
+}
+
+export interface ProductPrice extends BaseEntity {
+  productId: number;
+  measureId: number;
+  price: Decimal;
+  isActive: boolean;
+  effectiveDate: Date;
+  product?: Product;
+  measure?: Measure;
 }
 
 // Quote and order types
@@ -506,12 +520,13 @@ export enum MeasureType {
 export interface Measure extends BaseEntity {
   name: string;
   shortName: string;
-  symbol?: string;
+  symbol?: string | null;
   type: MeasureType;
-  baseUnit?: string;
-  conversionFactor?: number;
+  familyId?: number | null;
+  baseUnit?: string | null;
+  conversionFactor?: Decimal | null;
   isActive: boolean;
   sortOrder: number;
-  description?: string;
+  description?: string | null;
   quoteItems?: QuoteItem[];
 }

@@ -32,26 +32,37 @@ export class ProductService {
     if (categoryId) where.categoryId = categoryId;
     if (typeof isActive === 'boolean') where.isActive = isActive;
     if (typeof isFeatured === 'boolean') where.isFeatured = isFeatured;
-    if (origin) where.origin = { contains: origin, mode: 'insensitive' };
+    if (origin) where.origin = { contains: origin };
     if (inStock) where.stockQuantity = { gt: 0 };
-    // Price filtering removed - basePrice no longer exists
-    // TODO: Implement price filtering using ProductPrice table
+
+    // Price filtering using ProductPrice table
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      where.productPrices = {
+        some: {
+          isActive: true,
+          ...(minPrice !== undefined && { price: { gte: minPrice } }),
+          ...(maxPrice !== undefined && { price: { lte: maxPrice } }),
+        },
+      };
+    }
 
     // Search functionality
     if (search) {
       where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { shortDescription: { contains: search, mode: 'insensitive' } },
+        { name: { contains: search } },
+        { description: { contains: search } },
+        { shortDescription: { contains: search } },
       ];
     }
 
-    // Certifications filter (JSON array contains)
+    // Certifications filter (text contains)
     if (certifications && certifications.length > 0) {
-      where.certifications = {
-        path: ['$'],
-        array_contains: certifications,
-      };
+      where.OR = [
+        ...(where.OR || []),
+        ...certifications.map(cert => ({
+          certifications: { contains: cert },
+        })),
+      ];
     }
 
     const skip = (page - 1) * pageSize;
@@ -61,6 +72,17 @@ export class ProductService {
         where,
         include: {
           category: true,
+          variants: {
+            where: { isActive: true },
+            orderBy: { id: 'asc' },
+          },
+          productPrices: {
+            include: {
+              measure: true,
+            },
+            orderBy: { id: 'asc' },
+          },
+          defaultMeasure: true,
           _count: {
             select: { quoteItems: true },
           },
@@ -97,6 +119,13 @@ export class ProductService {
           where: { isActive: true },
           orderBy: { id: 'asc' },
         },
+        productPrices: {
+          include: {
+            measure: true,
+          },
+          orderBy: { id: 'asc' },
+        },
+        defaultMeasure: true,
         quoteItems: {
           include: {
             quote: true,
@@ -120,6 +149,13 @@ export class ProductService {
           where: { isActive: true },
           orderBy: { id: 'asc' },
         },
+        productPrices: {
+          include: {
+            measure: true,
+          },
+          orderBy: { id: 'asc' },
+        },
+        defaultMeasure: true,
       },
     });
 
@@ -135,6 +171,17 @@ export class ProductService {
       },
       include: {
         category: true,
+        variants: {
+          where: { isActive: true },
+          orderBy: { id: 'asc' },
+        },
+        productPrices: {
+          include: {
+            measure: true,
+          },
+          orderBy: { id: 'asc' },
+        },
+        defaultMeasure: true,
       },
       orderBy: { createdAt: 'desc' },
       take: limit,
@@ -155,6 +202,17 @@ export class ProductService {
       },
       include: {
         category: true,
+        variants: {
+          where: { isActive: true },
+          orderBy: { id: 'asc' },
+        },
+        productPrices: {
+          include: {
+            measure: true,
+          },
+          orderBy: { id: 'asc' },
+        },
+        defaultMeasure: true,
       },
       orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
       ...(limit && { take: limit }),
@@ -254,9 +312,9 @@ export class ProductService {
       where: {
         isActive: true,
         OR: [
-          { name: { contains: query, mode: 'insensitive' } },
-          { description: { contains: query, mode: 'insensitive' } },
-          { shortDescription: { contains: query, mode: 'insensitive' } },
+          { name: { contains: query } },
+          { description: { contains: query } },
+          { shortDescription: { contains: query } },
         ],
       },
       include: {

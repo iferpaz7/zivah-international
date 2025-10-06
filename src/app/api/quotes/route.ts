@@ -168,7 +168,11 @@ export async function POST(request: NextRequest) {
         customerPhone: validatedData.customerPhone,
         company: validatedData.company,
         countryId: validatedData.countryId,
-        shippingAddress: validatedData.shippingAddress,
+        shippingAddress: validatedData.shippingAddress
+          ? typeof validatedData.shippingAddress === 'string'
+            ? validatedData.shippingAddress
+            : JSON.stringify(validatedData.shippingAddress)
+          : null,
         message: validatedData.message,
         status: 'PENDING',
         items: {

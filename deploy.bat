@@ -43,7 +43,7 @@ if exist .env.production (
 REM Set defaults if not found in .env
 if not defined FTP_HOST set FTP_HOST=ftp.zivahinternational.com
 if not defined FTP_USER set FTP_USER=zivahint
-if not defined FTP_PATH set FTP_PATH=/public_html/nextjs
+if not defined FTP_PATH set FTP_PATH=/public_html/app
 
 REM Check if FTP password is available
 if not defined FTP_PASSWORD (
