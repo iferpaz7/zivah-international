@@ -17,7 +17,6 @@ export interface Category extends BaseEntity {
   products?: Product[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CreateQuoteRequestValidation {}
 
 export interface Product extends BaseEntity {
@@ -339,7 +338,6 @@ export interface CreateProductInput {
   seoDescription?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface UpdateProductInput extends Partial<CreateProductInput> {}
 
 export interface CreateQuoteInput {

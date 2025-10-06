@@ -5,7 +5,6 @@
  * This file acts as the entry point for cPanel Node.js hosting
  */
 
-/* eslint-disable @typescript-eslint/no-require-imports */
 const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');

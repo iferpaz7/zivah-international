@@ -2,8 +2,10 @@
 const nextConfig = {
   // Enable experimental features
   experimental: {
-    serverComponentsExternalPackages: ['@prisma/client'],
   },
+
+  // Server external packages
+  serverExternalPackages: ['@prisma/client'],
 
   // Image configuration
   images: {
