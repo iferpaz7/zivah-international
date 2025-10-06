@@ -33,7 +33,7 @@
     "miami"
   ],
   "author": "ZIVAH International S.A.",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
