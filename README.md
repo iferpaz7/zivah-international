@@ -214,8 +214,8 @@ This project is configured for **[cPanel Git™ Version Control](https://docs.cp
 
 1. **Setup Node.js App** in cPanel (CloudLinux / Phusion Passenger):
    - Node version: `22.x` or `20.x`
-   - Application root: `zivah-app`
-   - Startup file: `server.cjs`
+   - Application root: `public_html/app`
+   - Startup file: `server.cjs` (or `server.js`)
 2. **Clone in Git™ Version Control**:
    - Repository Path: `repositories/website`
    - Clone URL: `https://github.com/zivah-international/website.git`

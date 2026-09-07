@@ -40,8 +40,8 @@ This repository uses native **[cPanel Git™ Version Control](https://docs.cpane
 │                                     │ 3. Sync Standalone Artifacts     │
 │                                     ▼                                  │
 │  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │ Node.js Application (/home/user/zivah-app)                       │  │
-│  │   - server.cjs (Entry point)                                     │  │
+│  │ Node.js Application (/home/zivahint/public_html/app)             │  │
+│  │   - server.cjs / server.js (Entry point)                         │  │
 │  │   - .next/standalone + .next/static + public                     │  │
 │  │   - tmp/restart.txt (Touched to trigger Passenger reload)        │  │
 │  └──────────────────────────────────▲───────────────────────────────┘  │
@@ -61,14 +61,14 @@ This repository uses native **[cPanel Git™ Version Control](https://docs.cpane
 
 1. Log into your cPanel dashboard.
 2. In the **Software** section, click **Setup Node.js App**.
-3. Click **Create Application**:
+3. Create or inspect the application:
    - **Node.js version**: `22.x` (or `20.x`).
    - **Application mode**: `Production`.
-   - **Application root**: `zivah-app` (relative to `/home/youruser/`).
+   - **Application root**: `public_html/app` (or `/home/zivahint/public_html/app`).
    - **Application URL**: `zivahinternational.com` (or your domain).
-   - **Application startup file**: `server.cjs`.
-4. Click **Create**.
-5. Note the Command for entering the virtual environment displayed at the top (e.g. `source /home/youruser/nodevenv/zivah-app/22/bin/activate`).
+   - **Application startup file**: `server.cjs` (or `server.js`).
+4. Click **Create** (or **Save**).
+5. Note the command for entering the virtual environment (e.g. `source /home/zivahint/nodevenv/public_html/app/22/bin/activate`).
 
 #### Step 2: Configure Environment Variables
 
