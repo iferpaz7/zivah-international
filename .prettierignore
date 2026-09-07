@@ -3,144 +3,99 @@ node_modules/
 .pnp
 .pnp.js
 
-# Production builds
+# Production builds & deployment
 .next/
 out/
 dist/
 build/
+deploy/
+*.zip
 
-# Environment files
+# Environment variables & secrets
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+.ftpconfig
+ftp_upload*.txt
 
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Spec-Driven Development & AI Agents / Tooling metadata
+.agents/
+.claude/
+.cline/
+.clinerules/
+.cursor/
+.github/skills/
+.ide/
+.kiro/
+.opencode/
+.specify/
+specs/
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
+# Python / Virtual environment
+.venv/
+venv/
+__pycache__/
 
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
-
-# nyc test coverage
-.nyc_output
-
-# Dependency directories
-jspm_packages/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache
-.parcel-cache
-
-# Next.js build output
-.next
-
-# Nuxt.js build / generate output
-.nuxt
-dist
-
-# Gatsby files
-.cache/
-public
-
-# Storybook build outputs
-.out
-.storybook-out
-
-# Temporary folders
-tmp/
-temp/
-
-# Editor directories and files
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# OS generated files
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# Prisma
+# Generated Prisma & Next.js files
+generated/
 prisma/migrations/
+prisma/client/
+next-env.d.ts
+*.tsbuildinfo
 
-# Lock files
+# Package managers and lockfiles
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
-# Generated files
-*.min.js
-*.min.css
-*.tsbuildinfo
-next-env.d.ts
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov
 
-# Next.js specific
-.next/
-out/
-build/
+# Caches and logs
+.cache/
+.eslintcache
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Static binary assets & media
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.webp
+*.avif
+*.mp4
+*.webm
+*.pdf
+*.woff
+*.woff2
+*.ttf
+*.eot
+
+# Service worker & PWA generated files
 public/sw.js
 public/workbox-*.js
 public/worker-*.js
 public/fallback-*.js
 
-# TypeScript
-*.d.ts
-
-# Documentation
-CHANGELOG.md
-CHANGELOG*
-
-# Config files that should maintain their formatting
-tailwind.config.*
-next.config.*
-postcss.config.*
-
-# Prisma generated
-prisma/client/
-*.prisma
+# OS & Editor files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
