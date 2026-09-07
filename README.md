@@ -208,20 +208,18 @@ Two-tier approach:
 
 ## Production Deployment
 
-This project is configured for **[cPanel Git™ Version Control](https://docs.cpanel.net/cpanel/files/git-version-control/)** using `.cpanel.yml` and `scripts/cpanel-deploy.sh`.
+This project uses **GitHub Actions CI/CD** to build Next.js standalone output and deploy directly to cPanel via FTP, automatically triggering **Phusion Passenger** process reload without requiring SSH access.
 
 ### Deployment Overview
 
 1. **Setup Node.js App** in cPanel (CloudLinux / Phusion Passenger):
    - Node version: `22.x` or `20.x`
    - Application root: `public_html/app`
-   - Startup file: `server.cjs` (or `server.js`)
-2. **Clone in Git™ Version Control**:
-   - Repository Path: `repositories/website`
-   - Clone URL: `https://github.com/zivah-international/website.git`
-3. **Deploy with 1 Click**:
-   - In cPanel, click **Update from Remote** followed by **Deploy HEAD Commit**.
-   - `.cpanel.yml` runs `scripts/cpanel-deploy.sh`, compiles standalone Next.js (`next build --webpack`), and reloads Phusion Passenger.
+   - Startup file: `server.js` (or `server.cjs`)
+2. **Automated CI/CD**:
+   - Every push to `main` triggers `.github/workflows/deploy.yml`.
+   - GitHub Actions installs dependencies with `pnpm`, builds standalone Next.js in ~45 seconds, creates `tmp/restart.txt`, and uploads the bundle via FTP.
+   - Phusion Passenger automatically reloads the application upon receiving the new `tmp/restart.txt`.
 
 For complete step-by-step instructions, see the [Deployment & Operations Guide](docs/wiki/Deployment-and-Operations.md).
 
