@@ -1,9 +1,15 @@
-name: Deploy to Production
+# ==============================================================================
+# [DEACTIVATED] Legacy FTP Deployment Workflow
+#
+# This workflow has been DEACTIVATED in favor of native cPanel Git™ Version
+# Control using .cpanel.yml and scripts/cpanel-deploy.sh.
+#
+# Automatic execution on push to 'main' has been disabled.
+# ==============================================================================
+
+name: '[Deactivated] Deploy to Production (Legacy FTP)'
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 # Prevent concurrent deployments
@@ -13,6 +19,8 @@ concurrency:
 
 jobs:
   build-and-deploy:
+    # Set to false to prevent accidental manual runs
+    if: false
     runs-on: ubuntu-latest
     environment: Production
 
