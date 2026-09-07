@@ -66,6 +66,18 @@ prisma/
 └── migrations/             # SQL migrations
 ```
 
+## Documentation
+
+Full architectural, database, security, and component documentation is maintained in the [Project Wiki](docs/wiki/Home.md) and synchronized with the GitHub Wiki:
+
+- [Architecture Overview](docs/wiki/Architecture.md)
+- [Database Architecture & Setup](docs/wiki/Database-Architecture.md)
+- [Authentication & Security](docs/wiki/Authentication-and-Security.md)
+- [API Reference](docs/wiki/API-Reference.md)
+- [UI & Design System](docs/wiki/UI-Design-System.md)
+- [Deployment & Operations](docs/wiki/Deployment-and-Operations.md)
+- [Development Workflow](docs/wiki/Development-Workflow.md)
+
 ## Development
 
 ### Prerequisites
@@ -196,21 +208,22 @@ Two-tier approach:
 
 ## Production Deployment
 
-### Build
+This project is configured for **[cPanel Git™ Version Control](https://docs.cpanel.net/cpanel/files/git-version-control/)** using `.cpanel.yml` and `scripts/cpanel-deploy.sh`.
 
-```bash
-pnpm build
-```
+### Deployment Overview
 
-Output: `.next/standalone/` (standalone mode for cPanel).
+1. **Setup Node.js App** in cPanel (CloudLinux / Phusion Passenger):
+   - Node version: `22.x` or `20.x`
+   - Application root: `zivah-app`
+   - Startup file: `server.cjs`
+2. **Clone in Git™ Version Control**:
+   - Repository Path: `repositories/website`
+   - Clone URL: `https://github.com/zivah-international/website.git`
+3. **Deploy with 1 Click**:
+   - In cPanel, click **Update from Remote** followed by **Deploy HEAD Commit**.
+   - `.cpanel.yml` runs `scripts/cpanel-deploy.sh`, compiles standalone Next.js (`next build --webpack`), and reloads Phusion Passenger.
 
-### cPanel Setup
-
-1. Upload `.next/standalone/` contents and `public/` folder
-2. Set Node.js version to 22+
-3. Entry point: `node server.cjs` or `npm start`
-4. Configure environment variables in cPanel Node.js Selector
-5. Run `pnpm db:push` and `pnpm db:seed` on production DB
+For complete step-by-step instructions, see the [Deployment & Operations Guide](docs/wiki/Deployment-and-Operations.md).
 
 ### Required Environment Variables (Production)
 
