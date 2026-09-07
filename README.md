@@ -66,6 +66,18 @@ prisma/
 └── migrations/             # SQL migrations
 ```
 
+## Documentation
+
+Full architectural, database, security, and component documentation is maintained in the [Project Wiki](docs/wiki/Home.md) and synchronized with the GitHub Wiki:
+
+- [Architecture Overview](docs/wiki/Architecture.md)
+- [Database Architecture & Setup](docs/wiki/Database-Architecture.md)
+- [Authentication & Security](docs/wiki/Authentication-and-Security.md)
+- [API Reference](docs/wiki/API-Reference.md)
+- [UI & Design System](docs/wiki/UI-Design-System.md)
+- [Deployment & Operations](docs/wiki/Deployment-and-Operations.md)
+- [Development Workflow](docs/wiki/Development-Workflow.md)
+
 ## Development
 
 ### Prerequisites
