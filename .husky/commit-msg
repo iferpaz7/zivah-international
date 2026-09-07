@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Git hook: commit-msg
+# Ensures commit messages follow Conventional Commits standard
+
+commit_regex='^(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert)(\([a-zA-Z0-9_-]+\))?: .{1,100}'
+commit_msg=$(head -n 1 "$1")
+
+if ! echo "$commit_msg" | grep -Eq "$commit_regex"; then
+  echo "❌ Error: Invalid commit message format."
+  echo "   Format required: <type>(<scope>): <description>"
+  echo "   Allowed types: feat, fix, docs, style, refactor, perf, test, chore, ci, build, revert"
+  echo "   Example: feat(catalog): add shrimp export pricing calculation"
+  exit 1
+fi

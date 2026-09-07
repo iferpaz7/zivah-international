@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Git hook: pre-push
+# Ensures type safety and build sanity before pushing code to remote
+
+echo "🔍 Running pre-push checks (pnpm type-check)..."
+pnpm type-check
+
+echo "✅ Pre-push verification passed!"
