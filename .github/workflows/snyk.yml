@@ -50,6 +50,7 @@ jobs:
   scan:
     name: Snyk Open Source and Code
     runs-on: ubuntu-latest
+    environment: Production
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5.0.0
@@ -80,6 +81,13 @@ jobs:
         run: |
           set -uo pipefail
           mkdir -p snyk-results
+
+          if [ -z "${SNYK_TOKEN:-}" ]; then
+            echo "::error::SNYK_TOKEN is empty! Make sure SNYK_TOKEN is configured in GitHub Secrets."
+            exit 1
+          fi
+
+          snyk auth "$SNYK_TOKEN"
 
           # 1. Snyk Open Source Test (Dependencies)
           snyk test \
