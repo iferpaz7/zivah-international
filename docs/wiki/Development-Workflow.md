@@ -64,6 +64,34 @@ pnpm format
 
 ---
 
+## 🛡️ Security & Static Analysis
+
+### 1. Snyk Security Scanning (CI Pipeline)
+
+The repository integrates automated security scanning via [`.github/workflows/snyk.yml`](file:///.github/workflows/snyk.yml):
+
+- **Snyk Open Source**: Scans dependencies for high/critical vulnerabilities.
+- **Snyk Code**: SAST scanning of application source code.
+- **Reports**: Generates HTML and JSON reports uploaded to GitHub Actions artifacts.
+- **Required Secret**: `SNYK_TOKEN` (configured in GitHub Repository Secrets).
+
+### 2. SonarQube Local Scanning
+
+Run SonarQube static code quality analysis locally against your SonarQube server (e.g. `http://localhost:9000`):
+
+```bash
+# Run local scan using bash script
+./scripts/sonarqube-scan.sh "squ_xxxxxxxxxxxx"
+
+# Or using pnpm scripts
+pnpm sonar:local "squ_xxxxxxxxxxxx"
+pnpm sonar:scan
+```
+
+Configuration is defined in `sonar-project.properties`.
+
+---
+
 ## 🌿 Branching & Commit Conventions
 
 ### Branch Strategy

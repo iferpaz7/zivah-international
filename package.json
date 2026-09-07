@@ -19,7 +19,9 @@
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
     "prepare": "husky || echo 'Husky setup skipped'",
-    "postinstall": "echo 'Postinstall completed'"
+    "postinstall": "echo 'Postinstall completed'",
+    "sonar:scan": "sonar-scanner-npm",
+    "sonar:local": "bash ./scripts/sonarqube-scan.sh"
   },
   "keywords": [
     "zivah",
@@ -91,6 +93,7 @@
     "@eslint/eslintrc": "^3.3.6",
     "@next/eslint-plugin-next": "^16.2.12",
     "@playwright/test": "^1.62.0",
+    "@sonar/scan": "^5.0.0",
     "@types/node": "^26.1.1",
     "@types/nodemailer": "^8.0.1",
     "@types/pg": "^8.20.0",

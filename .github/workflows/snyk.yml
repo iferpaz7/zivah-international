@@ -1,0 +1,134 @@
+name: Snyk Security
+
+on:
+  push:
+    branches: [main, develop]
+    paths-ignore:
+      - AGENTS.md
+      - .agents/**
+      - .codex/**
+      - .specify/**
+      - .claude/**
+      - .cline/**
+      - .cursor/**
+      - .ide/**
+      - .opencode/**
+      - .kiro/**
+      - .clinerules/**
+      - specs/**
+      - docs/**
+      - README.md
+      - .github/skills/**
+  pull_request:
+    branches: [main, develop]
+    paths-ignore:
+      - AGENTS.md
+      - .agents/**
+      - .codex/**
+      - .specify/**
+      - .claude/**
+      - .cline/**
+      - .cursor/**
+      - .ide/**
+      - .opencode/**
+      - .kiro/**
+      - .clinerules/**
+      - specs/**
+      - docs/**
+      - README.md
+      - .github/skills/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: snyk-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    name: Snyk Open Source and Code
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js (22.x LTS)
+        uses: actions/setup-node@v5.0.0
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.1.0
+        with:
+          version: '11.9.0'
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@master
+
+      - name: Scan and create reports
+        id: snyk
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          set -uo pipefail
+          mkdir -p snyk-results
+
+          # 1. Snyk Open Source Test (Dependencies)
+          snyk test \
+            --org=zivah-snyk-org \
+            --all-projects \
+            --detection-depth=2 \
+            --exclude=node_modules,.next,dist,out,build \
+            --severity-threshold=high \
+            --json-file-output=snyk-results/snyk-test.json || open_source_status=$?
+          open_source_status=${open_source_status:-0}
+
+          # 2. Snyk Code Test (SAST)
+          snyk code test \
+            --org=zivah-snyk-org \
+            --severity-threshold=high \
+            --remote-repo-url="https://github.com/${{ github.repository }}" \
+            --json-file-output=snyk-results/snyk-code.json || code_status=$?
+          code_status=${code_status:-0}
+
+          # 3. Generate HTML reports with snyk-to-html
+          npm install --global snyk-to-html@3.7.9
+          for report in snyk-test snyk-code; do
+            if [ -s "snyk-results/${report}.json" ]; then
+              snyk-to-html -i "snyk-results/${report}.json" -o "snyk-results/${report}.html" || true
+            fi
+          done
+
+          {
+            echo "open_source_status=$open_source_status"
+            echo "code_status=$code_status"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Upload Snyk reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snyk-reports-${{ github.run_number }}
+          path: snyk-results/
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Enforce Snyk security gate
+        if: always() && steps.snyk.outcome == 'success'
+        env:
+          OPEN_SOURCE_STATUS: ${{ steps.snyk.outputs.open_source_status }}
+          CODE_STATUS: ${{ steps.snyk.outputs.code_status }}
+        run: |
+          if [ "$OPEN_SOURCE_STATUS" != "0" ] || [ "$CODE_STATUS" != "0" ]; then
+            echo "::error::Snyk security gate failed with High/Critical issues. Check artifacts for detailed HTML report."
+            exit 1
+          fi
+          echo "✅ Snyk security gate passed cleanly!"
