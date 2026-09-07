@@ -39,7 +39,24 @@ fi
 echo "📁 Target Deployment Path: $DEPLOY_PATH"
 mkdir -p "$DEPLOY_PATH"
 
-# 2. Setup Node.js & Package Manager Environment
+# 2. Check for Remote Updates & Prevent Redundant Builds
+echo "🔍 Checking for remote repository updates..."
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  LOCAL_SHA=$(git rev-parse HEAD 2>/dev/null || echo "")
+  git fetch origin main 2>/dev/null || true
+  REMOTE_SHA=$(git rev-parse origin/main 2>/dev/null || echo "")
+
+  if [ -n "$LOCAL_SHA" ] && [ -n "$REMOTE_SHA" ] && [ "$LOCAL_SHA" != "$REMOTE_SHA" ]; then
+    echo "🔄 New commits detected on remote ($LOCAL_SHA -> $REMOTE_SHA). Pulling latest changes..."
+    git pull --ff-only origin main || true
+  elif [ -f "$DEPLOY_PATH/.next/BUILD_ID" ] && [ -n "$LOCAL_SHA" ] && [ "$LOCAL_SHA" = "$REMOTE_SHA" ] && [ -z "${FORCE_BUILD:-}" ]; then
+    echo "✅ Application at $DEPLOY_PATH is already up to date with commit $LOCAL_SHA."
+    echo "⚡ No rebuild needed. Exiting cleanly."
+    exit 0
+  fi
+fi
+
+# 3. Setup Node.js & Package Manager Environment
 echo "🔍 Checking Node.js environment..."
 
 # Look for CloudLinux Node.js virtual environments or ea-nodejs if node is not found
@@ -82,7 +99,7 @@ fi
 
 echo "📦 Package Manager: $PKG_MANAGER"
 
-# 3. Install Dependencies
+# 4. Install Dependencies
 echo "📥 Installing dependencies..."
 if [ "$PKG_MANAGER" = "pnpm" ]; then
   pnpm install --frozen-lockfile
@@ -90,7 +107,7 @@ else
   npm ci || npm install
 fi
 
-# 4. Compile Next.js Application (Standalone Output)
+# 5. Compile Next.js Application (Standalone Output)
 echo "🏗️ Compiling Next.js application (next build --webpack)..."
 export NODE_ENV=production
 if [ "$PKG_MANAGER" = "pnpm" ]; then
@@ -99,7 +116,7 @@ else
   npm run build
 fi
 
-# 5. Sync Build Artifacts to Target Deployment Directory
+# 6. Sync Build Artifacts to Target Deployment Directory
 echo "🚚 Deploying files to $DEPLOY_PATH..."
 
 # Ensure target directories exist
@@ -135,7 +152,7 @@ fi
 /bin/cp -f package.json "$DEPLOY_PATH/package.json"
 /bin/cp -f prisma/schema.prisma "$DEPLOY_PATH/prisma/schema.prisma" 2>/dev/null || true
 
-# 6. Trigger Phusion Passenger App Restart
+# 7. Trigger Phusion Passenger App Restart
 echo "🔄 Triggering Phusion Passenger application reload..."
 mkdir -p "$DEPLOY_PATH/tmp"
 touch "$DEPLOY_PATH/tmp/restart.txt"
