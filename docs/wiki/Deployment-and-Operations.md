@@ -103,10 +103,6 @@ Configured under **Settings** > **Secrets and variables** > **Actions**:
   - `FTP_USER`: FTP deployment username.
   - `FTP_PASSWORD`: FTP deployment password.
   - `FTP_PATH`: Target directory path on FTP (e.g. `public_html/app`).
-  - `CPANEL_HOST`: (Optional) cPanel hostname for UAPI fallback.
-  - `CPANEL_USER`: (Optional) cPanel username.
-  - `CPANEL_API_TOKEN`: (Optional) cPanel UAPI token.
-  - `CPANEL_APP_NAME`: (Optional) Application name in cPanel.
 - **Variables**:
   - `NEXT_PUBLIC_GA_MEASUREMENT_ID`: Google Analytics measurement ID.
 

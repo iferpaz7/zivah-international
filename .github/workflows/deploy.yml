@@ -114,18 +114,3 @@ jobs:
             **/Thumbs.db
             **/*.log
             **/.env*
-
-      # -------------------------------------------------------
-      # 7. Restart the Node.js app via cPanel UAPI (optional fallback)
-      # -------------------------------------------------------
-      - name: Restart Node.js app via cPanel UAPI (fallback)
-        continue-on-error: true
-        run: |
-          echo "Attempting app restart via cPanel UAPI (tmp/restart.txt already triggers Passenger)..."
-          RESPONSE=$(curl -s -G \
-            -H "Authorization: cpanel ${{ secrets.CPANEL_USER }}:${{ secrets.CPANEL_API_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            --data-urlencode "app_path=public_html/app" \
-            --data-urlencode "app_name=${{ secrets.CPANEL_APP_NAME }}" \
-            "https://${{ secrets.CPANEL_HOST }}:2083/execute/NodeJS/restart_app" || true)
-          echo "$RESPONSE" || true
