@@ -2,19 +2,49 @@
 set -euo pipefail
 
 # ==============================================================================
-# SonarQube Local Scanner for ZIVAH International Website
-# Linux/macOS Bash equivalent of sonarqube-scan.ps1
+# SonarQube Local Scanner & API Results Exporter for ZIVAH International Website
 # ==============================================================================
 
-TOKEN="${1:-${SONAR_TOKEN:-}}"
-SERVER_URL="${2:-${SONAR_HOST_URL:-http://localhost:9000}}"
-PROJECT_KEY="${3:-zivah-international-website}"
-PROJECT_NAME="${4:-ZIVAH International Website}"
+# Parse arguments and support flags like --export
+TOKEN=""
+SERVER_URL=""
+PROJECT_KEY=""
+PROJECT_NAME=""
+AUTO_EXPORT=false
+
+for arg in "$@"; do
+  case "$arg" in
+    --export|-e)
+      AUTO_EXPORT=true
+      ;;
+    *)
+      if [ -z "$TOKEN" ]; then
+        TOKEN="$arg"
+      elif [ -z "$SERVER_URL" ]; then
+        SERVER_URL="$arg"
+      elif [ -z "$PROJECT_KEY" ]; then
+        PROJECT_KEY="$arg"
+      elif [ -z "$PROJECT_NAME" ]; then
+        PROJECT_NAME="$arg"
+      fi
+      ;;
+  esac
+done
+
+TOKEN="${TOKEN:-${SONAR_TOKEN:-}}"
+SERVER_URL="${SERVER_URL:-${SONAR_HOST_URL:-http://localhost:9000}}"
+PROJECT_KEY="${PROJECT_KEY:-zivah-international-website}"
+PROJECT_NAME="${PROJECT_NAME:-ZIVAH International Website}"
+AUTO_EXPORT="${AUTO_EXPORT:-${EXPORT_SONAR_RESULTS:-false}}"
 
 if [ -z "$TOKEN" ]; then
   echo "❌ Error: SonarQube token is required."
-  echo "Uso: ./scripts/sonarqube-scan.sh <TOKEN> [SERVER_URL] [PROJECT_KEY] [PROJECT_NAME]"
-  echo "Ejemplo: ./scripts/sonarqube-scan.sh squ_xxxxxxxxxxxx"
+  echo ""
+  echo "Uso: ./scripts/sonarqube-scan.sh <TOKEN> [SERVER_URL] [PROJECT_KEY] [PROJECT_NAME] [--export]"
+  echo "Ejemplo:"
+  echo "  ./scripts/sonarqube-scan.sh squ_xxxxxxxxxxxx"
+  echo "  ./scripts/sonarqube-scan.sh squ_xxxxxxxxxxxx --export"
+  echo "  ./scripts/sonarqube-scan.sh squ_xxxxxxxxxxxx http://localhost:9000 zivah-international-website"
   exit 1
 fi
 
@@ -112,7 +142,7 @@ echo "  ✓ Análisis procesado exitosamente"
 
 # 5. Mostrar métricas
 echo -e "\n── Métricas de Calidad del Proyecto"
-METRICS="bugs,vulnerabilities,code_smells,coverage,sqale_rating,reliability_rating,security_rating,ncloc,duplicated_lines_density"
+METRICS="alert_status,bugs,vulnerabilities,code_smells,coverage,sqale_rating,reliability_rating,security_rating,ncloc,duplicated_lines_density"
 MEASURES_RES=$(curl -s -H "$AUTH_HEADER" "$SERVER_URL/api/measures/component?component=$PROJECT_KEY&metricKeys=$METRICS" || echo "{}")
 
 node -e "
@@ -130,7 +160,97 @@ console.log('🔓 Vulnerabilidades:   ' + (m['vulnerabilities'] || '0') + ' (' +
 console.log('👃 Code Smells:        ' + (m['code_smells'] || '0') + ' (' + getRating(m['sqale_rating']) + ')');
 console.log('🛡️ Cobertura:          ' + (m['coverage'] ? m['coverage'] + '%' : 'N/A'));
 console.log('📄 Líneas Duplicadas:  ' + (m['duplicated_lines_density'] ? m['duplicated_lines_density'] + '%' : '0%'));
+console.log('🚦 Quality Gate:       ' + (m['alert_status'] === 'OK' ? 'PASSED ✅' : (m['alert_status'] || 'N/A')));
 console.log('--------------------------------------------------');
 " "$MEASURES_RES"
 
-echo -e "\n🔗 Dashboard SonarQube: $SERVER_URL/dashboard?id=$PROJECT_KEY\n"
+echo -e "\n🔗 Dashboard SonarQube: $SERVER_URL/dashboard?id=$PROJECT_KEY"
+
+# 6. Preguntar y exportar resultados por API a .sonarqube-results
+DO_EXPORT=false
+
+if [ "$AUTO_EXPORT" = "true" ]; then
+  DO_EXPORT=true
+elif [ -t 0 ]; then
+  echo ""
+  read -r -p "📥 ¿Deseas exportar los resultados completos a .sonarqube-results? [S/n]: " USER_RESP
+  USER_RESP="${USER_RESP:-S}"
+  if [[ "$USER_RESP" =~ ^[SsYy]$ ]]; then
+    DO_EXPORT=true
+  fi
+fi
+
+if [ "$DO_EXPORT" = "true" ]; then
+  DATE_FOLDER=$(date +"%Y-%m-%d_%H-%M-%S")
+  EXPORT_DIR=".sonarqube-results/scans/${DATE_FOLDER}"
+  mkdir -p "$EXPORT_DIR"
+  echo -e "\n📦 Exportando resultados vía API a: $EXPORT_DIR"
+
+  # Helper para guardar JSON formateado
+  fetch_and_save() {
+    local url="$1"
+    local output_file="$2"
+    curl -s -H "$AUTH_HEADER" "$url" | node -e "
+      let data = '';
+      process.stdin.on('data', chunk => data += chunk);
+      process.stdin.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          console.log(JSON.stringify(parsed, null, 2));
+        } catch (e) {
+          console.log(data);
+        }
+      });
+    " > "$output_file"
+  }
+
+  echo -n "  ⏳ Descargando métricas (measures.json) ... "
+  fetch_and_save "$SERVER_URL/api/measures/component?component=$PROJECT_KEY&metricKeys=$METRICS" "$EXPORT_DIR/measures.json"
+  echo "OK ✓"
+
+  echo -n "  ⏳ Descargando problemas (issues.json) ... "
+  fetch_and_save "$SERVER_URL/api/issues/search?componentKeys=$PROJECT_KEY&resolved=false&ps=500" "$EXPORT_DIR/issues.json"
+  echo "OK ✓"
+
+  echo -n "  ⏳ Descargando Quality Gate (quality-gate.json) ... "
+  fetch_and_save "$SERVER_URL/api/qualitygates/project_status?projectKey=$PROJECT_KEY" "$EXPORT_DIR/quality-gate.json"
+  echo "OK ✓"
+
+  echo -n "  ⏳ Descargando historial de análisis (latest-analysis.json) ... "
+  fetch_and_save "$SERVER_URL/api/project_analyses/search?project=$PROJECT_KEY&ps=5" "$EXPORT_DIR/latest-analysis.json"
+  echo "OK ✓"
+
+  # Guardar metadata con contexto de Git
+  GIT_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "N/A")
+  GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "N/A")
+
+  node -e "
+    const fs = require('fs');
+    const meta = {
+      projectKey: process.argv[1],
+      projectName: process.argv[2],
+      serverUrl: process.argv[3],
+      scanDate: new Date().toISOString(),
+      git: {
+        commit: process.argv[4],
+        branch: process.argv[5]
+      },
+      exportPath: '$EXPORT_DIR'
+    };
+    fs.writeFileSync('$EXPORT_DIR/metadata.json', JSON.stringify(meta, null, 2) + '\n');
+  " "$PROJECT_KEY" "$PROJECT_NAME" "$SERVER_URL" "$GIT_COMMIT" "$GIT_BRANCH"
+  echo "  ✓ Generado metadata.json"
+
+  # Crear / actualizar symlink .sonarqube-results/latest
+  mkdir -p .sonarqube-results
+  rm -f .sonarqube-results/latest
+  ln -s "scans/${DATE_FOLDER}" .sonarqube-results/latest 2>/dev/null || true
+
+  echo "=================================================="
+  echo "✅ Resultados exportados exitosamente en:"
+  echo "📁 $EXPORT_DIR"
+  echo "📌 Acceso rápido: .sonarqube-results/latest"
+  echo "=================================================="
+fi
+
+echo ""

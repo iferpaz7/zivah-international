@@ -106,3 +106,7 @@ temp/
 /generated/prisma
 tsconfig.tsbuildinfo
 zivah-deploy.zip
+/.scannerwork/
+.sonar/
+.sonarqube-results/
+snyk-results/
